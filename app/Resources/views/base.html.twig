@@ -10,6 +10,9 @@
             <link href="{{ asset('assets/css/styles.css') }}" type="text/css" rel="stylesheet" >
         {% endblock %}
         {% block javascripts %}
+            <script type="text/javascript">
+                var URL = "{{ app.request.getSchemeAndHttpHost() }}";
+            </script>
             <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
             <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
         {% endblock %}
@@ -17,7 +20,6 @@
     </head>
     <body>
         <header>
-
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
@@ -33,7 +35,7 @@
                         </a>
                     </div>
 
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li>
                                 <a href="{{ path("login") }}">
@@ -53,6 +55,18 @@
             </nav>
         </header>
         <section id="content">
+            <div class="container">
+                <div class="col-lg-11">
+                    {% for message in app.session.flashBag().get('status') %}
+                        <div class="alert alert-success alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="clearfix"></div>
+
             {% block content %}
                 Content default
             {% endblock %}

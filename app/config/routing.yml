@@ -1,3 +1,13 @@
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+
+user_nick_test:
+    path: /nick-test
+    defaults: { _controller: AppBundle:User:nickTest }
+    methods: [POST]
+
+user_email_test:
+    path: /email-test
+    defaults: { _controller: AppBundle:User:emailTest }
+    methods: [POST]

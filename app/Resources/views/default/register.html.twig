@@ -1,7 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}  {# parent() carga el contenido del bloque y añade lo siguiente #}
+    <script src="{{ asset('assets/js/custom/nick-test.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/email-test.js') }}"></script>
+{% endblock %}
+
 {% block content %}
-    <div class="box-form">
+    <div class="col-lg-6 box-form">
         <h2>Registrarse</h2>
         {{ form_start(form, {'action':'', 'method':'POST'}) }}
         {{ form_errors(form) }}

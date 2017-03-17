@@ -37,7 +37,7 @@ class Usuario{
      *
      * @var string
      */
-    protected $username;
+    protected $nick;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -172,6 +172,31 @@ class Usuario{
      */
     protected $receptor;
 
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getRoles()
+    {
+        return $this->getRol();
+    }
+
+    public function eraseCredentials()
+    {
+
+    }
+
+    public function __toString()
+    {
+        return $this->nombre;
+    }
+
     /**
      * @return int
      */
@@ -207,17 +232,17 @@ class Usuario{
     /**
      * @return string
      */
-    public function getUsername()
+    public function getNick()
     {
-        return $this->username;
+        return $this->nick;
     }
 
     /**
-     * @param string $username
+     * @param string $nick
      */
-    public function setUsername($username)
+    public function setUsername($nick)
     {
-        $this->username = $username;
+        $this->nick = $nick;
     }
 
     /**
@@ -548,11 +573,11 @@ class Usuario{
     /**
      * Add viaje
      *
-     * @param \AppBundle\Entity\Viaje $viaje
+     * @param Viaje $viaje
      *
      * @return Usuario
      */
-    public function addViaje(\AppBundle\Entity\Viaje $viaje)
+    public function addViaje(Viaje $viaje)
     {
         $this->viaje[] = $viaje;
 
@@ -562,9 +587,9 @@ class Usuario{
     /**
      * Remove viaje
      *
-     * @param \AppBundle\Entity\Viaje $viaje
+     * @param Viaje $viaje
      */
-    public function removeViaje(\AppBundle\Entity\Viaje $viaje)
+    public function removeViaje(Viaje $viaje)
     {
         $this->viaje->removeElement($viaje);
     }
@@ -572,11 +597,11 @@ class Usuario{
     /**
      * Add notificacion
      *
-     * @param \AppBundle\Entity\Notificacion $notificacion
+     * @param Notificacion $notificacion
      *
      * @return Usuario
      */
-    public function addNotificacion(\AppBundle\Entity\Notificacion $notificacion)
+    public function addNotificacion(Notificacion $notificacion)
     {
         $this->notificacion[] = $notificacion;
 
@@ -586,9 +611,9 @@ class Usuario{
     /**
      * Remove notificacion
      *
-     * @param \AppBundle\Entity\Notificacion $notificacion
+     * @param Notificacion $notificacion
      */
-    public function removeNotificacion(\AppBundle\Entity\Notificacion $notificacion)
+    public function removeNotificacion(Notificacion $notificacion)
     {
         $this->notificacion->removeElement($notificacion);
     }
@@ -596,11 +621,11 @@ class Usuario{
     /**
      * Add emisor
      *
-     * @param \AppBundle\Entity\Mensaje $emisor
+     * @param Mensaje $emisor
      *
      * @return Usuario
      */
-    public function addEmisor(\AppBundle\Entity\Mensaje $emisor)
+    public function addEmisor(Mensaje $emisor)
     {
         $this->emisor[] = $emisor;
 
@@ -610,9 +635,9 @@ class Usuario{
     /**
      * Remove emisor
      *
-     * @param \AppBundle\Entity\Mensaje $emisor
+     * @param Mensaje $emisor
      */
-    public function removeEmisor(\AppBundle\Entity\Mensaje $emisor)
+    public function removeEmisor(Mensaje $emisor)
     {
         $this->emisor->removeElement($emisor);
     }
@@ -620,11 +645,11 @@ class Usuario{
     /**
      * Add receptor
      *
-     * @param \AppBundle\Entity\Mensaje $receptor
+     * @param Mensaje $receptor
      *
      * @return Usuario
      */
-    public function addReceptor(\AppBundle\Entity\Mensaje $receptor)
+    public function addReceptor(Mensaje $receptor)
     {
         $this->receptor[] = $receptor;
 
@@ -634,9 +659,9 @@ class Usuario{
     /**
      * Remove receptor
      *
-     * @param \AppBundle\Entity\Mensaje $receptor
+     * @param Mensaje $receptor
      */
-    public function removeReceptor(\AppBundle\Entity\Mensaje $receptor)
+    public function removeReceptor(Mensaje $receptor)
     {
         $this->receptor->removeElement($receptor);
     }

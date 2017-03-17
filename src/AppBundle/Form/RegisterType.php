@@ -44,7 +44,7 @@ class RegisterType extends AbstractType
                 'label' => 'Correo electrónico',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-email form-control'
+                    'class' => 'form-email form-control email-input'
                 )
             ))
             ->add('password', PasswordType::class, array(
