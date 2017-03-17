@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="box-form">
+        <h2>Registrarse</h2>
+        {{ form_start(form, {'action':'', 'method':'POST'}) }}
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
