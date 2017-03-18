@@ -12,8 +12,9 @@ class IndexController extends Controller{
      * @Route("/home", name="homepage")
      */
     public function IndexAction(Request $request){
-        echo "Acción Index Viajes";
-        die();
+
+
+        return $this->render(':publication:home.html.twig');
     }
 
 }

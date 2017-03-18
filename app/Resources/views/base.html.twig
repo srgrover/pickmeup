@@ -35,7 +35,9 @@
                         </a>
                     </div>
 
+
                     <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+                        {% if app.user == null %}
                         <ul class="nav navbar-nav">
                             <li>
                                 <a href="{{ path("login") }}">
@@ -50,6 +52,45 @@
                                 </a>
                             </li>
                         </ul>
+                        {% endif %}
+                        {% if app.user != null %}
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        {{ app.user.nombre }} {{ app.user.apellidos }}
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                                Mi perfil
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('user_edit') }}">
+                                                <span class="glyphicon glyphicon-cog"></span>
+                                                Mis datos
+                                            </a>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li>
+                                            <a href="">
+                                                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                                Ayuda
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('logout') }}">
+                                                <span class="glyphicon glyphicon-log-out"></span>
+                                                Salir
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        {% endif %}
                     </div>
                 </div>
             </nav>
@@ -75,7 +116,7 @@
             <hr />
             <div class="container">
                 <p class="text-muted">
-                    Desarrollo de una web para compartir  - Jonathan Moya Moreno - 2017viajes
+                    Desarrollo de una web para compartir viajes - Jonathan Moya Moreno - 2017
                 </p>
             </div>
         </footer>

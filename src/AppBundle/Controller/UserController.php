@@ -23,8 +23,18 @@ class UserController extends Controller{
      * @Route("/login", name="login")
      */
     public function LoginAction(Request $request){
-        return $this->render(':default:login.html.twig', array(
-            "titulo" => "Login"
+        if(is_object($this->getUser())){        //El usuario está logueado
+            return $this->redirect('home');
+        }
+
+        $autenticationUtils = $this->get('security.authentication_utils');  //Utiles para autenticacion
+        $error = $autenticationUtils->getLastAuthenticationError();         //Capturamos el error
+
+        $lastUserName = $autenticationUtils->getLastUsername();             //Capturamos el usuario del error
+
+        return $this->render(':user:login.html.twig', array(
+            'last_username' => $lastUserName,
+            'error' => $error
         ));
     }
 
@@ -32,6 +42,10 @@ class UserController extends Controller{
      * @Route("/register", name="Register")
      */
     public function RegisterAction(Request $request){
+        if(is_object($this->getUser())){        //El usuario está logueado
+            return $this->redirect('home');
+        }
+
         $user = new Usuario();
         $form = $this->createForm(RegisterType::class, $user);
 
@@ -84,7 +98,7 @@ class UserController extends Controller{
             $this->session->getFlashBag()->add("status", $status);
         }
 
-        return $this->render(':default:register.html.twig', array(
+        return $this->render(':user:register.html.twig', array(
             "form" => $form->createView()
         ));
     }
@@ -127,6 +141,30 @@ class UserController extends Controller{
         }
 
         return new Response(($result));
+    }
+
+
+    /**
+     * @Route("/my-data", name="user_edit")
+     */
+    public function aditUserAction(Request $request){
+//        $email = $request->get("email");
+//
+//        $em = $this->getDoctrine()->getManager();
+//        $email_repo = $em->getRepository("AppBundle:Usuario");
+//        $email_isset = $email_repo->findOneBy(array("email" => $email));
+//
+//        $result = "used";
+//
+//        if(count($email_isset) >= 1 && is_object($email_isset)){
+//            $result = "used";
+//        }else{
+//            $result = "unused";
+//        }
+
+        return $this->render(':user:edit_user.html.twig', array(
+
+        ));
     }
 
 }

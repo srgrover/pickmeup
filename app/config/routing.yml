@@ -2,6 +2,12 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout
+
 user_nick_test:
     path: /nick-test
     defaults: { _controller: AppBundle:User:nickTest }
@@ -11,3 +17,4 @@ user_email_test:
     path: /email-test
     defaults: { _controller: AppBundle:User:emailTest }
     methods: [POST]
+

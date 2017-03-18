@@ -9,13 +9,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 
 /**
  * @ORM\Entity
  */
 
-class Usuario{
+class Usuario implements UserInterface{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -184,7 +185,7 @@ class Usuario{
 
     public function getRoles()
     {
-        return $this->getRol();
+        return array('ROLE_USER', 'ROLE_ADMIN');
     }
 
     public function eraseCredentials()
