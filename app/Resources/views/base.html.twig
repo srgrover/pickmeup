@@ -57,6 +57,14 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <div class="avatar">
+                                            {% if app.user.imagenPerfil == null %}
+                                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                                            {% else %}
+                                                <img src="{{ asset('uploads/users/'~app.user.imagenPerfil) }}" alt="avatar" />
+                                            {% endif %}
+                                        </div>
+
                                         {{ app.user.nombre }} {{ app.user.apellidos }}
                                         <span class="caret"></span>
                                     </a>
@@ -101,7 +109,8 @@
                     {% for message in app.session.flashBag().get('status') %}
                         <div class="alert alert-success alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            {{ message }}
+                            <span class="glyphicon glyphicon-ok"></span>
+                            &nbsp;{{ message }}
                         </div>
                     {% endfor %}
                 </div>

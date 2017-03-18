@@ -2,13 +2,15 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\RegisterType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+
 use AppBundle\Entity\Usuario;
+use AppBundle\Form\RegisterType;
+use AppBundle\Form\UserType;
 
 
 
@@ -148,22 +150,62 @@ class UserController extends Controller{
      * @Route("/my-data", name="user_edit")
      */
     public function aditUserAction(Request $request){
-//        $email = $request->get("email");
-//
-//        $em = $this->getDoctrine()->getManager();
-//        $email_repo = $em->getRepository("AppBundle:Usuario");
-//        $email_isset = $email_repo->findOneBy(array("email" => $email));
-//
-//        $result = "used";
-//
-//        if(count($email_isset) >= 1 && is_object($email_isset)){
-//            $result = "used";
-//        }else{
-//            $result = "unused";
-//        }
+        $user = $this->getUser();   //getUser() para recoger los datos de un usuario que ya esta logueado
+        $user_image = $user->getImagenPerfil();
+        $form = $this->createForm(UserType::class, $user);  //Crea el formulario
+
+        $form->handleRequest($request);    //Informacion de request se guarda aqui
+
+        if($form->isSubmitted()){
+            if($form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+
+                $query = $em->createQuery('SELECT u FROM AppBundle:Usuario u WHERE u.email = :email OR u.nick = :nick')
+                    ->setParameter('email', $form->get("email")->getData())
+                    ->setParameter('nick', $form->get("nick")->getData());
+
+                $user_isset = $query->getResult();
+
+                if(($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick()) || count($user_isset) == 0){
+
+                    //Fichero subido
+                    $file = $form["imagenPerfil"]->getData();
+
+                    if(!empty($file) && $file != null){
+                        $ext = $file->guessExtension();
+                        if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
+                            $file_name = $user->getId().time().'.'.$ext;
+                            $file->move("uploads/users", $file_name);
+
+                            $user->setImagenPerfil($file_name);
+                        }
+                    }else{
+                        $user->setImagenPerfil($user_image);
+                    }
+
+                    $em->persist($user);
+                    $flush = $em->flush();
+
+                    if($flush == null){ //No devuelve ningun error
+                        $status = "Datos modificados correctamente";
+                    }else{
+                        $status = "Los datos no se han modificado correctamente";
+                    }
+
+                }else{
+                    $status = "El usuario ya existe !!";
+                }
+
+            }else{
+                $status = "No se han actualizado los datos correctamente !!";
+            }
+
+            $this->session->getFlashBag()->add("status", $status);
+            return $this->redirect('my-data');
+        }
 
         return $this->render(':user:edit_user.html.twig', array(
-
+            "form" => $form->createView()
         ));
     }
 

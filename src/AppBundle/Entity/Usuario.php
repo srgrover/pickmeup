@@ -241,7 +241,7 @@ class Usuario implements UserInterface{
     /**
      * @param string $nick
      */
-    public function setUsername($nick)
+    public function setNick($nick)
     {
         $this->nick = $nick;
     }

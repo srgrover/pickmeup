@@ -3,6 +3,24 @@ body{
     background: #EEEEEE;
 }
 
+/* HEADER */
+
+.navbar-collapse .avatar{
+    background: #FFFFFF;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    float: left;
+    margin-right: 12px;
+    margin-top: -10px;
+}
+
+.navbar-collapse .avatar img{
+    height: 100%;
+    text-align: center;
+}
+
 /* REGISTRO */
 .box-form{
     background: #FFFFFF;
