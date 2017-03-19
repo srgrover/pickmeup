@@ -20,7 +20,7 @@
     </head>
     <body>
         <header>
-            <nav class="navbar navbar-inverse">
+            <nav class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapse" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -36,9 +36,9 @@
                     </div>
 
 
-                    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         {% if app.user == null %}
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav navbar-right">
                             <li>
                                 <a href="{{ path("login") }}">
                                     <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
@@ -49,6 +49,21 @@
                                 <a href="{{ path("Register") }}">
                                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                     &nbsp;Registro
+                                </a>
+                            </li>
+                        </ul>
+                        {% else %}
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="{{ path("homepage") }}">
+                                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                    &nbsp;Inicio
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path("users") }}">
+                                    <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                                    &nbsp;Conductores
                                 </a>
                             </li>
                         </ul>

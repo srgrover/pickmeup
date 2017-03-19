@@ -21,6 +21,11 @@ body{
     text-align: center;
 }
 
+/* CONTENT */
+#content{
+    margin-top: 80px;
+}
+
 /* REGISTRO */
 .box-form{
     background: #FFFFFF;

@@ -10,6 +10,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -34,28 +35,47 @@ class Usuario implements UserInterface{
     protected $rol;
 
     /**
-     * @ORM\Column(type="string", length=25, unique=true, nullable=false)
-     *
      * @var string
+     *
+     * @ORM\Column(type="string", length=25, unique=true, nullable=false)
+     * @Assert\Length(
+     *     min = 4,
+     *     max = 16,
+     *     minMessage = "El nickname debe tener como mínimo 4 caracteres",
+     *     maxMessage = "El nickname debe tener como mínimo 16 caracteres"
+     * )
+     * @Assert\NotBlank(
+     *     message = "El Nickname no puede estar vacío"
+     * )
      */
     protected $nick;
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\Length(
+     *     min = 8,
+     *     minMessage = "La contraseña debe tener como mínimo 8 caracteres"
+     * )
      *
      * @var string
      */
     protected $password;
 
     /**
-     * @ORM\Column(type="string", unique=true, nullable=false)
-     *
      * @var string
+     *
+     * @ORM\Column(type="string", unique=true, nullable=false)
+     * @Assert\NotBlank(
+     *     message = "El email no puede estar vacío"
+     * )
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank(
+     *     message = "El nombre no puede estar vacío"
+     * )
      *
      * @var string
      */
@@ -63,6 +83,9 @@ class Usuario implements UserInterface{
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank(
+     *     message = "Los apellidos no pueden estar vacíos"
+     * )
      *
      * @var string
      */
@@ -77,6 +100,9 @@ class Usuario implements UserInterface{
 
     /**
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank(
+     *     message = "La ciudad no puede estar vacía"
+     * )
      *
      * @var string
      */
@@ -98,6 +124,14 @@ class Usuario implements UserInterface{
 
     /**
      * @ORM\Column(type="string", length=9, nullable=false)
+     * @Assert\Length(
+     *     min = 9,
+     *     max = 9,
+     *     exactMessage = "El número de contacto debe tener 9 dígitos"
+     * )
+     * @Assert\NotBlank(
+     *     message = "El número de contacto no puede estar vacío"
+     * )
      *
      * @var string
      */

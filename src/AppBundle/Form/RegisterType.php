@@ -33,7 +33,7 @@ class RegisterType extends AbstractType
                     'class' => 'form-surname form-control'
                 )
             ))
-            ->add('username', TextType::class, array(
+            ->add('nick', TextType::class, array(
                 'label' => 'Nick',
                 'required' => 'required',
                 'attr' => array(

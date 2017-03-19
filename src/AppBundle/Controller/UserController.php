@@ -60,7 +60,7 @@ class UserController extends Controller{
 
                 $query = $em->createQuery('SELECT u FROM AppBundle:Usuario u WHERE u.email = :email OR u.nick = :nick')
                     ->setParameter('email', $form->get("email")->getData())
-                    ->setParameter('nick', $form->get("username")->getData());
+                    ->setParameter('nick', $form->get("nick")->getData());
 
                 $user_isset = $query->getResult();
 
@@ -125,27 +125,6 @@ class UserController extends Controller{
         return new Response(($result));
     }
 
-
-    //Comprobamos si el email introducido ya está registrado en la base de datos
-    public function emailTestAction(Request $request){
-        $email = $request->get("email");
-
-        $em = $this->getDoctrine()->getManager();
-        $email_repo = $em->getRepository("AppBundle:Usuario");
-        $email_isset = $email_repo->findOneBy(array("email" => $email));
-
-        $result = "used";
-
-        if(count($email_isset) >= 1 && is_object($email_isset)){
-            $result = "used";
-        }else{
-            $result = "unused";
-        }
-
-        return new Response(($result));
-    }
-
-
     /**
      * @Route("/my-data", name="user_edit")
      */
@@ -209,4 +188,27 @@ class UserController extends Controller{
         ));
     }
 
+
+    /**
+     * @Route("/users", name="users")
+     */
+    public function usersAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "SELECT u FROM AppBundle:Usuario u";
+
+        $query = $em->createQuery($dql);
+
+        $paginator = $this->get('knp_paginator');
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),     //page es la variable de la url
+            5                                       //5 usuarios por pagina
+        );
+
+        return $this->render(':user:users.html.twig', array(
+            'pagination' => $pagination
+        ));
+    }
 }

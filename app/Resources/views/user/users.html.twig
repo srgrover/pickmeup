@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+
+    </div>
+    <div class="col-lg-12 box-form">
+        <h1>Conductores</h1>
+        <div class="count">
+            <span class="label label-primary">
+                Conductores registrados {{ pagination.getTotalItemCount }}
+            </span>
+        </div>
+        <hr />
+
+        <div class="box-content box-users">
+            {% for user in pagination %}
+                {{ user.email }} <br>
+            {% endfor %}
+
+        </div>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}  <!-- pinta la paginacion con  la plantilla custom_pagination -->
+        </div>
+    </div>
+{% endblock %}
+
