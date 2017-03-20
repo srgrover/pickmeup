@@ -211,6 +211,21 @@ class Usuario implements UserInterface, \Serializable {
      */
     protected $receptor;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Seguimiento", mappedBy="usuario")
+     *
+     * @var Seguimiento
+     */
+    protected $usuarioSeguido;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Seguimiento", mappedBy="seguidor")
+     *
+     * @var Seguimiento
+     */
+    protected $seguidor;
+
+
     public function getUsername()
     {
         return $this->email;
@@ -722,4 +737,38 @@ class Usuario implements UserInterface, \Serializable {
     {
         $this->receptor->removeElement($receptor);
     }
+
+    /**
+     * @return Seguimiento
+     */
+    public function getUsuarioSeguido()
+    {
+        return $this->usuarioSeguido;
+    }
+
+    /**
+     * @param Seguimiento $usuarioSeguido
+     */
+    public function setUsuarioSeguido($usuarioSeguido)
+    {
+        $this->usuarioSeguido = $usuarioSeguido;
+    }
+
+    /**
+     * @return Seguimiento
+     */
+    public function getSeguidor()
+    {
+        return $this->seguidor;
+    }
+
+    /**
+     * @param Seguimiento $seguidor
+     */
+    public function setSeguidor($seguidor)
+    {
+        $this->seguidor = $seguidor;
+    }
+
+
 }
