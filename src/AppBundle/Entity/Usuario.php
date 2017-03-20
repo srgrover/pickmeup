@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  */
 
-class Usuario implements UserInterface{
+class Usuario implements UserInterface, \Serializable {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -67,6 +67,10 @@ class Usuario implements UserInterface{
      * @ORM\Column(type="string", unique=true, nullable=false)
      * @Assert\NotBlank(
      *     message = "El email no puede estar vacío"
+     * )
+     * @Assert\Email(
+     *     message = "El email {{ value }} no es válido.",
+     *     checkMX = "false"
      * )
      */
     protected $email;
@@ -230,6 +234,24 @@ class Usuario implements UserInterface{
     public function __toString()
     {
         return $this->nombre;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->email,
+            $this->password
+        ));
+    }
+
+    public function  unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->email,
+            $this->password
+            ) = unserialize($serialized);
     }
 
     /**

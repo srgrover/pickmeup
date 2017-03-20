@@ -39,3 +39,25 @@ body{
 .box-form input{
     margin-bottom: 10px;
 }
+
+/* CONDUCTORES */
+.user-item .avatar{
+    background: #EEEEEE;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    overflow: hidden;
+    float: left;
+}
+
+.user-item .avatar img{
+    height: 100%;
+    text-align: center;
+}
+
+.user-item-content{
+    padding: 10px;
+    margin-left: 85px;
+}

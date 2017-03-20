@@ -66,6 +66,17 @@
                                     &nbsp;Conductores
                                 </a>
                             </li>
+                            <li>
+                                <form action="{{ path('user_search') }}" class="navbar-form navbar-left">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Buscar" name="search" />
+                                        <button type="submit" class="btn btn-default">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                            Buscar
+                                        </button>
+                                    </div>
+                                </form>
+                            </li>
                         </ul>
                         {% endif %}
                         {% if app.user != null %}

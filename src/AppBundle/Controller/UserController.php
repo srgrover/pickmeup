@@ -145,7 +145,7 @@ class UserController extends Controller{
 
                 $user_isset = $query->getResult();
 
-                if(($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick()) || count($user_isset) == 0){
+                if(count($user_isset) == 0 || ($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick())){
 
                     //Fichero subido
                     $file = $form["imagenPerfil"]->getData();
@@ -195,9 +195,41 @@ class UserController extends Controller{
     public function usersAction(Request $request){
         $em = $this->getDoctrine()->getManager();
 
-        $dql = "SELECT u FROM AppBundle:Usuario u";
+        $dql = "SELECT u FROM AppBundle:Usuario u ORDER BY u.id ASC";
 
         $query = $em->createQuery($dql);
+
+        $paginator = $this->get('knp_paginator');
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),     //page es la variable de la url
+            5                                       //5 usuarios por pagina
+        );
+
+        return $this->render(':user:users.html.twig', array(
+            'pagination' => $pagination
+        ));
+    }
+
+
+    /**
+     * @Route("/search", name="user_search")
+     */
+    public function searchAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+
+        $search = $request->query->get("search", null); //Se recoge el valor de la variable search de la URL
+
+        if($search == null){    //Si la variable search del GET es nula, se redirige a la pagina home
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+
+        $dql = "SELECT u FROM AppBundle:Usuario u " .
+            "WHERE u.nombre LIKE :search OR u.apellidos LIKE :search " .
+            "OR u.nick LIKE :search ORDER BY u.id ASC";
+
+        $query = $em->createQuery($dql)->setParameter('search', "%$search%");   //añadimos parametro search que sea "lo que sea" + search + "lo que sea"
 
         $paginator = $this->get('knp_paginator');
 
