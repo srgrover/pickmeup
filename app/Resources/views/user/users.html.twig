@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
-
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/custom/users.js') }}"></script>
+{% endblock %}
 {% block content %}
     <div class="container">
 
@@ -8,13 +11,13 @@
         <h1>Conductores</h1>
         <div class="count">
             <span class="label label-primary">
-                Conductores: {{ pagination.getTotalItemCount }}
+                Conductores: {{ pagination.getTotalItemCount }} <!-- obtiene el total de items del array pagination -->
             </span>
         </div>
         <hr />
 
         <div class="box-content box-users">
-            {% for user in pagination %}
+            {% for user in pagination %}    <!-- Para cada usuario(con todos sus datos) dentro de paginacion -->
                 <div class="col-lg-12 user-item">
                     <div class="avatar">
                         {% if user.imagenPerfil == null %}
@@ -34,7 +37,7 @@
 
         </div>
         <div class="navigation">
-            {{ knp_pagination_render(pagination) }}  <!-- pinta la paginacion con  la plantilla custom_pagination -->
+            {{ knp_pagination_render(pagination) }}  <!-- pinta la paginacion con la plantilla custom_pagination -->
         </div>
         <div class="clearfix"></div>
     </div>
