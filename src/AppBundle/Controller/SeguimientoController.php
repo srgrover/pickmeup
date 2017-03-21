@@ -12,9 +12,6 @@ use AppBundle\Entity\Usuario;
 use AppBundle\Entity\Seguimiento;
 
 
-
-
-
 class SeguimientoController extends Controller{
     private $session;
 
@@ -24,13 +21,31 @@ class SeguimientoController extends Controller{
 
 
     /**
-     * @Route("/follow", name="following_follow")
+     * @Route("/follow", name="following_follow", methods="POST")
      */
     public function seguimientoAction(Request $request){
+        $user = $this->getUser();                   //Obtenemos el usuario actual
+        $followed_id = $request->get('followed');   //Obtenemos el usuario al que vamos a seguir. 'followed' es una variable recogida por POST
 
+        $em = $this->getDoctrine()->getManager();
 
-        echo "Follow Action";
+        $user_repo = $em->getRepository('AppBundle:Usuario');
 
-        die();
+        $followed = $user_repo->find($followed_id);
+
+        $following = new Seguimiento();             //Creamos nueva instancia de la entida seguimiento
+        $following->setUsuario($user);              //Seteamos el usuario seguido
+        $following->setSeguidor($followed);         //Y el usuario seguidor
+
+        $em->persist($following);
+        $flush = $em->flush();                      //Para que guarde los cambios
+
+        if($flush == null){     //Si no da fallo
+            $status = "Ahora estas siguiendo a este usuario.";
+        }else{
+            $status = "No se ha podido seguir a este usuario.";
+        }
+
+        return new Response($status);
     }
 }
