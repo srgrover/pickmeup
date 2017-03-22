@@ -2,12 +2,14 @@
 
 namespace AppBundle\Form;
 
+use Doctrine\ORM\Query\Expr\Select;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
@@ -19,63 +21,55 @@ class AddViajeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', TextType::class, array(
-                'label' => 'Nombre',
+            ->add('origen', TextType::class, array(
+                'label' => 'Origen',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-name form-control'
+                    'class' => 'form-origen form-control'
                 )
             ))
-            ->add('apellidos', TextType::class, array(
-                'label' => 'Apellidos',
+            ->add('destino', TextType::class, array(
+                'label' => 'Destino',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-surname form-control'
+                    'class' => 'form-destino form-control'
                 )
             ))
-            ->add('nick', TextType::class, array(
-                'label' => 'Nick',
+            ->add('plazasLibres', NumberType::class, array(
+                'label' => 'Plazas libres',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-nick form-control nick-input'
+                    'class' => 'form-plazas form-control'
                 )
             ))
-            ->add('email', EmailType::class, array(
-                'label' => 'Correo electrónico',
+            ->add('diasRutina', TextType::class, array(
+                'label' => 'Días',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-email form-control email-input'
+                    'class' => 'form-dias form-control'
                 )
             ))
-            ->add('password', PasswordType::class, array(
-                'label' => 'Contraseña',
+//            ->add('Lunes-Viernes', CheckboxType::class, array(
+//                'required' => 'required',
+//                'attr' => array(
+//                    'class' => 'form-check form-control'
+//                )
+//            ))
+            ->add('maximoAtras', CheckboxType::class, array(
+                'label' => 'Máx. 2 pasajeros atrás',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-password form-control'
+                    'class' => 'form-max'
                 )
             ))
-            ->add('fechaNacimiento', DateType::class, array(
-                'label' => 'Fecha de nacimiento',
+            ->add('flexiblididad', TextType::class, array(
+                'label' => 'Flexibilidad',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-date form-control'
+                    'class' => 'form-flexibilidad form-control'
                 )
             ))
-            ->add('ciudad', TextType::class, array(
-                'label' => 'Ciudad',
-                'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-city form-control'
-                )
-            ))
-            ->add('telefono', TextType::class, array(
-                'label' => 'Teléfono',
-                'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-tlf form-control'
-                )
-            ))
-            ->add('Registrarse', SubmitType::class, array(
+            ->add('Añadir', SubmitType::class, array(
                 "attr" => array(
                     "class" => "form-submit btn btn-success"
                 )
@@ -89,7 +83,7 @@ class AddViajeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Usuario'
+            'data_class' => 'AppBundle\Entity\Viaje'
         ));
     }
 
@@ -98,7 +92,7 @@ class AddViajeType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_usuario';
+        return 'appbundle_viaje';
     }
 
 
