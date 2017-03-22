@@ -33,9 +33,24 @@
 
                     {% if app.user.id != user.id %}
                         <div class="pull-right buttons-following">
-                            <button class="btn btn-sm btn-success btn-follow" data-followed="{{ user.id }}">
+                            <button class="btn btn-sm btn-success btn-follow
+                                    {% if app.user|following(user) == true %}
+                                        hidden
+                                    {% endif %}
+                                    "
+                                    data-followed="{{ user.id }}">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                Seguir
+                                Seguir viajes
+                            </button>
+
+                            <button class="btn btn-sm btn-danger btn-unfollow
+                                    {% if app.user|following(user) == false %}
+                                        hidden
+                                    {% endif %}
+                                    "
+                                    data-followed="{{ user.id }}">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                Dejar de seguir
                             </button>
                         </div>
                     {% endif %}
