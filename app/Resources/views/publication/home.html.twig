@@ -1,11 +1,35 @@
-{% extends 'base.html.twig' %}
+{% extends '::base.html.twig' %}
 
 {% block content %}
-    <div class="col-lg-8">
-        <h2>Home</h2>
-        <hr />
+    <div class="container">
+        <div id="timeline" class="col-lg-7 box-default pull-left">
+            <h1 class="box-header">Timeline</h1>
 
+            <div class="box-content">
+                Publicaciones list
+            </div>
+        </div>
 
+        <div id="user-card" class="col-lg-4 box-default pull-left">
+            <div class="avatar">
+                {% if app.user.imagenPerfil == null %}
+                    <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                {% else %}
+                    <img src="{{ asset('uploads/users/'~app.user.imagenPerfil) }}" alt="avatar" />
+                {% endif %}
+            </div>
+
+            <div class="name-surname">
+                <a href="#">{{ app.user.nombre }} {{ app.user.apellidos }}</a>
+                <div class="clearfix"></div>
+                <span class="nickname">
+                    {{ app.user.nick }}
+                </span>
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
     </div>
+
 {% endblock %}
 

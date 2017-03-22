@@ -33,6 +33,34 @@ class Viaje{
     protected $fechaPublicacion;
 
     /**
+     * @ORM\Column(type="integer", nullable=false)
+     *
+     * @var integer
+     */
+    protected $tipo;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    protected $fechaSalida;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    protected $fechaVuelta;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $diasRutina;
+
+    /**
      * @ORM\Column(type="string", nullable=false)
      *
      * @var string
@@ -234,5 +262,69 @@ class Viaje{
     public function getMaximoAtras()
     {
         return $this->maximoAtras;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    /**
+     * @param int $tipo
+     */
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getFechaSalida()
+    {
+        return $this->fechaSalida;
+    }
+
+    /**
+     * @param \DateTime $fechaSalida
+     */
+    public function setFechaSalida($fechaSalida)
+    {
+        $this->fechaSalida = $fechaSalida;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getFechaVuelta()
+    {
+        return $this->fechaVuelta;
+    }
+
+    /**
+     * @param \DateTime $fechaVuelta
+     */
+    public function setFechaVuelta($fechaVuelta)
+    {
+        $this->fechaVuelta = $fechaVuelta;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiasRutina()
+    {
+        return $this->diasRutina;
+    }
+
+    /**
+     * @param string $diasRutina
+     */
+    public function setDiasRutina($diasRutina)
+    {
+        $this->diasRutina = $diasRutina;
     }
 }

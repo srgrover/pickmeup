@@ -27,7 +27,7 @@ body{
 }
 
 /* REGISTRO */
-.box-form{
+.box-form, .box-default{
     background: #FFFFFF;
     border: 1px solid #CCCCCC;
     padding: 20px;
@@ -60,4 +60,54 @@ body{
 .user-item-content{
     padding: 10px;
     margin-left: 85px;
+}
+
+/* HOME */
+#timeline{
+    margin-right: 20px;
+    min-height: 750px;
+    padding-bottom: 20px;
+}
+
+.box-header{
+    border-bottom: 1px solid #CCCCCC;
+    padding: 10px;
+    padding-top: 0px;
+    font-size: 25px;
+}
+
+#user-card{
+    padding: 10px;
+}
+
+#user-card .avatar{
+    background: #EEEEEE;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    float: left;
+}
+
+#user-card .avatar img{
+    height: 100%;
+    text-align: center;
+}
+
+#user-card .avatar img.default{
+    opacity: 0.5;
+}
+
+#user-card .name-surname{
+    float: left;
+    font-size: 20px;
+    padding: 10px;
+}
+
+#user-card .name-surname a{
+    color: #000000;
+}
+
+#user-card .nickname{
+    opacity: 0.7;
 }
