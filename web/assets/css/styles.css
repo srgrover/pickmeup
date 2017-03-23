@@ -126,6 +126,15 @@ body{
     color: #000000;
 }
 
-.pub-date{
+.pub-long-time{
     color: #AAAAAA;
+    cursor: default;
+}
+
+.pub-date{
+    padding: 2px;
+    background: #CCCCCC;
+    font-size: 12px;
+    border-radius: 3px;
+    color: #6E6E6E;
 }

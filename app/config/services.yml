@@ -14,3 +14,9 @@ services:
             doctrine: "@doctrine"
         tags:
             - { name: twig.extension }
+
+    long_time.twig_extension:
+        class: AppBundle\twig\LongTimeExtension
+        public: false
+        tags:
+            - { name: twig.extension }
