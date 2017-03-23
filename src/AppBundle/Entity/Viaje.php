@@ -75,11 +75,25 @@ class Viaje{
     protected $destino;
 
     /**
+     * @ORM\Column(type="time", nullable=false)
+     *
+     * @var /time
+     */
+    protected $horaSalida;
+
+    /**
      * @ORM\Column(type="integer", nullable=false)
      *
      * @var integer
      */
     protected $plazasLibres;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     *
+     * @var integer
+     */
+    protected $precio;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="viaje")
@@ -326,5 +340,37 @@ class Viaje{
     public function setDiasRutina($diasRutina)
     {
         $this->diasRutina = $diasRutina;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHoraSalida()
+    {
+        return $this->horaSalida;
+    }
+
+    /**
+     * @param mixed $horaSalida
+     */
+    public function setHoraSalida($horaSalida)
+    {
+        $this->horaSalida = $horaSalida;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
+
+    /**
+     * @param int $precio
+     */
+    public function setPrecio($precio)
+    {
+        $this->precio = $precio;
     }
 }

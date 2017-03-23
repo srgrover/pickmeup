@@ -6,7 +6,65 @@
             <h1 class="box-header">Timeline</h1>
 
             <div class="box-content">
-                Publicaciones list
+                {% for publication in pagination %}
+                    <div class="col-lg-12 publication-item">
+                        <p>
+                            <a class="pub-name-link" href="#">
+                                {{ publication.conductor.nombre }} {{ publication.conductor.apellidos }}
+                            </a>
+                            -
+                            ({{ publication.conductor.nick }})
+                            -
+                            <span class="pub-date">
+                                    {{ publication.fechaPublicacion|date('d-m-Y') }}
+                                </span>
+                        </p>
+                        <div class="avatar">
+                            {% if publication.conductor.imagenPerfil == null %}
+                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                            {% else %}
+                                <img src="{{ asset('uploads/users/'~publication.conductor.imagenPerfil) }}" alt="avatar" />
+                            {% endif %}
+                        </div>
+
+                        <div class="publication-item-content">
+                            <table width="80%">
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
+                                            {{ publication.origen }}
+                                        </p>
+                                        <p>
+                                            <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
+                                            {{ publication.destino }}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            Hora de salida: {{ publication.horaSalida|date('h:m')  }}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            {{ publication.precio }}€ por plaza
+                                        </p>
+                                        <p>
+                                            {{ publication.plazasLibres }} Plazas libres
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                    </div>
+                {% endfor %}
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
             </div>
         </div>
 

@@ -2,16 +2,14 @@
 
 namespace AppBundle\Form;
 
-use Doctrine\ORM\Query\Expr\Select;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class AddViajeType extends AbstractType
 {
@@ -42,11 +40,25 @@ class AddViajeType extends AbstractType
                     'class' => 'form-plazas form-control'
                 )
             ))
+            ->add('precio', NumberType::class, array(
+                'label' => 'Precio en €',
+                'required' => 'required',
+                'attr' => array(
+                    'class' => 'form-precio form-control'
+                )
+            ))
             ->add('diasRutina', TextType::class, array(
                 'label' => 'Días',
                 'required' => 'required',
                 'attr' => array(
                     'class' => 'form-dias form-control'
+                )
+            ))
+            ->add('horaSalida', TimeType::class, array(
+                'label' => 'Hora de salida',
+                'required' => 'required',
+                'attr' => array(
+                    'class' => 'form-hora-salida form-control'
                 )
             ))
 //            ->add('Lunes-Viernes', CheckboxType::class, array(
@@ -57,7 +69,7 @@ class AddViajeType extends AbstractType
 //            ))
             ->add('maximoAtras', CheckboxType::class, array(
                 'label' => 'Máx. 2 pasajeros atrás',
-                'required' => 'required',
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-max'
                 )

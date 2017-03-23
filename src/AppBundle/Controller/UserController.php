@@ -219,7 +219,7 @@ class UserController extends Controller{
     public function searchAction(Request $request){
         $em = $this->getDoctrine()->getManager();
 
-        $search = $request->query->get("search", null); //Se recoge el valor de la variable search de la URL
+        $search = trim($request->query->get("search", null)); //Se recoge el valor de la variable search de la URL
 
         if($search == null){    //Si la variable search del GET es nula, se redirige a la pagina home
             return $this->redirect($this->generateUrl('homepage'));

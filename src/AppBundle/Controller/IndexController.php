@@ -21,8 +21,11 @@ class IndexController extends Controller{
      * @Route("/home", name="homepage")
      */
     public function IndexAction(Request $request){
+        $publications = $this->getPublications($request);
 
-        return $this->render(':publication:home.html.twig');
+        return $this->render(':publication:home.html.twig',array(
+            'pagination' => $publications
+        ));
     }
 
 
@@ -61,9 +64,43 @@ class IndexController extends Controller{
             return $this->redirectToRoute('homepage');
         }
 
+
+
         return $this->render(':publication:add_rutina.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ));
+    }
+
+    public function getPublications($request){
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $viajes_repo = $em->getRepository('AppBundle:Viaje');
+        $following_repo = $em->getRepository('AppBundle:Seguimiento');
+
+        /*SELECT * FROM `viaje` WHERE conductor_id = 3 OR conductor_id IN (SELECT seguidor_id FROM `seguimiento` WHERE usuario_id = 3)*/
+        $following = $following_repo->findBy(array('usuario' => $user));
+
+        $following_array = array();
+        foreach ($following as $follow){
+            $following_array[] = $follow->getSeguidor();
+        }
+
+        $query = $viajes_repo->createQueryBuilder('p')
+            ->where('p.conductor = (:user_id) OR p.conductor IN (:following)')
+            ->setParameter('user_id', $user->getId())
+            ->setParameter('following', $following_array)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery();
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        return $pagination;
     }
 
 }

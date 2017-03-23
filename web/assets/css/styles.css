@@ -41,7 +41,8 @@ body{
 }
 
 /* CONDUCTORES */
-.user-item .avatar{
+.user-item .avatar,
+.publication-item .avatar{
     background: #EEEEEE;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -52,12 +53,14 @@ body{
     float: left;
 }
 
-.user-item .avatar img{
+.user-item .avatar img,
+.publication-item .avatar img{
     height: 100%;
     text-align: center;
 }
 
-.user-item-content{
+.user-item .user-item-content,
+.publication-item .publication-item-content{
     padding: 10px;
     margin-left: 85px;
 }
@@ -116,4 +119,13 @@ body{
 
 .form-max{
     margin-left: 1525px;
+}
+
+.pub-name-link{
+    font-weight: bold;
+    color: #000000;
+}
+
+.pub-date{
+    color: #AAAAAA;
 }
