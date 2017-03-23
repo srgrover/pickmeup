@@ -96,11 +96,11 @@ class Viaje{
     protected $descripcion = "No hay ninguna descripción para este viaje.";
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="string", nullable=false)
      *
-     * @var integer
+     * @var string
      */
-    protected $flexiblididad = 1;
+    protected $flexiblididad = "Justo a tiempo";
 
     /**
      * @ORM\Column(type="boolean", nullable=false)
