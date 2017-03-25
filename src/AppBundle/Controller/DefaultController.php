@@ -9,10 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="raiz")
      */
     public function indexAction()
     {
-        return $this->redirect($this->generateUrl('login'));
+        return $this->redirectToRoute('login');
     }
 }

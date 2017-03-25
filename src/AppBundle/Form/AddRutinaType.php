@@ -5,15 +5,14 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class AddViajeType extends AbstractType
+class AddRutinaType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -49,11 +48,11 @@ class AddViajeType extends AbstractType
                     'class' => 'form-precio form-control'
                 )
             ))
-            ->add('fechaSalida', DateType::class, array(
-                'label' => 'Fecha de salida',
+            ->add('diasRutina', TextType::class, array(
+                'label' => 'Días',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-salida form-control'
+                    'class' => 'form-dias form-control'
                 )
             ))
             ->add('horaSalidaIda', TimeType::class, array(
@@ -61,20 +60,6 @@ class AddViajeType extends AbstractType
                 'required' => 'required',
                 'attr' => array(
                     'class' => 'form-hora-salida form-control'
-                )
-            ))
-            ->add('fechaVuelta', DateType::class, array(
-                'label' => 'Fecha de vuelta',
-                'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-vuelta form-control'
-                )
-            ))
-            ->add('horaSalidaVuelta', TimeType::class, array(
-                'label' => 'Hora de Vuelta',
-                'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-hora-vuelta form-control'
                 )
             ))
 //            ->add('Lunes-Viernes', CheckboxType::class, array(
@@ -99,7 +84,7 @@ class AddViajeType extends AbstractType
             ))
             ->add('descripcion', TextareaType::class, array(
                 'label' => 'Descripción/Anotaciones del viaje',
-                'required' => 'required',
+                'required' => false,
                 'attr' => array(
                     'class' => 'form-desc form-control'
                 )

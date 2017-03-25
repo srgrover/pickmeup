@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\AddRutinaType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use AppBundle\Form\AddViajeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,17 +38,17 @@ class IndexController extends Controller{
 
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
-        $viaje = new Viaje();
-        $form = $this->createForm(AddViajeType::class, $viaje);
+        $rutina = new Viaje();
+        $form = $this->createForm(AddRutinaType::class, $rutina);
 
         $form->handleRequest($request);
         if($form->isSubmitted()){
             if($form->isValid()){
-                $viaje->setTipo(1);
-                $viaje->setConductor($user);
-                $viaje->setFechaPublicacion(new \DateTime("now"));
+                $rutina->setTipo(1);
+                $rutina->setConductor($user);
+                $rutina->setFechaPublicacion(new \DateTime("now"));
 
-                $em->persist($viaje);
+                $em->persist($rutina);
                 $flush = $em->flush();
 
                 if($flush == null){
@@ -64,9 +65,46 @@ class IndexController extends Controller{
             return $this->redirectToRoute('homepage');
         }
 
-
-
         return $this->render(':publication:add_rutina.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     * @Route("/viaje/add", name="add_viaje")
+     */
+    public function addViajeAction(Request $request){
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $viaje = new Viaje();
+        $form = $this->createForm(AddViajeType::class, $viaje);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            if($form->isValid()){
+                $viaje->setTipo(2);
+                $viaje->setConductor($user);
+                $viaje->setFechaPublicacion(new \DateTime("now"));
+
+                $em->persist($viaje);
+                $flush = $em->flush();
+
+                if($flush == null){
+                    $status = 'El viaje se ha creado correctamente';
+                }else{
+                    $status = 'Error al añadir el viaje';
+                }
+
+            }else{
+                $status = 'El viaje no se ha creado porque el formulario no es válido';
+            }
+
+            $this->session->getFlashBag()->add("status", $status);
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render(':publication:add_viaje.html.twig', array(
             'form' => $form->createView(),
         ));
     }

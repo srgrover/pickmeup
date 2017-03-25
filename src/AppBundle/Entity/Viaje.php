@@ -79,7 +79,14 @@ class Viaje{
      *
      * @var /time
      */
-    protected $horaSalida;
+    protected $horaSalidaIda;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     *
+     * @var /time
+     */
+    protected $horaSalidaVuelta;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -345,17 +352,33 @@ class Viaje{
     /**
      * @return mixed
      */
-    public function getHoraSalida()
+    public function getHoraSalidaIda()
     {
-        return $this->horaSalida;
+        return $this->horaSalidaIda;
     }
 
     /**
-     * @param mixed $horaSalida
+     * @param mixed $horaSalidaIda
      */
-    public function setHoraSalida($horaSalida)
+    public function setHoraSalidaIda($horaSalidaIda)
     {
-        $this->horaSalida = $horaSalida;
+        $this->horaSalidaIda = $horaSalidaIda;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHoraSalidaVuelta()
+    {
+        return $this->horaSalidaVuelta;
+    }
+
+    /**
+     * @param mixed $horaSalidaVuelta
+     */
+    public function setHoraSalidaVuelta($horaSalidaVuelta)
+    {
+        $this->horaSalidaVuelta = $horaSalidaVuelta;
     }
 
     /**

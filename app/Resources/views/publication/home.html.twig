@@ -1,5 +1,10 @@
 {% extends '::base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('assets/js/custom/home.js') }}"></script>
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <div id="timeline" class="col-lg-7 box-default pull-left">
@@ -45,7 +50,7 @@
                                     </td>
                                     <td>
                                         <p>
-                                            Hora de salida: {{ publication.horaSalida|date('h:i')  }}h
+                                            Hora de salida: {{ publication.horaSalidaIda|date('h:i')  }}h
                                         </p>
                                     </td>
                                     <td>

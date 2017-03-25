@@ -8,6 +8,7 @@
             <link href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" type="text/css" rel="stylesheet" >
             <link href="{{ asset('assets/css/bootstrap.cosmo.min.css') }}" type="text/css" rel="stylesheet" >
             <link href="{{ asset('assets/css/styles.css') }}" type="text/css" rel="stylesheet" >
+            <link href="{{ asset('assets/css/nprogress/nprogress.css') }}" type="text/css" rel="stylesheet">
         {% endblock %}
         {% block javascripts %}
             <script type="text/javascript">
@@ -16,6 +17,27 @@
             <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
             <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('assets/js/jquery-ias.min.js') }}"></script>
+            <script src="{{ asset('assets/js/nprogress/nprogress.js') }}"></script>
+            <script>
+
+                // Show the progress bar
+                NProgress.start();
+
+                // Increase randomly
+                var interval = setInterval(function() { NProgress.inc(); }, 1000);
+
+                // Trigger finish when page fully loaded
+                $(window).load(function () {
+                    clearInterval(interval);
+                    NProgress.done();
+                });
+
+                // Trigger bar when exiting the page
+                $(window).unload(function () {
+                    NProgress.start();
+                });
+
+            </script>
         {% endblock %}
 
     </head>
@@ -82,11 +104,24 @@
                         {% endif %}
                         {% if app.user != null %}
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="bg-success">
-                                    <a href="{{ path('add_rutina') }}">
+                                <li class="bg-success dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                        Añadir viaje
                                     </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('add_rutina') }}">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                Añadir rutina
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('add_viaje') }}">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                                Añadir viaje
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li>
                                     <a href="#">
@@ -172,5 +207,7 @@
                 </p>
             </div>
         </footer>
+
+
     </body>
 </html>
