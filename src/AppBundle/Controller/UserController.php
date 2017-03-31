@@ -244,4 +244,40 @@ class UserController extends Controller{
             'pagination' => $pagination
         ));
     }
+
+
+    /**
+     * @Route("/perfil/{nick}", name="perfil_usuario")
+     */
+    public function perfilAction(Request $request, $nick = null){
+        $em = $this->getDoctrine()->getManager();
+
+        if($nick != null){
+            $usuario_repo = $em->getRepository("AppBundle:Usuario");
+            $usuario = $usuario_repo->findOneBy(array('nick' => $nick));
+        }else{
+            $usuario = $this->getUser();
+        }
+
+        if(empty($usuario) || !is_object($usuario)){
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+
+        $usuario_id = $usuario->getId();
+
+        $dql = "SELECT p FROM AppBundle:Viaje p WHERE p.conductor = $usuario_id ORDER BY p.id DESC";
+        $query = $em->createQuery($dql);
+
+        $paginador = $this->get("knp_paginator");
+        $publicaciones = $paginador->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        return $this->render(':user:perfil.html.twig', array(
+            'usuario' => $usuario,
+            'paginacion' => $publicaciones
+        ));
+    }
 }

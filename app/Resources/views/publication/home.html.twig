@@ -50,15 +50,15 @@
                                     </td>
                                     <td>
                                         <p>
-                                            Hora de salida: {{ publication.horaSalidaIda|date('h:i')  }}h
+                                            Hora de salida: <span class="hora-label">{{ publication.horaSalidaIda|date('h:i')  }}h</span>
                                         </p>
                                     </td>
                                     <td>
                                         <p>
-                                            {{ publication.precio }}€ por plaza
+                                            <span class="price-label">{{ publication.precio }}€</span> por plaza
                                         </p>
                                         <p>
-                                            {{ publication.plazasLibres }} Plazas libres
+                                            <span class="plazas-label">{{ publication.plazasLibres }}</span> Plazas libres
                                         </p>
                                     </td>
                                     <td class="text-right">
@@ -133,13 +133,15 @@
 
             <div class="clearfix"></div>
 
+            {% set estadisticas = app.user|user_stats %}
+
             <div class="stat-data">
                 <a href="#">
                     <span class="stat-label">
                         Siguiendo
                     </span>
                     <span class="stat-number">
-                        2
+                        {{ estadisticas.siguiendo }}
                     </span>
                 </a>
             </div>
@@ -149,7 +151,7 @@
                         Seguidores
                     </span>
                     <span class="stat-number">
-                        5
+                        {{ estadisticas.seguidores }}
                     </span>
                 </a>
             </div>
@@ -159,22 +161,12 @@
                         Viajes activos
                     </span>
                     <span class="stat-number">
-                        1
+                        {{ estadisticas.publicaciones }}
                     </span>
                 </a>
             </div>
         </div>
     </div>
 
-
-    {#<script type="text/javascript">#}
-        {#$(".pub-long-time").unbind("click").mouseenter(function () {#}
-            {#$(this).parent().find(".pub-date").removeClass("hidden");#}
-        {#});#}
-        {#$(".pub-long-time").unbind("click").mouseleave(function () {#}
-            {#$(this).parent().find(".pub-date").addClass("hidden");#}
-        {#});#}
-
-    {#</script>#}
 {% endblock %}
 

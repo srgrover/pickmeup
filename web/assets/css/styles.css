@@ -163,6 +163,15 @@ header nav a:hover{
     font-weight: bold;
 }
 
+.hora-label{
+    display: block;
+    font-size: 25px;
+}
+
+.price-label, .plazas-label{
+    font-size: 25px;
+}
+
 /* AÑADIR RUTINA */
 
 .form-max{

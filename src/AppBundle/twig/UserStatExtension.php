@@ -4,7 +4,7 @@ namespace AppBundle\twig;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class FollowingExtension extends \Twig_Extension{
+class UserStatExtension extends \Twig_Extension{
     protected $doctrine;
 
     public function __construct(RegistryInterface $doctrine){
@@ -13,27 +13,29 @@ class FollowingExtension extends \Twig_Extension{
 
     public function getFilters(){
         return array(
-            new \Twig_SimpleFilter('following', array($this, 'followingFilter'))
+            new \Twig_SimpleFilter('user_stats', array($this, 'userStatsFilter'))
         );
     }
 
-    public function followingFilter($user, $followed){
+    public function userStatsFilter($user){
         $following_repo = $this->doctrine->getRepository('AppBundle:Seguimiento');
-        $user_following = $following_repo->findOneBy(array(
-            "usuario" => $user,
-            "seguidor" => $followed
-        ));
+        $publication_repo = $this->doctrine->getRepository('AppBundle:Viaje');
 
-        if (!empty($user_following) && is_object($user_following)){
-            $result = true;
-        }else{
-            $result = false;
-        }
+        $user_following = $following_repo->findBy(array('usuario' => $user));       //Usuarios que estoy siguiendo
+        $followers = $following_repo->findBy(array('seguidor' => $user));           //Usuarios que estoy siguiendo
+        $user_publication = $publication_repo->findBy(array('conductor' => $user)); //Viajes de un conductor
+
+        $result = array(
+            'siguiendo' => count($user_following),
+            'seguidores' => count($followers),
+            'publicaciones' => count($user_publication)
+        );
 
         return $result;
+
     }
 
     public function getName(){
-        return 'following_extension';
+        return 'user_stats_extension';
     }
 }
