@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="publication-item-content">
-                            <table width="80%">
+                            <table width="100%">
                                 <tr>
                                     <td>
                                         <p>
@@ -53,13 +53,18 @@
                                             Hora de salida: {{ publication.horaSalidaIda|date('h:i')  }}h
                                         </p>
                                     </td>
-                                    <td>
+                                    <td colspan="2">
                                         <p>
                                             {{ publication.precio }}€ por plaza
                                         </p>
                                         <p>
                                             {{ publication.plazasLibres }} Plazas libres
                                         </p>
+                                    </td>
+                                    <td> </td>
+                                    <td>
+                                        <a href="#" class="btn btn-success btn-sm">Ver</a>
+                                        <a href="#" class="btn btn-default btn-sm">Editar</a>
                                     </td>
                                 </tr>
                             </table>

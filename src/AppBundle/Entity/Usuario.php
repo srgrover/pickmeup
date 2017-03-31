@@ -28,11 +28,11 @@ class Usuario implements UserInterface, \Serializable {
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="boolean", nullable=false)
      *
-     * @var string
+     * @var boolean
      */
-    protected $rol;
+    protected $admin = false;
 
     /**
      * @var string
@@ -70,7 +70,6 @@ class Usuario implements UserInterface, \Serializable {
      * )
      * @Assert\Email(
      *     message = "El email {{ value }} no es válido.",
-     *     checkMX = "false"
      * )
      */
     protected $email;
@@ -238,7 +237,12 @@ class Usuario implements UserInterface, \Serializable {
 
     public function getRoles()
     {
-        return array('ROLE_USER', 'ROLE_ADMIN');
+        $roles = ["ROLE_USER"];     //Todos los usuarios son ROLE_USER
+        if($this->isAdmin()){
+            $roles[] = "ROLE_ADMIN";
+        }
+
+        return $roles;
     }
 
     public function eraseCredentials()
@@ -286,19 +290,19 @@ class Usuario implements UserInterface, \Serializable {
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getRol()
+    public function isAdmin()
     {
-        return $this->rol;
+        return $this->admin;
     }
 
     /**
-     * @param string $rol
+     * @param bool $admin
      */
-    public function setRol($rol)
+    public function setAdmin($admin)
     {
-        $this->rol = $rol;
+        $this->admin = $admin;
     }
 
     /**

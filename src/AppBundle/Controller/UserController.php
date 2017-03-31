@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,7 +73,6 @@ class UserController extends Controller{
                     $password = $encoder->encodePassword($form->get("password")->getData(), $user->getSalt());
 
                     $user->setPassword($password);
-                    $user->setRol("ROLE_USER");
                     $user->setImagenPerfil(null);
                     $user->setImagenFondo(null);
                     $user->setActivacion(new \DateTime("now"));
@@ -126,6 +126,7 @@ class UserController extends Controller{
     }
 
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/my-data", name="user_edit")
      */
     public function aditUserAction(Request $request){

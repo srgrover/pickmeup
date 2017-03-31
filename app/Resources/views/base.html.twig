@@ -6,7 +6,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% block stylesheets %}
             <link href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" type="text/css" rel="stylesheet" >
-            <link href="{{ asset('assets/css/bootstrap.cosmo.min.css') }}" type="text/css" rel="stylesheet" >
+            <link href="{{ asset('assets/css/bootstrap.lumen.min.css') }}" type="text/css" rel="stylesheet" >
             <link href="{{ asset('assets/css/styles.css') }}" type="text/css" rel="stylesheet" >
             <link href="{{ asset('assets/css/nprogress/nprogress.css') }}" type="text/css" rel="stylesheet">
         {% endblock %}
@@ -44,7 +44,7 @@
     <body>
         <header>
             <nav class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container-fluid">
+                <div class="container-fluid bg-warning">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapse" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                             <span class="sr-only">Navegación</span>
@@ -52,7 +52,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="{{ path("login") }}">
+                        <a class="navbar-brand" href="{{ path("homepage") }}">
                             <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
                             PICKMEUP!
                         </a>

@@ -4,6 +4,8 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,8 +43,8 @@ class AddRutinaType extends AbstractType
                     'class' => 'form-plazas form-control'
                 )
             ))
-            ->add('precio', NumberType::class, array(
-                'label' => 'Precio en €',
+            ->add('precio', MoneyType::class, array(
+                'label' => 'Precio',
                 'required' => 'required',
                 'attr' => array(
                     'class' => 'form-precio form-control'
@@ -59,7 +61,7 @@ class AddRutinaType extends AbstractType
                 'label' => 'Hora de salida',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-hora-salida form-control'
+                    'class' => 'form-hora-salida'
                 )
             ))
 //            ->add('Lunes-Viernes', CheckboxType::class, array(
@@ -75,15 +77,22 @@ class AddRutinaType extends AbstractType
                     'class' => 'form-max'
                 )
             ))
-            ->add('flexiblididad', TextType::class, array(
+            ->add('flexiblididad', ChoiceType::class, array(
                 'label' => 'Flexibilidad',
                 'required' => 'required',
+                'choices'  => array(
+                    'Justo a tiempo' => 'Justo a tiempo',
+                    'En +/- 15 minutos' => 'En +/- 15 minutos',
+                    'En +/- 30 minutos' => 'En +/- 30 minutos',
+                    'En +/- 1 hora' => 'En +/- 1 hora',
+                    'En + de 1 hora' => 'En + de 1 hora',
+                ),
                 'attr' => array(
-                    'class' => 'form-flexibilidad form-control'
+                    'class' => 'form-flexibilidad'
                 )
             ))
             ->add('descripcion', TextareaType::class, array(
-                'label' => 'Descripción/Anotaciones del viaje',
+                'label' => 'Anotaciones del viaje',
                 'required' => false,
                 'attr' => array(
                     'class' => 'form-desc form-control'

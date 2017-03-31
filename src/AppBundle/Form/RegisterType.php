@@ -44,7 +44,7 @@ class RegisterType extends AbstractType
                 'label' => 'Correo electrónico',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-email form-control email-input'
+                    'class' => 'form-email form-control'
                 )
             ))
             ->add('password', PasswordType::class, array(
@@ -58,7 +58,7 @@ class RegisterType extends AbstractType
                 'label' => 'Fecha de nacimiento',
                 'required' => 'required',
                 'attr' => array(
-                    'class' => 'form-date form-control'
+                    'class' => 'form-date'
                 )
             ))
             ->add('ciudad', TextType::class, array(
