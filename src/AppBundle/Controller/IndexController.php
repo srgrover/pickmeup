@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Viaje;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends Controller{
     private $session;
@@ -139,6 +140,32 @@ class IndexController extends Controller{
         );
 
         return $pagination;
+    }
+
+    /**
+     * @Route("/publicacion/eliminar/{id}", name="eliminar_viaje")
+     */
+    public function removePublicationAction(Request $request, $id = null){
+        $em = $this->getDoctrine()->getManager();
+        $publication_repo = $em->getRepository('AppBundle:Viaje');
+        $publication = $publication_repo->find($id);
+
+        $user = $this->getUser();
+
+        if($user->getId() == $publication->getConductor()->getId()){
+            $em->remove($publication);
+            $flush = $em->flush();
+
+            if($flush == null){
+                $status = 'Tu viaje publicado se ha borrado correctamente';
+            }else{
+                $status = 'Hubo un error al intentar borrar tu viaje publicado';
+            }
+        }else{
+            $status = 'Hubo un error al intentar borrar tu viaje publicado';
+        }
+
+        return new Response($status);
     }
 
 }

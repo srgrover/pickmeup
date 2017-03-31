@@ -33,5 +33,21 @@ $(document).ready(function () {
 });
 
 function Buttons() {
+    $(".pub-long-time").unbind("click").mouseenter(function () {
+        $(this).parent().find('.pub-date').fadeIn();
+    });
 
+    $(".pub-long-time").unbind("click").mouseleave(function () {
+        $(this).parent().find('.pub-date').fadeOut();
+    });
+
+    $(".btn-delete-pub").unbind("click").click(function () {
+        $.ajax({
+            url: URL+'/publicacion/eliminar/'+$(this).attr("data-id"),
+            type: 'GET',
+            success: function (response) {
+                location.reload();
+            }
+        });
+    });
 }

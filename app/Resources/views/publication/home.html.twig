@@ -23,7 +23,7 @@
                             <span class="pub-long-time">
                                 {{ publication.fechaPublicacion|long_time }}
                             </span>
-                            <span class="pub-date hide">
+                            <span class="pub-date">
                                 ({{ publication.fechaPublicacion|date('d-m-Y') }})
                             </span>
                         </p>
@@ -53,7 +53,7 @@
                                             Hora de salida: {{ publication.horaSalidaIda|date('h:i')  }}h
                                         </p>
                                     </td>
-                                    <td colspan="2">
+                                    <td>
                                         <p>
                                             {{ publication.precio }}€ por plaza
                                         </p>
@@ -61,14 +61,47 @@
                                             {{ publication.plazasLibres }} Plazas libres
                                         </p>
                                     </td>
-                                    <td> </td>
-                                    <td>
-                                        <a href="#" class="btn btn-success btn-sm">Ver</a>
-                                        <a href="#" class="btn btn-default btn-sm">Editar</a>
+                                    <td class="text-right">
+                                        <div class="btn-group" role="group" aria-label="...">
+                                            <a href="#" class="btn btn-success btn-sm">
+                                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                            </a>
+                                            {% if (publication.conductor.id is defined) and (publication.conductor.id == app.user.id) %}
+                                                <a href="#" class="btn-edit-pub btn btn-default btn-sm" data-id="{{ publication.id }}">
+                                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                                </a>
+                                                <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title text-left" id="myModalLabel">Estas a punto de borrar esta publicación</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="text-left">
+                                                            ¿Estas seguro de que quieres borrar esta publicación?
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Atrás</button>
+                                                        <button type="button" class="btn-delete-pub btn btn-danger" data-id="{{ publication.id }}">
+                                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                            Eliminar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
-
 
                         </div>
                         <div class="clearfix"></div>
@@ -99,18 +132,49 @@
             </div>
 
             <div class="clearfix"></div>
+
+            <div class="stat-data">
+                <a href="#">
+                    <span class="stat-label">
+                        Siguiendo
+                    </span>
+                    <span class="stat-number">
+                        2
+                    </span>
+                </a>
+            </div>
+            <div class="stat-data">
+                <a href="#">
+                    <span class="stat-label">
+                        Seguidores
+                    </span>
+                    <span class="stat-number">
+                        5
+                    </span>
+                </a>
+            </div>
+            <div class="stat-data">
+                <a href="#">
+                    <span class="stat-label">
+                        Viajes activos
+                    </span>
+                    <span class="stat-number">
+                        1
+                    </span>
+                </a>
+            </div>
         </div>
     </div>
 
 
-    <script type="text/javascript">
-        $(".pub-long-time").unbind("click").mouseenter(function () {
-            $(this).parent().find(".pub-date").removeClass("hide");
-        });
-        $(".pub-long-time").unbind("click").mouseleave(function () {
-            $(this).parent().find(".pub-date").addClass("hide");
-        });
+    {#<script type="text/javascript">#}
+        {#$(".pub-long-time").unbind("click").mouseenter(function () {#}
+            {#$(this).parent().find(".pub-date").removeClass("hidden");#}
+        {#});#}
+        {#$(".pub-long-time").unbind("click").mouseleave(function () {#}
+            {#$(this).parent().find(".pub-date").addClass("hidden");#}
+        {#});#}
 
-    </script>
+    {#</script>#}
 {% endblock %}
 

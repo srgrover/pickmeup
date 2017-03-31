@@ -29,14 +29,20 @@ header nav a{
     color: #FFFFFF !important;
 }
 
-header nav a:hover, header nav .dropdown-menu a:hover{
-    color: #333333 !important;
-}
-
 header nav .dropdown-menu a{
     color: #888888 !important;
 }
 
+
+header nav a:hover{
+    background-color: #EF6C00 !important;
+    color: #FFFFFF !important;
+}
+
+.activado{
+    background-color: #EF6C00 !important;
+    color: #FFFFFF !important;
+}
 /* CONTENT */
 #content{
     margin-top: 80px;
@@ -129,6 +135,34 @@ header nav .dropdown-menu a{
     opacity: 0.7;
 }
 
+#user-card .stat-data{
+    width: 33%;
+    float: left;
+    text-align: center;
+    border-top: 1px solid #CCCCCC;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+#user-card .stat-data a{
+    color: #444444;
+}
+
+#user-card .stat-data a:hover{
+    color: #000000;
+    text-decoration: none;
+}
+
+#user-card .stat-data .stat-label{
+    display: block;
+}
+
+#user-card .stat-data .stat-number{
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 /* AÑADIR RUTINA */
 
 .form-max{
@@ -147,8 +181,9 @@ header nav .dropdown-menu a{
 
 .pub-date{
     padding: 2px;
-    background: #CCCCCC;
+    background: #EEEEEE;
     font-size: 12px;
-    border-radius: 3px;
+    border-radius: 2px;
     color: #6E6E6E;
+    display: none;
 }
