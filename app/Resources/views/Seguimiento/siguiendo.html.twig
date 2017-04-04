@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/custom/users.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="col-lg-11 box-form">
+            {% if tipo == 'siguiendo' %}
+                <h2>Personas a las que estás siguiendo
+                    <span class="label label-primary">
+                        {{ paginacion.getTotalItemCount }}
+                    </span>
+                </h2>
+            {% else %}
+                <h2>Personas que te están siguiendo
+                    <span class="label label-primary">
+                        {{ paginacion.getTotalItemCount }}
+                    </span>
+                </h2>
+            {% endif %}
+
+            <hr />
+
+            <div class="box-content box-users">
+
+
+                {% for seguimiento in paginacion %}    <!-- Para cada usuario(con todos sus datos) dentro de paginacion -->
+                    {% if tipo == 'siguiendo' %}
+                        {% set usuario = seguimiento.seguidor %}
+                    {% else %}
+                        {% set usuario = seguimiento.usuario %}
+                    {% endif %}
+                    <div class="col-lg-12 user-item">
+                        <div class="avatar">
+                            {% if usuario.imagenPerfil == null %}
+                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                            {% else %}
+                                <img src="{{ asset('uploads/users/'~usuario.imagenPerfil) }}" alt="avatar" />
+                            {% endif %}
+                        </div>
+                        <div class="user-item-content">
+                            <p>
+                                <a class="user-link" href="{{ path('perfil_usuario', {'nick': usuario.nick}) }}">
+                                    {{ usuario.nombre }} {{ usuario.apellidos }}
+                                </a>
+                                - ({{ usuario.nick }})</p>
+                            <p>{{ usuario.descripcion }}</p>
+                        </div>
+
+                        {% if app.user.id != usuario.id %}
+                            <div class="pull-right buttons-following">
+                                <button class="btn btn-sm btn-success btn-follow
+                                        {% if app.user|following(usuario) == true %}
+                                            hidden
+                                        {% endif %}
+                                        "
+                                        data-followed="{{ usuario.id }}">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                    Seguir viajes
+                                </button>
+
+                                <button class="btn btn-sm btn-danger btn-unfollow
+                                        {% if app.user|following(usuario) == false %}
+                                            hidden
+                                        {% endif %}
+                                        "
+                                        data-followed="{{ usuario.id }}">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    Dejar de seguir
+                                </button>
+                            </div>
+                        {% endif %}
+                        <div class="clearfix"></div>
+                        <hr />
+                    </div>
+                {% endfor %}
+
+            </div>
+            <div class="navigation">
+                {{ knp_pagination_render(paginacion) }}  <!-- pinta la paginacion con la plantilla custom_pagination -->
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+{% endblock %}
+

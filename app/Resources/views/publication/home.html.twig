@@ -11,10 +11,12 @@
             <h1 class="box-header">Timeline</h1>
 
             <div class="box-content">
-                {% for publication in pagination %}
+
+
+                {% for publication in pagination %}             {# Cada vez que se llame a un elemento de la colección será con "publication" #}
                     <div class="col-lg-12 publication-item">
                         <p>
-                            <a class="pub-name-link" href="#">
+                            <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick': publication.conductor.nick}) }}">
                                 {{ publication.conductor.nombre }} {{ publication.conductor.apellidos }}
                             </a>
                             -
@@ -62,7 +64,7 @@
                                         </p>
                                     </td>
                                     <td class="text-right">
-                                        <div class="btn-group" role="group" aria-label="...">
+                                        <div class="btn-group-vertical" role="group" aria-label="...">
                                             <a href="#" class="btn btn-success btn-sm">
                                                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                             </a>
@@ -108,6 +110,8 @@
                         <hr>
                     </div>
                 {% endfor %}
+
+
                 <div class="navigation">
                     {{ knp_pagination_render(pagination) }}
                 </div>
@@ -124,7 +128,7 @@
             </div>
 
             <div class="name-surname">
-                <a href="#">{{ app.user.nombre }} {{ app.user.apellidos }}</a>
+                <a href="{{ path('perfil_usuario', {'nick': app.user.nick}) }}">{{ app.user.nombre }} {{ app.user.apellidos }}</a>
                 <div class="clearfix"></div>
                 <span class="nickname">
                     {{ app.user.nick }}
@@ -136,7 +140,7 @@
             {% set estadisticas = app.user|user_stats %}
 
             <div class="stat-data">
-                <a href="#">
+                <a href="{{ path('siguiendo_usuarios', {'nick': app.user.nick}) }}">
                     <span class="stat-label">
                         Siguiendo
                     </span>

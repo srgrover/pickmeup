@@ -78,4 +78,42 @@ class SeguimientoController extends Controller{
 
         return new Response($status);
     }
+
+
+    /**
+     * @Route("/siguiendo/{nick}", name="siguiendo_usuarios")
+     */
+    public function siguiendoAction(Request $request, $nick = null){
+        $em = $this->getDoctrine()->getManager();
+
+        if($nick != null){
+            $usuario_repo = $em->getRepository("AppBundle:Usuario");
+            $usuario = $usuario_repo->findOneBy(array('nick' => $nick));
+        }else{
+            $usuario = $this->getUser();
+        }
+
+        if(empty($usuario) || !is_object($usuario)){
+            return $this->redirect($this->generateUrl('homepage'));
+        }
+
+        $usuario_id = $usuario->getId();
+        $dql = "SELECT f FROM AppBundle:Seguimiento f WHERE f.usuario = $usuario_id ORDER BY f.id DESC";
+        $query = $em->createQuery($dql);
+
+        $paginador = $this->get("knp_paginator");
+        $siguiendo = $paginador->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        return $this->render(':Seguimiento:siguiendo.html.twig', array(
+            'tipo' => 'siguiendo',
+            'perfil_usuario' => $usuario,
+            'paginacion' => $siguiendo
+        ));
+
+
+    }
 }

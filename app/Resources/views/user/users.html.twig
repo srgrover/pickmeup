@@ -27,7 +27,11 @@
                         {% endif %}
                     </div>
                     <div class="user-item-content">
-                        <p>{{ user.nombre }} {{ user.apellidos }} - ({{ user.nick }})</p>
+                        <p>
+                            <a class="user-link" href="{{ path('perfil_usuario', {'nick': user.nick}) }}">
+                                {{ user.nombre }} {{ user.apellidos }}
+                            </a>
+                            - ({{ user.nick }})</p>
                         <p>{{ user.descripcion }}</p>
                     </div>
 

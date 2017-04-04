@@ -2,117 +2,197 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {#<script type="text/javascript" src="{{ asset('assets/js/custom/home.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('assets/js/custom/profile.js') }}"></script>
 {% endblock %}
 
 {% block content %}
-   <div class="col-lg-10 box-default profile-box">
-       <div class="user-publications">
-           {% for publication in paginacion %}
-               <div class="col-lg-12 publication-item">
-                   <p>
-                       <a class="pub-name-link" href="#">
-                           {{ publication.conductor.nombre }} {{ publication.conductor.apellidos }}
-                       </a>
-                       -
-                       ({{ publication.conductor.nick }})
-                       -
-                       <span class="pub-long-time">
+
+    <div class="col-lg-10 profile-box profile-wall">
+        <div class="box-info-user col-lg-12">
+            <div class="avatar">
+                {% if usuario.imagenPerfil == null %}
+                    <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                {% else %}
+                    <img src="{{ asset('uploads/users/'~usuario.imagenPerfil) }}" alt="avatar" />
+                {% endif %}
+            </div>
+
+            <div class="name-surname">
+                <a href="#">{{ usuario.nombre }} {{ usuario.apellidos }}</a>
+                <div class="clearfix"></div>
+                <span class="nickname">
+                    {{ usuario.nick }}
+                </span>
+            </div>
+
+            <div class="bio">
+                <div class="clearfix"></div>
+                <h3>Sobre mí:</h3>
+                {{ usuario.descripcion }}
+                {% if (app.user.id is defined) and (usuario.id == app.user.id) %}
+                <a href="{{ path('user_edit') }}" class="btn btn-primary pull-right">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                    Editar perfil
+                </a>
+                {% endif %}
+            </div>
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+
+    </div>
+    <div class="clearfix"></div>
+    <div class="content-profile">
+
+
+        <div id="user-stats" class="col-lg-4 box-default">
+
+            {% set estadisticas = usuario|user_stats %}
+
+            <div class="stat-data">
+                <a href="#">
+                    <span class="stat-label">
+                        Siguiendo
+                    </span>
+                    <span class="stat-number">
+                        {{ estadisticas.siguiendo }}
+                    </span>
+                </a>
+            </div>
+            <div class="stat-data">
+                <a href="#">
+                    <span class="stat-label">
+                        Seguidores
+                    </span>
+                    <span class="stat-number">
+                        {{ estadisticas.seguidores }}
+                    </span>
+                </a>
+            </div>
+            <div class="stat-data">
+                <a href="#">
+                    <span class="stat-label">
+                        Viajes activos
+                    </span>
+                    <span class="stat-number">
+                        {{ estadisticas.publicaciones }}
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-7 box-default">
+            <div class="user-publications">
+                {% for publication in paginacion %}
+                    <div class="col-lg-12 publication-item">
+                        <p>
+                            <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick': publication.conductor.nick}) }}">
+                                {{ publication.conductor.nombre }} {{ publication.conductor.apellidos }}
+                            </a>
+                            -
+                            ({{ publication.conductor.nick }})
+                            -
+                            <span class="pub-long-time">
                                 {{ publication.fechaPublicacion|long_time }}
                             </span>
-                       <span class="pub-date">
+                            <span class="pub-date">
                                 ({{ publication.fechaPublicacion|date('d-m-Y') }})
                             </span>
-                   </p>
-                   <div class="avatar">
-                       {% if publication.conductor.imagenPerfil == null %}
-                           <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
-                       {% else %}
-                           <img src="{{ asset('uploads/users/'~publication.conductor.imagenPerfil) }}" alt="avatar" />
-                       {% endif %}
-                   </div>
+                        </p>
+                        <div class="avatar">
+                            {% if publication.conductor.imagenPerfil == null %}
+                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                            {% else %}
+                                <img src="{{ asset('uploads/users/'~publication.conductor.imagenPerfil) }}" alt="avatar" />
+                            {% endif %}
+                        </div>
 
-                   <div class="publication-item-content">
-                       <table width="100%">
-                           <tr>
-                               <td>
-                                   <p>
-                                       <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
-                                       {{ publication.origen }}
-                                   </p>
-                                   <p>
-                                       <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
-                                       {{ publication.destino }}
-                                   </p>
-                               </td>
-                               <td>
-                                   <p>
-                                       Hora de salida: <span class="hora-label">{{ publication.horaSalidaIda|date('h:i')  }}h</span>
-                                   </p>
-                               </td>
-                               <td>
-                                   <p>
-                                       <span class="price-label">{{ publication.precio }}€</span> por plaza
-                                   </p>
-                                   <p>
-                                       <span class="plazas-label">{{ publication.plazasLibres }}</span> Plazas libres
-                                   </p>
-                               </td>
-                               <td class="text-right">
-                                   <div class="btn-group" role="group" aria-label="...">
-                                       <a href="#" class="btn btn-success btn-sm">
-                                           <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                       </a>
-                                       {% if (publication.conductor.id is defined) and (publication.conductor.id == app.user.id) %}
-                                           <a href="#" class="btn-edit-pub btn btn-default btn-sm" data-id="{{ publication.id }}">
-                                               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                           </a>
-                                           <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
-                                               <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                           </a>
-                                       {% endif %}
-                                   </div>
-                                   <!-- Modal -->
-                                   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                       <div class="modal-dialog" role="document">
-                                           <div class="modal-content">
-                                               <div class="modal-header">
-                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                   <h4 class="modal-title text-left" id="myModalLabel">Estas a punto de borrar esta publicación</h4>
-                                               </div>
-                                               <div class="modal-body">
-                                                   <p class="text-left">
-                                                       ¿Estas seguro de que quieres borrar esta publicación?
-                                                   </p>
-                                               </div>
+                        <div class="publication-item-content">
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
+                                            {{ publication.origen }}
+                                        </p>
+                                        <p>
+                                            <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
+                                            {{ publication.destino }}
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            Hora de salida: <span class="hora-label">{{ publication.horaSalidaIda|date('h:i')  }}h</span>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            <span class="price-label">{{ publication.precio }}€</span> por plaza
+                                        </p>
+                                        <p>
+                                            <span class="plazas-label">{{ publication.plazasLibres }}</span> Plazas libres
+                                        </p>
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="btn-group" role="group" aria-label="...">
+                                            <a href="#" class="btn btn-success btn-sm">
+                                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                            </a>
+                                            {% if (publication.conductor.id is defined) and (publication.conductor.id == app.user.id) %}
+                                                <a href="#" class="btn-edit-pub btn btn-default btn-sm" data-id="{{ publication.id }}">
+                                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                                </a>
+                                                <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title text-left" id="myModalLabel">Estas a punto de borrar esta publicación</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="text-left">
+                                                            ¿Estas seguro de que quieres borrar esta publicación?
+                                                        </p>
+                                                    </div>
 
-                                               <div class="modal-footer">
-                                                   <button type="button" class="btn btn-default" data-dismiss="modal">Atrás</button>
-                                                   <button type="button" class="btn-delete-pub btn btn-danger" data-id="{{ publication.id }}">
-                                                       <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                                       Eliminar
-                                                   </button>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </td>
-                           </tr>
-                       </table>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Atrás</button>
+                                                        <button type="button" class="btn-delete-pub btn btn-danger" data-id="{{ publication.id }}">
+                                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                            Eliminar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
 
-                   </div>
-                   <div class="clearfix"></div>
-                   <hr>
-               </div>
-           {% endfor %}
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr>
+                    </div>
+                    <div class="clearfix"></div>
+                {% endfor %}
 
-           <div class="navigation">
-               {{ knp_pagination_render(paginacion) }}
-           </div>
+                <div class="navigation">
+                    {{ knp_pagination_render(paginacion) }}
+                </div>
 
-           <div class="clearfix"></div>
+                <div class="clearfix"></div>
 
-       </div>
-   </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
