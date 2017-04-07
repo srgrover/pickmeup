@@ -9,6 +9,14 @@ nav{
     border-bottom: 0 !important;
 }
 
+
+.navbar::after {
+    height:5px;
+    width:100%;
+    background-image: url("/assets/images/gradient-border-bottom.png");
+}
+
+
 .navbar-collapse .avatar{
     background: #FFFFFF;
     border-radius: 50%;
@@ -25,24 +33,16 @@ nav{
     text-align: center;
 }
 
-header nav a{
+header nav .add-pub a{
+    color: #28B62C !important;
+}
+
+
+header nav .add-pub a:hover{
+    background-color: #28B62C !important;
     color: #FFFFFF !important;
 }
 
-header nav .dropdown-menu a{
-    color: #888888 !important;
-}
-
-
-header nav a:hover{
-    background-color: #EF6C00 !important;
-    color: #FFFFFF !important;
-}
-
-.activado{
-    background-color: #EF6C00 !important;
-    color: #FFFFFF !important;
-}
 /* CONTENT */
 #content{
     margin-top: 80px;
@@ -251,7 +251,8 @@ header nav a:hover{
 }
 
 .profile-wall{
-    background: url("http://www.planwallpaper.com/static/images/494303a2cb59b5103ed095867f3d5dbd.jpg") center center;
+    /*background-image: url("/assets/images/default-background-profile.jpg");*/
+    /*background: url("http://www.planwallpaper.com/static/images/494303a2cb59b5103ed095867f3d5dbd.jpg") center center;*/
     background-size: cover;
     padding: 0 20px 20px;
     margin: 0 auto;

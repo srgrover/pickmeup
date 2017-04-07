@@ -7,7 +7,13 @@
 
 {% block content %}
 
-    <div class="col-lg-10 profile-box profile-wall">
+    <div class="col-lg-10 profile-box profile-wall" style="background-image:
+    {% if usuario.imagenFondo == null %}
+            url({{ asset('assets/images/default-background-profile.jpg') }});
+        {% else %}
+            url({{ asset('uploads/users/'~usuario.imagenFondo) }});
+        {% endif %}
+    ">
         <div class="box-info-user col-lg-12">
             <div class="avatar">
                 {% if usuario.imagenPerfil == null %}

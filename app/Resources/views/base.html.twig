@@ -45,7 +45,7 @@
     {% set ruta = app.request.get('_route') %}
         <header>
             <nav class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container-fluid bg-warning">
+                <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapse" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                             <span class="sr-only">Navegación</span>
@@ -78,13 +78,13 @@
                         </ul>
                         {% else %}
                         <ul class="nav navbar-nav">
-                            <li {% if ruta == 'homepage' %} class="activado"{% endif %}>
+                            <li {% if ruta == 'homepage' %} class="active"{% endif %}>
                                 <a href="{{ path("homepage") }}">
                                     <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
                                     &nbsp;Inicio
                                 </a>
                             </li>
-                            <li {% if ruta == 'users' %} class="activado"{% endif %}>
+                            <li {% if ruta == 'users' %} class="active"{% endif %}>
                                 <a href="{{ path("users") }}">
                                     <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
                                     &nbsp;Conductores
@@ -104,7 +104,7 @@
                         {% endif %}
                         {% if app.user != null %}
                             <ul class="nav navbar-nav navbar-right">
-                                <li class="bg-success dropdown">
+                                <li class="dropdown add-pub text-success">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                     </a>
