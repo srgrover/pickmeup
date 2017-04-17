@@ -58,7 +58,7 @@
             {% set estadisticas = usuario|user_stats %}
 
             <div class="stat-data">
-                <a href="#">
+                <a href="{{ path('siguiendo_usuarios', {'nick' : usuario.nick}) }}">
                     <span class="stat-label">
                         Siguiendo
                     </span>
@@ -68,7 +68,7 @@
                 </a>
             </div>
             <div class="stat-data">
-                <a href="#">
+                <a href="{{ path('usuarios_seguidores', {'nick' : usuario.nick}) }}">
                     <span class="stat-label">
                         Seguidores
                     </span>
@@ -78,7 +78,7 @@
                 </a>
             </div>
             <div class="stat-data">
-                <a href="#">
+                <a href="{{ path('perfil_usuario', {'nick' : app.user.nick}) }}">
                     <span class="stat-label">
                         Viajes activos
                     </span>

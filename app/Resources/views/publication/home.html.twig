@@ -152,7 +152,7 @@
                 </a>
             </div>
             <div class="stat-data">
-                <a href="#">
+                <a href="{{ path('usuarios_seguidores', {'nick': app.user.nick}) }}">
                     <span class="stat-label">
                         Seguidores
                     </span>
@@ -162,7 +162,7 @@
                 </a>
             </div>
             <div class="stat-data">
-                <a href="#">
+                <a href="{{ path('perfil_usuario', {'nick' : app.user.nick}) }}">
                     <span class="stat-label">
                         Viajes activos
                     </span>

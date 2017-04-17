@@ -148,17 +148,12 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="">
+                                            <a href="{{ path('perfil_usuario', {'nick' : app.user.nick}) }}">
                                                 <span class="glyphicon glyphicon-user"></span>
                                                 Mi perfil
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="{{ path('user_edit') }}">
-                                                <span class="glyphicon glyphicon-cog"></span>
-                                                Mis datos
-                                            </a>
-                                        </li>
+
                                         <li role="separator" class="divider"></li>
                                         <li>
                                             <a href="">

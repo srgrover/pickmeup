@@ -149,19 +149,35 @@ class UserController extends Controller{
                 if(count($user_isset) == 0 || ($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick())){
 
                     //Fichero subido
-                    $file = $form["imagenPerfil"]->getData();
+                    $imagenPerfil = $form["imagenPerfil"]->getData();
 
-                    if(!empty($file) && $file != null){
-                        $ext = $file->guessExtension();
+                    if(!empty($imagenPerfil) && $imagenPerfil != null){
+                        $ext = $imagenPerfil->guessExtension();
                         if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
-                            $file_name = $user->getId().time().'.'.$ext;
-                            $file->move("uploads/users", $file_name);
+                            $nombre_imagen = $user->getId().time().'.'.$ext;
+                            $imagenPerfil->move("uploads/users", $nombre_imagen);
 
-                            $user->setImagenPerfil($file_name);
+                            $user->setImagenPerfil($nombre_imagen);
                         }
                     }else{
                         $user->setImagenPerfil($user_image);
                     }
+
+
+                    $imagenFondo = $form["imagenFondo"]->getData();
+
+                    if(!empty($imagenFondo) && $imagenFondo != null){
+                        $ext = $imagenFondo->guessExtension();
+                        if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
+                            $nombre_imagen = 'wall_'.$user->getId().time().'.'.$ext;
+                            $imagenFondo->move("uploads/users", $nombre_imagen);
+
+                            $user->setImagenFondo($nombre_imagen);
+                        }
+                    }else{
+                        $user->setImagenFondo($user_image);
+                    }
+
 
                     $em->persist($user);
                     $flush = $em->flush();
