@@ -28,3 +28,7 @@ services:
                 doctrine: "@doctrine"
             tags:
                 - { name: twig.extension }
+
+    app.notificacion_service:
+        class: AppBundle\Services\NotificacionService
+        arguments: ["@doctrine.orm.entity_manager"]

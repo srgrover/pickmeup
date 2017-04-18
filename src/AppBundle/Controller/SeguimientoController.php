@@ -24,7 +24,7 @@ class SeguimientoController extends Controller{
      * @Route("/follow", name="following_follow", methods="POST")
      */
     public function followAction(Request $request){
-        $user = $this->getUser();                   //Obtenemos el usuario actual
+        $user = $this->getUser();                        //Obtenemos el usuario actual
         $followed_id = $request->get('followed');   //Obtenemos el usuario al que vamos a seguir. 'followed' es una variable recogida por POST
 
         $em = $this->getDoctrine()->getManager();
@@ -40,10 +40,14 @@ class SeguimientoController extends Controller{
         $em->persist($following);
         $flush = $em->flush();                      //Para que guarde los cambios
 
-        if($flush == null){     //Si no da fallo
+        if($flush == null){                         //Si no da fallo
+            $notificacion = $this->get('app.notificacion_service');
+            $notificacion->set($followed, 'follow', $user->getId());
+
             $status = "Ahora estas siguiendo a este usuario.";
         }else{
             $status = "No se ha podido seguir a este usuario.";
+
         }
 
         return new Response($status);
@@ -54,7 +58,7 @@ class SeguimientoController extends Controller{
      * @Route("/unfollow", name="following_unfollow", methods="POST")
      */
     public function unfollowAction(Request $request){
-        $user = $this->getUser();                   //Obtenemos el usuario actual
+        $user = $this->getUser();                        //Obtenemos el usuario actual
         $followed_id = $request->get('followed');   //Obtenemos el usuario al que vamos a seguir. 'followed' es una variable recogida por POST
 
         $em = $this->getDoctrine()->getManager();
