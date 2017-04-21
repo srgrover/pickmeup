@@ -11,8 +11,10 @@
                     <div class="col-lg-12 notification-item">
                         <div class="alert alert-info">
                             <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                            {% set usuario_notif = notificacion.tipoId|get_user %}
+
                             {% if notificacion.tipo == "follow" %}
-                                1 Usuario está siguiendo tus viajes.
+                                <a href="{{ path('perfil_usuario', {'nick': usuario_notif.nick}) }}" class="usuario_notif">{{ usuario_notif.nombre }} {{ usuario_notif.apellidos }}</a> ahora sigue tus viajes.
                             {% endif %}
 
                         </div>

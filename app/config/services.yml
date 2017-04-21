@@ -22,12 +22,20 @@ services:
             - { name: twig.extension }
 
     user_stats.twig_extension:
-            class: AppBundle\twig\UserStatExtension
-            public: false
-            arguments:
-                doctrine: "@doctrine"
-            tags:
-                - { name: twig.extension }
+        class: AppBundle\twig\UserStatExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
+
+    get_user.twig_extension:
+        class: AppBundle\twig\getUserExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+            - { name: twig.extension }
 
     app.notificacion_service:
         class: AppBundle\Services\NotificacionService

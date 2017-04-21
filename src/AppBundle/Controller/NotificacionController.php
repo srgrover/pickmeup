@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class NotificacionController extends Controller
 {
@@ -33,5 +34,19 @@ class NotificacionController extends Controller
             'user' => $user,
             'paginador' => $notificacion
         ]);
+    }
+
+    /**
+     * @Route("/notificaciones/count", name="notificaciones_count")
+     */
+    public function countNotificationsAction(){
+        $em = $this->getDoctrine()->getManager();
+        $notificacion_repo = $em->getRepository("AppBundle:Notificacion");
+        $notificaciones = $notificacion_repo->findBy([
+           'id_usuario' => $this->getUser(),
+            'leido' => false
+        ]);
+
+        return new Response(count($notificaciones));
     }
 }

@@ -313,3 +313,10 @@ header nav .add-pub a:hover{
     margin: 0;
     float: left;
 }
+
+/* NOTIFICACIONES */
+
+.notification-item .usuario_notif{
+    color: #FFFFFF;
+    font-weight: bold;
+}
