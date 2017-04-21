@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use AppBundle\Entity\Usuario;
 use AppBundle\Entity\Seguimiento;
 
 

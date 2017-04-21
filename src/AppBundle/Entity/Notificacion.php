@@ -61,7 +61,7 @@ class Notificacion{
     protected $created_at;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var string
      */
