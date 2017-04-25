@@ -42,4 +42,26 @@ class NotificacionService{
 
         return $status;
     }
+
+    public function leer($usuario){
+        $respuesta = false;
+        $em = $this->manager;
+
+        $notificaciones = $em->getRepository("AppBundle:Notificacion")
+            ->findBy(['id_usuario' => $usuario]);
+
+        foreach($notificaciones as $notificacion){
+            $notificacion->setLeido(true);
+
+            $em->persist($notificacion);
+        }
+
+        $flush = $em->flush();
+
+        if ($flush == null){
+            $respuesta = true;
+        }
+
+        return $respuesta;
+    }
 }

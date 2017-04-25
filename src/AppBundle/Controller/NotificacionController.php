@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,26 +12,39 @@ class NotificacionController extends Controller
     /**
      * @Route("/notificaciones", name="notificaciones")
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
-        $user_id = $user->getId();
+        $usuario = $this->getUser();
+        $usuario_id = $usuario->getId();
 
-        $dql = "SELECT n FROM AppBundle:Notificacion n WHERE n.id_usuario = $user_id ORDER BY n.id DESC";
-        $query = $em->createQuery($dql);
+        $notificaciones = $em->createQueryBuilder()
+            ->select('n')
+            ->from('AppBundle:Notificacion', 'n')
+            ->where('n.id_usuario = :usuario')
+            ->andWhere('n.leido = false')
+            ->setParameter('usuario', $usuario_id)
+            ->orderBy('n.created_at')
+            ->getQuery()
+            ->getResult();
+
+//        $dql = "SELECT n FROM AppBundle:Notificacion n WHERE n.id_usuario = $user_id ORDER BY n.id DESC";
+//        $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');
-        $notificacion = $paginator->paginate(
-            $query,
+        $notifications = $paginator->paginate(
+            $notificaciones,
             $request->query->getInt('page', 1),           //page es la variable de la url
-            5                                       //5 usuarios por pagina
+            5                                                   //5 usuarios por pagina
         );
 
+        $notificacion = $this->get('app.notificacion_service');
+        $notificacion->leer($usuario_id);
+
         return $this->render('notificacion/notificacion.html.twig', [
-            'user' => $user,
-            'paginador' => $notificacion
+            'user' => $usuario,
+            'paginador' => $notifications
         ]);
     }
 
@@ -49,4 +61,5 @@ class NotificacionController extends Controller
 
         return new Response(count($notificaciones));
     }
+
 }

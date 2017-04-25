@@ -22,87 +22,87 @@ class AddRutinaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('origen', TextType::class, array(
+            ->add('origen', TextType::class, [
                 'label' => 'Origen',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-origen form-control'
-                )
-            ))
-            ->add('destino', TextType::class, array(
+                ]
+            ])
+            ->add('destino', TextType::class, [
                 'label' => 'Destino',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-destino form-control'
-                )
-            ))
-            ->add('plazasLibres', NumberType::class, array(
+                ]
+            ])
+            ->add('plazasLibres', NumberType::class, [
                 'label' => 'Plazas libres',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-plazas form-control'
-                )
-            ))
-            ->add('precio', MoneyType::class, array(
+                ]
+            ])
+            ->add('precio', MoneyType::class, [
                 'label' => 'Precio',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-precio form-control'
-                )
-            ))
-            ->add('diasRutina', TextType::class, array(
+                ]
+            ])
+            ->add('diasRutina', TextType::class, [
                 'label' => 'Días',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-dias form-control'
-                )
-            ))
-            ->add('horaSalidaIda', TimeType::class, array(
+                ]
+            ])
+            ->add('horaSalidaIda', TimeType::class, [
                 'label' => 'Hora de salida',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-hora-salida'
-                )
-            ))
+                ]
+            ])
 //            ->add('Lunes-Viernes', CheckboxType::class, array(
 //                'required' => 'required',
 //                'attr' => array(
 //                    'class' => 'form-check form-control'
 //                )
 //            ))
-            ->add('maximoAtras', CheckboxType::class, array(
+            ->add('maximoAtras', CheckboxType::class, [
                 'label' => 'Máx. 2 pasajeros atrás',
                 'required' => false,
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-max'
-                )
-            ))
-            ->add('flexiblididad', ChoiceType::class, array(
+                ]
+            ])
+            ->add('flexiblididad', ChoiceType::class, [
                 'label' => 'Flexibilidad',
                 'required' => 'required',
-                'choices'  => array(
+                'choices'  => [
                     'Justo a tiempo' => 'Justo a tiempo',
                     'En +/- 15 minutos' => 'En +/- 15 minutos',
                     'En +/- 30 minutos' => 'En +/- 30 minutos',
                     'En +/- 1 hora' => 'En +/- 1 hora',
                     'En + de 1 hora' => 'En + de 1 hora',
-                ),
-                'attr' => array(
+                ],
+                'attr' => [
                     'class' => 'form-flexibilidad'
-                )
-            ))
-            ->add('descripcion', TextareaType::class, array(
+                ]
+            ])
+            ->add('descripcion', TextareaType::class, [
                 'label' => 'Anotaciones del viaje',
                 'required' => false,
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-desc form-control'
-                )
-            ))
-            ->add('Añadir', SubmitType::class, array(
-                "attr" => array(
+                ]
+            ])
+            ->add('Añadir', SubmitType::class, [
+                "attr" => [
                     "class" => "form-submit btn btn-success"
-                )
-            ))
+                ]
+            ])
        ;
     }
     
@@ -111,9 +111,9 @@ class AddRutinaType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Viaje'
-        ));
+        ]);
     }
 
     /**
