@@ -95,13 +95,17 @@ header nav .add-pub a:hover{
 #timeline{
     margin-right: 20px;
     min-height: 750px;
+    padding: 0;
     padding-bottom: 20px;
 }
 
 .box-header{
     border-bottom: 1px solid #CCCCCC;
-    padding: 0 10px 10px;
     font-size: 25px;
+    margin: 0;
+    padding: 15px;
+    background-color: darkorchid;
+    color: #FFFFFF;
 }
 
 #user-card{
