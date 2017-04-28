@@ -1,5 +1,10 @@
 {% extends '::base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/js/custom/home.js') }}"></script>
@@ -7,7 +12,7 @@
 
 {% block content %}
     <div class="container">
-        <div id="timeline" class="col-lg-7 box-default pull-left">
+        <div id="timeline" class="col-lg-9 box-default pull-left">
             <h1 class="box-header">Últimas publicaciones</h1>
 
             <div class="box-content">
@@ -120,56 +125,71 @@
             </div>
         </div>
 
-        <div id="user-card" class="col-lg-4 box-default pull-left">
-            <div class="avatar">
-                {% if app.user.imagenPerfil == null %}
-                    <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
-                {% else %}
-                    <img src="{{ asset('uploads/users/'~app.user.imagenPerfil) }}" alt="avatar" />
-                {% endif %}
-            </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-sm-6">
 
-            <div class="name-surname">
-                <a href="{{ path('perfil_usuario', {'nick': app.user.nick}) }}">{{ app.user.nombre }} {{ app.user.apellidos }}</a>
-                <div class="clearfix"></div>
-                <span class="nickname">
-                    {{ app.user.nick }}
-                </span>
-            </div>
+                    <div class="card hovercard">
+                        <div class="cardheader" style="background-image:
+                        {% if app.user.imagenFondo == null %}
+                                url({{ asset('assets/images/default-background-profile.jpg') }});
+                        {% else %}
+                                url({{ asset('uploads/users/'~app.user.imagenFondo) }});
+                        {% endif %}
+                                ">
 
-            <div class="clearfix"></div>
+                        </div>
+                        <div class="avatar-card">
+                            {% if app.user.imagenPerfil == null %}
+                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                            {% else %}
+                                <img src="{{ asset('uploads/users/'~app.user.imagenPerfil) }}" alt="avatar" />
+                            {% endif %}
+                        </div>
+                        <div class="info">
+                            <div class="title">
+                                <a href="{{ path('perfil_usuario', {'nick': app.user.nick}) }}">{{ app.user.nombre }} {{ app.user.apellidos }}</a>
+                            </div>
+                            <div class="desc">{{ app.user.nick }}</div>
+                            <div class="desc">{{ app.user.ciudad }}</div>
+                        </div>
+                        <div class="bottom">
+                            {% set estadisticas = app.user|user_stats %}
 
-            {% set estadisticas = app.user|user_stats %}
-
-            <div class="stat-data">
-                <a href="{{ path('siguiendo_usuarios', {'nick': app.user.nick}) }}">
-                    <span class="stat-label">
-                        Siguiendo
-                    </span>
-                    <span class="stat-number">
-                        {{ estadisticas.siguiendo }}
-                    </span>
-                </a>
-            </div>
-            <div class="stat-data">
-                <a href="{{ path('usuarios_seguidores', {'nick': app.user.nick}) }}">
-                    <span class="stat-label">
-                        Seguidores
-                    </span>
-                    <span class="stat-number">
-                        {{ estadisticas.seguidores }}
-                    </span>
-                </a>
-            </div>
-            <div class="stat-data">
-                <a href="{{ path('perfil_usuario', {'nick' : app.user.nick}) }}">
-                    <span class="stat-label">
-                        Viajes activos
-                    </span>
-                    <span class="stat-number">
-                        {{ estadisticas.publicaciones }}
-                    </span>
-                </a>
+                            <div class="stat-data">
+                                <a href="{{ path('siguiendo_usuarios', {'nick': app.user.nick}) }}">
+                                    <span class="stat-label">
+                                        Siguiendo
+                                    </span>
+                                    <span class="stat-number">
+                                        {{ estadisticas.siguiendo }}
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="stat-data">
+                                <a href="{{ path('usuarios_seguidores', {'nick': app.user.nick}) }}">
+                                    <span class="stat-label">
+                                        Seguidores
+                                    </span>
+                                    <span class="stat-number">
+                                        {{ estadisticas.seguidores }}
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="stat-data">
+                                <a href="{{ path('perfil_usuario', {'nick' : app.user.nick}) }}">
+                                    <span class="stat-label">
+                                        Viajes activos
+                                    </span>
+                                    <span class="stat-number">
+                                        {{ estadisticas.publicaciones }}
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
