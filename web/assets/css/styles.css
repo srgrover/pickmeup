@@ -610,3 +610,12 @@ header nav .add-pub a:hover{
 .card .stat-data a .stat-number{
     float: right;
 }
+
+/* NOTIFICACIONES */
+
+.not-notifications{
+    color: #555555;
+    font-weight: bold;
+    font-size: 17px;
+    text-align: center;
+}

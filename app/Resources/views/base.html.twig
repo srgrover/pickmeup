@@ -19,26 +19,6 @@
             <script src="{{ asset('assets/js/jquery-ias.min.js') }}"></script>
             <script src="{{ asset('assets/js/custom/common.js') }}"></script>
             <script src="{{ asset('assets/js/nprogress/nprogress.js') }}"></script>
-            <script>
-
-                // Show the progress bar
-                NProgress.start();
-
-                // Increase randomly
-                var interval = setInterval(function() { NProgress.inc(); }, 1000);
-
-                // Trigger finish when page fully loaded
-                $(window).load(function () {
-                    clearInterval(interval);
-                    NProgress.done();
-                });
-
-                // Trigger bar when exiting the page
-                $(window).unload(function () {
-                    NProgress.start();
-                });
-
-            </script>
         {% endblock %}
 
     </head>
@@ -201,7 +181,7 @@
             <hr />
             <div class="container">
                 <p class="text-muted">
-                    Desarrollo de una web para compartir viajes - Jonathan Moya Moreno - 2017
+                    Desarrollo de una web para compartir viajes - Jonathan Moya Moreno - copyright &copy; 2017
                 </p>
             </div>
         </footer>
