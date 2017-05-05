@@ -45,13 +45,13 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         {% if app.user == null %}
                         <ul class="nav navbar-nav navbar-right">
-                            <li>
+                            <li {% if ruta == 'login' %} class="active"{% endif %}>
                                 <a href="{{ path("login") }}">
                                     <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
                                     &nbsp;Entrar
                                 </a>
                             </li>
-                            <li>
+                            <li {% if ruta == 'Register' %} class="active"{% endif %}>
                                 <a href="{{ path("Register") }}">
                                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                                     &nbsp;Registro
@@ -91,7 +91,7 @@
                                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li>
+                                        <li {% if ruta == 'add_viaje' or ruta == 'add_rutina' %} class="active"{% endif %}>
                                             <a href="{{ path('add_rutina') }}">
                                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                                                 Añadir rutina
@@ -105,12 +105,12 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li>
+                                <li {% if ruta == 'add_viaje' %} class="active"{% endif %}>
                                     <a href="{{ path('mensajes') }}">
                                         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
                                     </a>
                                 </li>
-                                <li>
+                                <li {% if ruta == 'n' %} class="active"{% endif %}>
                                     <a href="{{ path('notificaciones') }}">
                                         <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
                                         <span class="label label-success label-notifications"></span>
@@ -185,7 +185,5 @@
                 </p>
             </div>
         </footer>
-
-
     </body>
 </html>

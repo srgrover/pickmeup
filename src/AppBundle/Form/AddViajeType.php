@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -51,7 +52,7 @@ class AddViajeType extends AbstractType
                     'class' => 'form-precio form-control'
                 ]
             ])
-            ->add('fechaSalida', DateType::class, [
+            ->add('fechaSalida', BirthdayType::class, [
                 'label' => 'Fecha de salida',
                 'required' => 'required',
                 'attr' => [
@@ -65,7 +66,7 @@ class AddViajeType extends AbstractType
                     'class' => 'form-hora-salida'
                 ]
             ])
-            ->add('fechaVuelta', DateType::class, [
+            ->add('fechaVuelta', BirthdayType::class, [
                 'label' => 'Fecha de vuelta',
                 'required' => 'required',
                 'attr' => [

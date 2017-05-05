@@ -3,6 +3,14 @@ body{
     background: #EEEEEE;
 }
 
+.active{
+    background-color: darkorchid !important;
+}
+
+.active a{
+    color: #FFFFFF !important;
+}
+
 /* HEADER */
 
 nav{
@@ -101,7 +109,6 @@ header nav .add-pub a:hover{
 /* HOME */
 #timeline{
     margin-right: 20px;
-    min-height: 750px;
     padding: 0 0 20px;
     border-radius:  3px;
 }
@@ -284,6 +291,10 @@ header nav .add-pub a:hover{
 .profile-box .bio h3{
     color: #FFFFFF;
     text-shadow: 2px 1px #0f0f0f;
+}
+
+.profile-box .bio p{
+    width: 80%;
 }
 
 .content-profile{

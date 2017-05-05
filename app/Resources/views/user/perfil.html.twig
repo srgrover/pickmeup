@@ -7,7 +7,7 @@
 
 {% block content %}
 
-    <div class="col-lg-10 profile-box profile-wall" style="background-image:
+    <div class="col-lg-10 profile-box profile-wall" style="background-image: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.0) 100%),
     {% if usuario.imagenFondo == null %}
             url({{ asset('assets/images/default-background-profile.jpg') }});
         {% else %}
@@ -34,7 +34,8 @@
             <div class="bio">
                 <div class="clearfix"></div>
                 <h3>Sobre mí:</h3>
-                {{ usuario.descripcion }}
+                <p>{{ usuario.descripcion }}</p>
+
                 {% if (app.user.id is defined) and (usuario.id == app.user.id) %}
                 <a href="{{ path('user_edit') }}" class="btn btn-primary pull-right">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>

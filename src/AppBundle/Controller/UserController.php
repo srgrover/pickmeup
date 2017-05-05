@@ -57,11 +57,19 @@ class UserController extends Controller{
         if($form->isSubmitted()){
             if($form->isValid()){
                 $em = $this->getDoctrine()->getManager();
-                //$user_repo = $em->getRepository("AppBundle:Usuario");
 
-                $query = $em->createQuery('SELECT u FROM AppBundle:Usuario u WHERE u.email = :email OR u.nick = :nick')
+                $query = $em->createQueryBuilder()
+                    ->select('u')
+                    ->from('AppBundle:Usuario', 'u')
+                    ->where('u.email = :email')
+                    ->orWhere('u.nick = :nick')
                     ->setParameter('email', $form->get("email")->getData())
-                    ->setParameter('nick', $form->get("nick")->getData());
+                    ->setParameter('nick', $form->get("nick")->getData())
+                    ->getQuery();
+
+//                $query = $em->createQuery('SELECT u FROM AppBundle:Usuario u WHERE u.email = :email OR u.nick = :nick')
+//                    ->setParameter('email', $form->get("email")->getData())
+//                    ->setParameter('nick', $form->get("nick")->getData());
 
                 $user_isset = $query->getResult();
 
@@ -140,11 +148,21 @@ class UserController extends Controller{
             if($form->isValid()){
                 $em = $this->getDoctrine()->getManager();
 
-                $query = $em->createQuery('SELECT u FROM AppBundle:Usuario u WHERE u.email = :email OR u.nick = :nick')
+                $user_isset = $em->createQueryBuilder()
+                    ->select('u')
+                    ->from('AppBundle:Usuario', 'u')
+                    ->where('u.email = :email')
+                    ->orWhere('u.nick = :nick')
                     ->setParameter('email', $form->get("email")->getData())
-                    ->setParameter('nick', $form->get("nick")->getData());
+                    ->setParameter('nick', $form->get("nick")->getData())
+                    ->getQuery()
+                    ->getResult();
 
-                $user_isset = $query->getResult();
+//                $query = $em->createQuery('SELECT u FROM AppBundle:Usuario u WHERE u.email = :email OR u.nick = :nick')
+//                    ->setParameter('email', $form->get("email")->getData())
+//                    ->setParameter('nick', $form->get("nick")->getData());
+//
+//                $user_isset = $query->getResult();
 
                 if(count($user_isset) == 0 || ($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick())){
 
