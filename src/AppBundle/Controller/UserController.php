@@ -158,12 +158,6 @@ class UserController extends Controller{
                     ->getQuery()
                     ->getResult();
 
-//                $query = $em->createQuery('SELECT u FROM AppBundle:Usuario u WHERE u.email = :email OR u.nick = :nick')
-//                    ->setParameter('email', $form->get("email")->getData())
-//                    ->setParameter('nick', $form->get("nick")->getData());
-//
-//                $user_isset = $query->getResult();
-
                 if(count($user_isset) == 0 || ($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick())){
 
                     //Fichero subido

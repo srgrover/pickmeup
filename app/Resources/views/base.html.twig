@@ -105,18 +105,18 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li {% if ruta == 'add_viaje' %} class="active"{% endif %}>
+                                <li {% if ruta == 'mensajes' %} class="active"{% endif %}>
                                     <a href="{{ path('mensajes') }}">
                                         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
                                     </a>
                                 </li>
-                                <li {% if ruta == 'n' %} class="active"{% endif %}>
+                                <li {% if ruta == 'notificaciones' %} class="active"{% endif %}>
                                     <a href="{{ path('notificaciones') }}">
                                         <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
                                         <span class="label label-success label-notifications"></span>
                                     </a>
                                 </li>
-                                <li class="dropdown">
+                                <li class="dropdown {% if ruta == 'perfil_usuario' %} active{% endif %}">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                         <div class="avatar">
                                             {% if app.user.imagenPerfil == null %}
