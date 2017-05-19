@@ -13,8 +13,6 @@ use AppBundle\Entity\Usuario;
 use AppBundle\Form\RegisterType;
 use AppBundle\Form\UserType;
 
-
-
 class UserController extends Controller{
     private $session;
 
@@ -23,9 +21,9 @@ class UserController extends Controller{
     }
 
     /**
-     * @Route("/login", name="login")
+     * @Route("/Entrar", name="login")
      */
-    public function LoginAction(Request $request){
+    public function LoginAction(){
         if(is_object($this->getUser())){        //El usuario está logueado
             return $this->redirect('home');
         }
@@ -35,14 +33,16 @@ class UserController extends Controller{
 
         $lastUserName = $autenticationUtils->getLastUsername();             //Capturamos el usuario del error
 
-        return $this->render(':user:login.html.twig', array(
+        return $this->render(':user:login.html.twig', [
             'last_username' => $lastUserName,
             'error' => $error
-        ));
+        ]);
     }
 
     /**
-     * @Route("/register", name="Register")
+     * @Route("/Registro", name="Register")
+     * @param Request $request
+     * @return Response
      */
     public function RegisterAction(Request $request){
         if(is_object($this->getUser())){        //El usuario está logueado
@@ -66,10 +66,6 @@ class UserController extends Controller{
                     ->setParameter('email', $form->get("email")->getData())
                     ->setParameter('nick', $form->get("nick")->getData())
                     ->getQuery();
-
-//                $query = $em->createQuery('SELECT u FROM AppBundle:Usuario u WHERE u.email = :email OR u.nick = :nick')
-//                    ->setParameter('email', $form->get("email")->getData())
-//                    ->setParameter('nick', $form->get("nick")->getData());
 
                 $user_isset = $query->getResult();
 
@@ -108,9 +104,9 @@ class UserController extends Controller{
             $this->session->getFlashBag()->add("status", $status);
         }
 
-        return $this->render(':user:register.html.twig', array(
+        return $this->render(':user:register.html.twig', [
             "form" => $form->createView()
-        ));
+        ]);
     }
 
 
@@ -122,12 +118,10 @@ class UserController extends Controller{
         $user_repo = $em->getRepository("AppBundle:Usuario");
         $user_isset = $user_repo->findOneBy(array("nick" => $nick));
 
-        $result = "used";
+        $result = "unused";
 
         if(count($user_isset) >= 1 && is_object($user_isset)){
             $result = "used";
-        }else{
-            $result = "unused";
         }
 
         return new Response(($result));
@@ -135,7 +129,9 @@ class UserController extends Controller{
 
     /**
      * @Security("has_role('ROLE_USER')")
-     * @Route("/my-data", name="user_edit")
+     * @Route("/perfil/editar", name="user_edit")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function aditUserAction(Request $request){
         $user = $this->getUser();   //getUser() para recoger los datos de un usuario que ya esta logueado
@@ -195,57 +191,64 @@ class UserController extends Controller{
                     $flush = $em->flush();
 
                     if($flush == null){ //No devuelve ningun error
-                        $status = "Datos modificados correctamente";
+                        $this->addFlash('estado', 'Datos modificados correctamente');
                     }else{
-                        $status = "Los datos no se han modificado correctamente";
+                        $this->addFlash('error', 'Los datos no se han modificado correctamente');
                     }
 
                 }else{
-                    $status = "El usuario ya existe !!";
+                    $this->addFlash('error', 'El usuario ya existe !!');
                 }
 
             }else{
-                $status = "No se han actualizado los datos correctamente !!";
+                $this->addFlash('error', 'Los datos no se han modificado correctamente');
             }
 
-            $this->session->getFlashBag()->add("status", $status);
             return $this->redirect('my-data');
         }
 
-        return $this->render(':user:edit_user.html.twig', array(
+        return $this->render(':user:edit_user.html.twig', [
             "form" => $form->createView()
-        ));
+        ]);
     }
 
 
     /**
-     * @Route("/users", name="users")
+     * @Route("/usuarios", name="users")
+     * @param Request $request
+     * @return Response
      */
     public function usersAction(Request $request){
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-
-        $dql = "SELECT u FROM AppBundle:Usuario u ORDER BY u.id ASC";
-
-        $query = $em->createQuery($dql);
+        $usuarios = $em->createQueryBuilder()
+            ->select('u')
+            ->from('AppBundle:Usuario', 'u')
+            ->orderBy('u.id', 'ASC')
+            ->getQuery()
+            ->getResult();
 
         $paginator = $this->get('knp_paginator');
 
         $pagination = $paginator->paginate(
-            $query,
+            $usuarios,
             $request->query->getInt('page', 1),     //page es la variable de la url
-            5                                       //5 usuarios por pagina
+            5                                             //5 usuarios por pagina
         );
 
-        return $this->render(':user:users.html.twig', array(
+        return $this->render(':user:users.html.twig', [
             'pagination' => $pagination
-        ));
+        ]);
     }
 
 
     /**
-     * @Route("/search", name="user_search")
+     * @Route("/buscar", name="user_search")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function searchAction(Request $request){
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
         $search = trim($request->query->get("search", null)); //Se recoge el valor de la variable search de la URL
@@ -254,23 +257,28 @@ class UserController extends Controller{
             return $this->redirect($this->generateUrl('homepage'));
         }
 
-        $dql = "SELECT u FROM AppBundle:Usuario u " .
-            "WHERE u.nombre LIKE :search OR u.apellidos LIKE :search " .
-            "OR u.nick LIKE :search ORDER BY u.id ASC";
-
-        $query = $em->createQuery($dql)->setParameter('search', "%$search%");   //añadimos parametro search que sea "lo que sea" + search + "lo que sea"
+        $usuarios = $em->createQueryBuilder()
+            ->select('u')
+            ->from('AppBundle:Usuario', 'u')
+            ->where('u.nombre LIKE :search')
+            ->orWhere('u.apellidos LIKE :search')
+            ->orWhere('u.nick LIKE :search')
+            ->orderBy('u.id', 'ASC')
+            ->setParameter('search', "%$search%")
+            ->getQuery()
+            ->getResult();
 
         $paginator = $this->get('knp_paginator');
 
         $pagination = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),     //page es la variable de la url
-            5                                       //5 usuarios por pagina
+            $usuarios,
+            $request->query->getInt('page', 1),       //page es la variable de la url
+            5                                               //5 usuarios por pagina
         );
 
-        return $this->render(':user:users.html.twig', array(
+        return $this->render(':user:users.html.twig', [
             'pagination' => $pagination
-        ));
+        ]);
     }
 
 
@@ -293,19 +301,28 @@ class UserController extends Controller{
 
         $usuario_id = $usuario->getId();
 
-        $dql = "SELECT p FROM AppBundle:Viaje p WHERE p.conductor = $usuario_id ORDER BY p.id DESC";
-        $query = $em->createQuery($dql);
+        $viajes = $em->createQueryBuilder()
+            ->select('p')
+            ->from('AppBundle:Viaje', 'p')
+            ->where('p.conductor = :usuario')
+            ->orderBy('p.id', 'DESC')
+            ->setParameter('usuario', $usuario_id)
+            ->getQuery()
+            ->getResult();
+
+//        $dql = "SELECT p FROM AppBundle:Viaje p WHERE p.conductor = $usuario_id ORDER BY p.id DESC";
+//        $query = $em->createQuery($dql);
 
         $paginador = $this->get("knp_paginator");
         $publicaciones = $paginador->paginate(
-            $query,
+            $viajes,
             $request->query->getInt('page', 1),
             5
         );
 
-        return $this->render(':user:perfil.html.twig', array(
+        return $this->render(':user:perfil.html.twig', [
             'usuario' => $usuario,
             'paginacion' => $publicaciones
-        ));
+        ]);
     }
 }

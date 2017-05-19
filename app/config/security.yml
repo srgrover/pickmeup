@@ -4,7 +4,7 @@ security:
     encoders:
         AppBundle\Entity\Usuario:
            algorithm: bcrypt
-           cost: 4
+           cost: 8
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:

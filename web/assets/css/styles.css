@@ -11,12 +11,35 @@ body{
     color: #FFFFFF !important;
 }
 
+.user-pad {
+    padding: 20px 25px;
+}
+
+.overview h3 {
+    font-size: 20px;
+    font-weight: 300;
+    margin: 10px 0 0;
+}
+
+.overview h4 {
+    font-size: 30px;
+    font-weight: bold !important;
+    margin-top: 0;
+}
+
+.modal-footer{
+    border-top: 0 !important;
+}
+
 /* HEADER */
 
 nav{
     border-bottom: 0 !important;
 }
 
+.navbar-default{
+    background: #FFFFFF;
+}
 
 .navbar::after {
     height:5px;
@@ -62,14 +85,13 @@ header nav .add-pub a:hover{
 
 /* REGISTRO */
 .box-form, .box-default{
-    background: #FFFFFF;
-    border: 1px solid #CCCCCC;
+    background: #FEFEFE;
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.14);
     padding: 0 20px 20px;
     margin: 0 auto;
     float: none;
-    -webkit-border-radius: 0 0 3px 3px;
-    -moz-border-radius: 0 0 3px 3px;
-    border-radius: 0 0 3px 3px;
+    border-radius: 3px;
+    white-space: normal;
 }
 
 .box-form input{
@@ -114,14 +136,11 @@ header nav .add-pub a:hover{
 }
 
 .box-header{
-    border-bottom: 1px solid #CCCCCC;
     font-size: 25px;
     margin: 0;
     padding: 15px;
-    background-color: darkorchid;
+    background-color: #fc8859;
     color: #FFFFFF;
-    -webkit-border-radius: 3px 3px 0 0;
-    -moz-border-radius: 3px 3px 0 0;
     border-radius: 3px 3px 0 0;
 }
 
@@ -226,8 +245,7 @@ header nav .add-pub a:hover{
 /* PERFILES */
 
 .box-info-user{
-    padding: 20px;
-    padding-bottom: 0;
+    padding: 20px 20px 0;
     margin-top: 15px;
 }
 
@@ -272,7 +290,7 @@ header nav .add-pub a:hover{
 }
 
 .box-items .info-usuario a{
-    margin-right: 30px;
+    margin-right: 25px;
 }
 
 .box-items .info-usuario a:nth-child(1){
@@ -281,30 +299,22 @@ header nav .add-pub a:hover{
     font-size: 18px;
 }
 
+.box-ajustado{
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 20px;
+    margin-top: 25px !important;
+}
+
+.no-padding-bottom{
+    padding-bottom: 0 !important;
+}
+
 .profile-wall{
     background-size: cover;
-    padding: 0 20px 20px;
+    padding: 150px 20px 20px;
     margin: 0 auto;
     float: none;
-}
-
-.profile-box .bio{
-    clear: both;
-    padding: 20px;
-    font-size: 16px;
-    color: #FFFFFF;
-    text-shadow: 2px 1px #0f0f0f;
-    display: block;
-
-}
-
-.profile-box .bio h3{
-    color: #FFFFFF;
-    text-shadow: 2px 1px #0f0f0f;
-}
-
-.profile-box .bio p{
-    width: 80%;
 }
 
 .content-profile{
@@ -319,16 +329,8 @@ header nav .add-pub a:hover{
     float: left;
 }
 
-.box-estadisticas{
-    padding-right: 0;
-    padding-left: 0;
-    padding-bottom: 20px;
-    background-color: #FFFFFF;
-    margin-top: 25px;
-    border-radius: 3px;
-    border-bottom: 2px solid #CCCCCC;
-    border-left: 0.5px solid #CCCCCC;
-    border-right: 0.5px solid #CCCCCC;
+.modal-bio span{
+    display: block;
 }
 
 /* NOTIFICACIONES */
@@ -352,16 +354,10 @@ header nav .add-pub a:hover{
 
 .card {
     padding-top: 20px;
-    margin: 0 0 20px 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0 0 20px 0 !important;
     background-color: rgba(214, 224, 226, 0.2);
-    border-top-width: 0;
-    border-bottom-width: 2px;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -542,7 +538,6 @@ header nav .add-pub a:hover{
     text-align: center;
     background-color: rgba(255, 255, 255, 1);
     padding-bottom: 20px;
-    border: 1px solid #CCCCCC;
 }
 
 .card.hovercard a{

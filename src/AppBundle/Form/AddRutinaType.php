@@ -40,7 +40,8 @@ class AddRutinaType extends AbstractType
                 'label' => 'Plazas libres',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-plazas form-control'
+                    'class' => 'form-plazas form-control',
+                    'type' => 'number'
                 ]
             ])
             ->add('precio', MoneyType::class, [
@@ -95,7 +96,7 @@ class AddRutinaType extends AbstractType
                 'label' => 'Anotaciones del viaje',
                 'required' => false,
                 'attr' => [
-                    'class' => 'form-desc form-control'
+                    'class' => 'form-desc'
                 ]
             ])
             ->add('Añadir', SubmitType::class, [

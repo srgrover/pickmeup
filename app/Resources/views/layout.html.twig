@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% set ruta = app.request.get('_route') %}
+    <header>
+    {% block navbar %}
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Desplegar barra de navegación</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ path('homepage') }}">
+                        <img src="{{ asset('assets/images/logo.png') }}" alt="" width="20px">
+                        PICKMEUP!
+                    </a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    {% if app.user == null %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li {% if ruta == 'login' %} class="active"{% endif %}>
+                                <a href="{{ path("login") }}">
+                                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                                    &nbsp;Entrar
+                                </a>
+                            </li>
+                            <li {% if ruta == 'Register' %} class="active"{% endif %}>
+                                <a href="{{ path("Register") }}">
+                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    &nbsp;Registro
+                                </a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="nav navbar-nav">
+                            <li {% if ruta == 'homepage' %} class="active"{% endif %}>
+                                <a href="{{ path("homepage") }}">
+                                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                    &nbsp;Inicio
+                                </a>
+                            </li>
+                            <li {% if ruta == 'users' %} class="active"{% endif %}>
+                                <a href="{{ path("users") }}">
+                                    <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+                                    &nbsp;Conductores
+                                </a>
+                            </li>
+                            <li>
+                                <form action="{{ path('user_search') }}" class="navbar-form navbar-left">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Buscar" name="search" />
+                                        <button type="submit" class="btn btn-info">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </li>
+                        </ul>
+                    {% endif %}
+                    {% if app.user != null %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown add-pub text-success">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li {% if ruta == 'add_viaje' or ruta == 'add_rutina' %} class="active"{% endif %}>
+                                        <a href="{{ path('add_rutina') }}">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            Añadir rutina
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('add_viaje') }}">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            Añadir viaje
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li {% if ruta == 'mensajes' %} class="active"{% endif %}>
+                                <a href="{{ path('mensajes') }}">
+                                    <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li {% if ruta == 'notificaciones' %} class="active"{% endif %}>
+                                <a href="{{ path('notificaciones') }}">
+                                    <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>
+                                    <span class="label label-success label-notifications"></span>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <div class="avatar">
+                                        {% if app.user.imagenPerfil == null %}
+                                            <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                                        {% else %}
+                                            <img src="{{ asset('uploads/users/'~app.user.imagenPerfil) }}" alt="avatar" />
+                                        {% endif %}
+                                    </div>
+
+                                    {{ app.user.nombre }} {{ app.user.apellidos }}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{ path('perfil_usuario', {'nick' : app.user.nick}) }}">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                            Mi perfil
+                                        </a>
+                                    </li>
+
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="">
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                            Ayuda
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('logout') }}">
+                                            <span class="glyphicon glyphicon-log-out"></span>
+                                            Salir
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+    {% endblock %}
+    </header>
+    <div class="container">
+        {% if app.session.flashBag.has('estado') %}
+            {% set mensajes = app.session.flashBag.get('estado') %}
+            {% for mensaje in mensajes %}
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    {{ mensaje }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if app.session.flashBag.has('error') %}
+            {% set mensajes = app.session.flashBag.get('error') %}
+            {% for mensaje in mensajes %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
+                    {{ mensaje }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

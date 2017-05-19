@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-//use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class UserType extends AbstractType
 {
@@ -21,76 +20,92 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', TextType::class, array(
+            ->add('nombre', TextType::class, [
                 'label' => 'Nombre',
                 'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-name form-control'
-                )
-            ))
-            ->add('apellidos', TextType::class, array(
+                'attr' => [
+                    'class' => 'form-name'
+                ]
+            ])
+            ->add('apellidos', TextType::class, [
                 'label' => 'Apellidos',
                 'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-surname form-control'
-                )
-            ))
-            ->add('nick', TextType::class, array(
+                'attr' => [
+                    'class' => 'form-surname'
+                ]
+            ])
+            ->add('nick', TextType::class, [
                 'label' => 'Nick',
-                'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-nick form-control'
-                )
-            ))
-            ->add('email', EmailType::class, array(
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-nick disabled',
+                    'disabled'=> true
+                ]
+            ])
+            ->add('email', EmailType::class, [
                 'label' => 'Correo electrónico',
                 'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-email form-control'
-                )
-            ))
-            ->add('descripcion', TextareaType::class, array(
+                'attr' => [
+                    'class' => 'form-email',
+                    'disabled'=> true
+                ]
+            ])
+            ->add('descripcion', TextareaType::class, [
                 'label' => 'Biografia',
                 'required' => false,
-                'attr' => array(
-                    'class' => 'form-bio form-control'
-                )
-            ))
-            ->add('ciudad', TextType::class, array(
+                'attr' => [
+                    'class' => 'form-bio'
+                ]
+            ])
+            ->add('ciudad', TextType::class, [
                 'label' => 'Ciudad',
-                'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-city form-control'
-                )
-            ))
-            ->add('telefono', TextType::class, array(
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-city'
+                ]
+            ])
+            ->add('provincia', TextType::class, [
+                'label' => 'Provincia',
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-provincia'
+                ]
+            ])
+            ->add('pais', TextType::class, [
+                'label' => 'País',
+                'required' => false,
+                'attr' => [
+                    'class' => 'form-pais'
+                ]
+            ])
+            ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
-                'required' => 'required',
-                'attr' => array(
-                    'class' => 'form-tlf form-control'
-                )
-            ))
-            ->add('imagenPerfil', FileType::class, array(
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-tlf'
+                ]
+            ])
+            ->add('imagenPerfil', FileType::class, [
                 'label' => 'Imagen de perfil',
                 'required' => false,
                 'data_class' => null,
-                'attr' => array(
-                    'class' => 'form-imagenPerfil form-control'
-                )
-            ))
-            ->add('imagenFondo', FileType::class, array(
+                'attr' => [
+                    'class' => 'form-imagenPerfil'
+                ]
+            ])
+            ->add('imagenFondo', FileType::class, [
                 'label' => 'Imagen de fondo',
                 'required' => false,
                 'data_class' => null,
-                'attr' => array(
-                    'class' => 'form-imgfondo form-control'
-                )
-            ))
-            ->add('Guardar', SubmitType::class, array(
-                "attr" => array(
+                'attr' => [
+                    'class' => 'form-imgfondo'
+                ]
+            ])
+            ->add('Guardar', SubmitType::class, [
+                "attr" => [
                     "class" => "form-submit btn btn-success"
-                )
-            ))
+                ]
+            ])
        ;
     }
     
@@ -99,9 +114,9 @@ class UserType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Usuario'
-        ));
+        ]);
     }
 
     /**

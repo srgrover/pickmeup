@@ -1,4 +1,4 @@
-{% extends '::base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -13,10 +13,9 @@
 {% block content %}
     <div class="container">
         <div id="timeline" class="col-lg-9 box-default pull-left">
-            <h1 class="box-header">Últimas publicaciones</h1>
+            <h1 class="box-header">ÚLTIMAS PUBLICACIONES</h1>
 
             <div class="box-content">
-
 
                 {% for publication in pagination %}             {# Cada vez que se llame a un elemento de la colección será con "publication" #}
                     <div class="col-lg-12 publication-item">
@@ -46,6 +45,12 @@
                             <table width="100%">
                                 <tr>
                                     <td>
+                                        {% if publication.tipo == 1 %}
+                                            <label class="label label-success">RUTINA</label>
+                                        {% else %}
+                                            <label class="label label-info">VIAJE</label>
+                                        {% endif %}
+
                                         <p>
                                             <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
                                             {{ publication.origen }}
@@ -77,14 +82,14 @@
                                                 <a href="#" class="btn-edit-pub btn btn-default btn-sm" data-id="{{ publication.id }}">
                                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                                 </a>
-                                                <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal">
+                                                <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal_borrar">
                                                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                 </a>
                                             {% endif %}
                                         </div>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                        <div class="modal fade" id="modal_borrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -129,7 +134,7 @@
             <div class="row">
                 <div class="col-lg-3 col-sm-6">
 
-                    <div class="card hovercard">
+                    <div class="card hovercard box-default">
                         <div class="cardheader" style="background-image:
                         {% if app.user.imagenFondo == null %}
                                 url({{ asset('assets/images/default-background-profile.jpg') }});

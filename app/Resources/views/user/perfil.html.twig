@@ -1,13 +1,12 @@
-{% extends '::base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block javascripts %}
-    {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/js/custom/profile.js') }}"></script>
 {% endblock %}
 
 {% block content %}
 
-    <div class="col-lg-10 profile-box profile-wall" style="background-image: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.0) 100%),
+    <div class="col-lg-10 profile-box profile-wall box-default" style="background-image: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.0) 100%),
     {% if usuario.imagenFondo == null %}
             url({{ asset('assets/images/default-background-profile.jpg') }});
         {% else %}
@@ -15,15 +14,6 @@
         {% endif %}
     ">
         <div class="box-info-user col-lg-12">
-
-
-            <div class="bio">
-                <div class="clearfix"></div>
-                <h3>Sobre mí:</h3>
-                <p>{{ usuario.descripcion }}</p>
-
-
-            </div>
             <div class="col-lg-12 box-items">
                 <div class="col-lg-8">
                     <div class="avatar">
@@ -35,7 +25,7 @@
                     </div>
 
                     <div class="name-surname">
-                        <a href="#">
+                        <a href="{{ path('perfil_usuario', {'nick' : usuario.nick}) }}">
                             {{ usuario.nombre }} {{ usuario.apellidos }}
                         </a>
                         <div class="clearfix"></div>
@@ -46,7 +36,7 @@
                 </div>
 
                 <div class="col-lg-4 info-usuario text-right">
-                    <a href="#">
+                    <a href="#" data-toggle="modal" data-target="#info-modal">
                         SOBRE MÍ
                     </a>
                     {% if (app.user.id is defined) and (usuario.id == app.user.id) %}
@@ -61,58 +51,91 @@
                         </a>
                     {% endif %}
                 </div>
-
+                <!-- Modal Info Usuario-->
+                <div class="modal fade" id="info-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">SOBRE MÍ</h4>
+                            </div>
+                            <div class="modal-body modal-bio">
+                                <h3>
+                                    {{ usuario.nombre }} {{ usuario.apellidos }} <small>{{ usuario.nick }}</small>
+                                </h3>
+                                <div class="col-lg-12">
+                                    <div class="col-lg-6">
+                                        <span>{{ usuario.ciudad }} {% if usuario.provincia  != null %}({{ usuario.provincia }}){% endif %}{% if usuario.pais != null %}, {{ usuario.pais }}{% endif %}</span>
+                                        <span>Email: {{ usuario.email }}</span>
+                                        <span>Fecha de nacimiento: {{ usuario.fechaNacimiento|date('d/F/Y') }}</span>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        {% if usuario.descripcion  != null %}
+                                            <span>
+                                                {{ usuario.descripcion }}
+                                            </span>
+                                        {% else %}
+                                            {% if (app.user.id is defined) and (usuario.id == app.user.id) %}
+                                                <span>
+                                                    Aún no has introducido una descripción de usuario. Edita tu perfil para añadirla. Puedes ir directamente a editar tu perfil siguiento
+                                                    <a href="{{ path('user_edit') }}"> este enlace</a>
+                                                </span>
+                                            {% else %}
+                                                <span>
+                                                    Este usuario aún no ha introducido una descripción.
+                                                </span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
             </div>
             <div class="clearfix"></div>
         </div>
-
         <div class="clearfix"></div>
-
     </div>
     <div class="clearfix"></div>
 
     <div class="col-lg-10 content-profile">
-        <div id="user-stats" class="col-lg-4 box-estadisticas">
+        <div id="user-stats" class="col-lg-4 col-md-12 col-sm-12 box-default box-ajustado no-padding-bottom">
             <h1 class="box-header">
-                Estadisticas
+                ESTADÍSTICAS
             </h1>
             {% set estadisticas = usuario|user_stats %}
-            <div class="container">
-                <div class="stat-data">
+            <div class="row overview">
+                <div class="col-md-4 user-pad text-center">
                     <a href="{{ path('siguiendo_usuarios', {'nick' : usuario.nick}) }}">
-                    <span class="stat-label">
-                        Siguiendo
-                    </span>
-                        <span class="stat-number">
-                        {{ estadisticas.siguiendo }}
-                    </span>
+                        <h3>SIGUIENDO</h3>
+                        <h4>{{ estadisticas.siguiendo }}</h4>
                     </a>
                 </div>
-                <div class="stat-data">
+                <div class="col-md-4 user-pad text-center">
                     <a href="{{ path('usuarios_seguidores', {'nick' : usuario.nick}) }}">
-                    <span class="stat-label">
-                        Seguidores
-                    </span>
-                        <span class="stat-number">
-                        {{ estadisticas.seguidores }}
-                    </span>
+                        <h3>SEGUIDORES</h3>
+                        <h4>{{ estadisticas.seguidores }}</h4>
                     </a>
                 </div>
-                <div class="stat-data">
-                    <a href="{{ path('perfil_usuario', {'nick' : app.user.nick}) }}">
-                    <span class="stat-label">
-                        Viajes activos
-                    </span>
-                        <span class="stat-number">
-                        {{ estadisticas.publicaciones }}
-                    </span>
+                <div class="col-md-4 user-pad text-center">
+                    <a href="{{ path('perfil_usuario', {'nick' : usuario.nick}) }}">
+                        <h3>VIAJES</h3>
+                        <h4>{{ estadisticas.publicaciones }}</h4>
                     </a>
                 </div>
             </div>
-
         </div>
         <div class="col-lg-1"></div>
-        <div class="col-lg-7 col-sm-12 box-default">
+        <div class="col-lg-7 col-md-12 col-sm-12 box-default box-ajustado">
+            <h1 class="box-header">
+                RUTINAS ACTUALES
+            </h1>
             <div class="user-publications">
                 {% for publication in paginacion %}
                     <div class="col-lg-12 publication-item">
@@ -205,7 +228,6 @@
                                     </td>
                                 </tr>
                             </table>
-
                         </div>
                         <div class="clearfix"></div>
                         <hr>
@@ -218,10 +240,8 @@
                 </div>
 
                 <div class="clearfix"></div>
-
             </div>
         </div>
-
     </div>
 
 {% endblock %}

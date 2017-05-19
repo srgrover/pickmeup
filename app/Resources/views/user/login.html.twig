@@ -1,10 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block content %}
     <div class="col-lg-4 box-form">
         <h2>Identificarse</h2>
         <hr />
-
 
         <form action="{{ path('login_check') }}" method="post">
             <label>Email</label>
