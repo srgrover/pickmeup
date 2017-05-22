@@ -133,7 +133,7 @@ class UserController extends Controller{
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function aditUserAction(Request $request){
+    public function editarUsuarioAction(Request $request){
         $user = $this->getUser();   //getUser() para recoger los datos de un usuario que ya esta logueado
         $user_image = $user->getImagenPerfil();
         $form = $this->createForm(UserType::class, $user);  //Crea el formulario
@@ -171,7 +171,6 @@ class UserController extends Controller{
                         $user->setImagenPerfil($user_image);
                     }
 
-
                     $imagenFondo = $form["imagenFondo"]->getData();
 
                     if(!empty($imagenFondo) && $imagenFondo != null){
@@ -186,14 +185,13 @@ class UserController extends Controller{
                         $user->setImagenFondo($user_image);
                     }
 
-
                     $em->persist($user);
                     $flush = $em->flush();
 
                     if($flush == null){ //No devuelve ningun error
                         $this->addFlash('estado', 'Datos modificados correctamente');
                     }else{
-                        $this->addFlash('error', 'Los datos no se han modificado correctamente');
+                        $this->addFlash('error', 'Los datos no se han modificado correctamente FLUSH');
                     }
 
                 }else{
@@ -201,7 +199,7 @@ class UserController extends Controller{
                 }
 
             }else{
-                $this->addFlash('error', 'Los datos no se han modificado correctamente');
+                $this->addFlash('error', 'Los datos no se han modificado correctamente NO VALIDO');
             }
 
             return $this->redirect('my-data');

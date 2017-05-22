@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\AddRutinaType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\HttpFoundation\Session\Session;
 use AppBundle\Form\AddViajeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
