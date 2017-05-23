@@ -649,3 +649,50 @@ header nav .add-pub a:hover{
     font-size: 17px;
     text-align: center;
 }
+
+/* VISTA DE VIAJE*/
+.vista-viaje{
+    padding: 0;
+}
+
+.vista-viaje span{
+    display: block;
+    margin: 15px 0;
+}
+
+.user-item .avatar,
+.publication-item .avatar,
+.box-anotacion-viaje .avatar{
+    background: #EEEEEE;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    overflow: hidden;
+    float: left;
+}
+
+.box-anotacion-viaje .avatar{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.box-anotacion-viaje span, .box-anotacion-viaje h4{
+    margin-top: 0;
+}
+
+.user-item .avatar img,
+.publication-item .avatar img,
+.box-anotacion-viaje .avatar img{
+    height: 100%;
+    text-align: center;
+}
+
+.box-anotacion-viaje{
+    padding: 15px;
+    margin: 15px;
+    background-color: rgba(21, 140, 186, 0.08);
+    border-radius: 3px;
+}

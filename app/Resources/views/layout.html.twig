@@ -135,7 +135,7 @@
         </nav>
     {% endblock %}
     </header>
-    <div class="container">
+    <div class="container" style="width: 100%;">
         {% if app.session.flashBag.has('estado') %}
             {% set mensajes = app.session.flashBag.get('estado') %}
             {% for mensaje in mensajes %}

@@ -1,10 +1,5 @@
 {% extends 'layout.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="{{ asset('assets/js/custom/home.js') }}"></script>
@@ -75,7 +70,7 @@
                                     </td>
                                     <td class="text-right">
                                         <div class="btn-group-vertical" role="group" aria-label="...">
-                                            <a href="#" class="btn btn-success btn-sm">
+                                            <a href="{{ path('ver_viaje', {'id' : publication.id}) }}" class="btn btn-success btn-sm">
                                                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                             </a>
                                             {% if (publication.conductor.id is defined) and (publication.conductor.id == app.user.id) %}

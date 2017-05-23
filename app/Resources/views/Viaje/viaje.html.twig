@@ -1,0 +1,79 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="container" style="padding-left: 0;">
+        <h4>
+            <a href="{{ path('homepage') }}">
+                <i class="fa fa-long-arrow-left"></i>
+                Volver a la página principal
+            </a>
+        </h4>
+        <div class="col-lg-6 box-default pull-left vista-viaje">
+            <h1 class="box-header">
+                {{ viaje.origen }}
+                <i class="fa fa-long-arrow-right"></i>
+                {{ viaje.destino }}
+            </h1>
+            <div class="col-lg-3">
+                <span>
+                    Salida:
+                </span>
+                <span>
+                    Destino:
+                </span>
+                <span>
+                    Fecha:
+                </span>
+                <span>
+                    Detalles:
+                </span>
+            </div>
+            <div class="col-lg-5">
+                <span>
+                    <i class="fa fa-circle-o text-success"></i>
+                    {{ viaje.origen }}
+                </span>
+                <span>
+                    <i class="fa fa-circle-o text-danger"></i>
+                    {{ viaje.destino }}
+                </span>
+                <span>
+                    <i class="fa fa-calendar"></i>
+                    {{ viaje.fechaSalida|date('D\\. d \\d\\e M') }} - {{ viaje.horaSalidaIda|date('H:i') }}
+                </span>
+                <span>
+                    <i class="fa fa-clock-o"></i>
+                    Salida {{ viaje.flexiblididad }}
+                </span>
+                <span>
+                    <i class="fa fa-info-circle"></i>
+                    {% if viaje.maximoAtras %}
+                        El conductor viaja con un máximo de 2 pasajeros en la parte de atrás
+                    {% endif %}
+                </span>
+            </div>
+            <div class="col-lg-11 box-anotacion-viaje">
+                <div class="avatar">
+                    {% if viaje.conductor.imagenPerfil == null %}
+                        <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                    {% else %}
+                        <img src="{{ asset('uploads/users/'~viaje.conductor.imagenPerfil) }}" alt="avatar" />
+                    {% endif %}
+                </div>
+                <h4>
+                    {{ viaje.conductor.nombre }} {{ viaje.conductor.apellidos }}
+                </h4>
+                <span>
+                    {{ viaje.descripcion }}
+                </span>
+
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5 box-default pull-left vista-viaje">
+xdvxfbsx
+        </div>
+    </div>
+
+{% endblock %}
+

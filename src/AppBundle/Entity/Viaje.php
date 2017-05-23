@@ -114,7 +114,7 @@ class Viaje{
      *
      * @var string
      */
-    protected $descripcion = "No hay ninguna descripción para este viaje.";
+    protected $descripcion = "El usuario no ha añadido mas información sobre el viaje.";
 
     /**
      * @ORM\Column(type="string", nullable=false)

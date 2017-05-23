@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\AddRutinaType;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Form\AddViajeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,24 +19,28 @@ use Symfony\Component\HttpFoundation\Response;
 class ViajeController extends Controller{
 
     /**
-     * @Route("/viaje", name="ver_viaje")
+     * @Route("/viaje/{id}", name="ver_viaje")
      * @param Request $request
      * @return Response
      */
-    public function viajeAction(Request $request){
-        $publications = $this->getPublications($request);
+    public function viajeAction(Request $request, Viaje $id = null){
+        /** @var EntityManager $em*/
+        $em = $this->getDoctrine()->getManager();
 
-        return $this->render(':viajes:viaje:home.html.twig',array(
-            'pagination' => $publications
+        $viaje_repo = $em->getRepository("AppBundle:Viaje");
+        $viaje = $viaje_repo->findOneBy(['id' => $id]);
+
+        return $this->render(':Viaje:viaje.html.twig',array(
+            'viaje' => $viaje
         ));
     }
 
     /**
-     * @Route("/rutina", name="ver_rutina")
+     * @Route("/rutina/{id}", name="ver_rutina")
      * @param Request $request
      * @return Response
      */
-    public function rutinaAction(Request $request){
+    public function rutinaAction(Request $request, Viaje $id = null){
         $publications = $this->getPublications($request);
 
         return $this->render(':viajes:rutina:home.html.twig',array(

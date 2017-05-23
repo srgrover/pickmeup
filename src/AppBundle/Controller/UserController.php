@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -284,6 +286,7 @@ class UserController extends Controller{
      * @Route("/perfil/{nick}", name="perfil_usuario")
      */
     public function perfilAction(Request $request, $nick = null){
+        /** @var EntityManager $em*/
         $em = $this->getDoctrine()->getManager();
 
         if($nick != null){
