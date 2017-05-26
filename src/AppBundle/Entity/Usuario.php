@@ -8,6 +8,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -181,6 +182,13 @@ class Usuario implements UserInterface, \Serializable {
      * @var Viaje
      */
     protected $viaje;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Rutina", mappedBy="conductor")
+     *
+     * @var Rutina
+     */
+    protected $rutina;
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Vehiculo", mappedBy="conductor")
@@ -630,10 +638,10 @@ class Usuario implements UserInterface, \Serializable {
      */
     public function __construct()
     {
-        $this->viaje = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->notificacion = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->emisor = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->receptor = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->viaje = new ArrayCollection();
+        $this->notificacion = new ArrayCollection();
+        $this->emisor = new ArrayCollection();
+        $this->receptor = new ArrayCollection();
     }
 
     /**

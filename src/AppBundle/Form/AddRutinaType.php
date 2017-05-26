@@ -6,7 +6,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -36,12 +35,17 @@ class AddRutinaType extends AbstractType
                     'class' => 'form-destino form-control'
                 ]
             ])
-            ->add('plazasLibres', NumberType::class, [
+            ->add('plazasLibres', ChoiceType::class, [
                 'label' => 'Plazas libres',
                 'required' => 'required',
+                'choices' => [
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4,
+                ],
                 'attr' => [
-                    'class' => 'form-plazas form-control',
-                    'type' => 'number'
+                    'class' => 'form-plazas form-control'
                 ]
             ])
             ->add('precio', MoneyType::class, [
@@ -51,26 +55,20 @@ class AddRutinaType extends AbstractType
                     'class' => 'form-precio form-control'
                 ]
             ])
-            ->add('diasRutina', TextType::class, [
+            ->add('dias', TextType::class, [
                 'label' => 'Días',
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-dias form-control'
                 ]
             ])
-            ->add('horaSalidaIda', TimeType::class, [
+            ->add('horaSalida', TimeType::class, [
                 'label' => 'Hora de salida',
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-hora-salida'
                 ]
             ])
-//            ->add('Lunes-Viernes', CheckboxType::class, array(
-//                'required' => 'required',
-//                'attr' => array(
-//                    'class' => 'form-check form-control'
-//                )
-//            ))
             ->add('maximoAtras', CheckboxType::class, [
                 'label' => 'Máx. 2 pasajeros atrás',
                 'required' => false,
@@ -103,8 +101,7 @@ class AddRutinaType extends AbstractType
                 "attr" => [
                     "class" => "form-submit btn btn-success"
                 ]
-            ])
-       ;
+            ]);
     }
     
     /**
@@ -113,7 +110,7 @@ class AddRutinaType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Viaje'
+            'data_class' => 'AppBundle\Entity\Rutina'
         ]);
     }
 
@@ -122,7 +119,7 @@ class AddRutinaType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_viaje';
+        return 'appbundle_rutina';
     }
 
 

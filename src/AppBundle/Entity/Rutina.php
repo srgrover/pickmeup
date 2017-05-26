@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  */
 
-class Viaje{
+class Rutina{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -34,18 +34,11 @@ class Viaje{
     protected $fechaPublicacion;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", nullable=false)
      *
-     * @var \DateTime
+     * @var string
      */
-    protected $fechaSalida;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @var \DateTime
-     */
-    protected $fechaVuelta;
+    protected $dias;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -66,14 +59,7 @@ class Viaje{
      *
      * @var /time
      */
-    protected $horaSalidaIda;
-
-    /**
-     * @ORM\Column(type="time", nullable=true)
-     *
-     * @var /time
-     */
-    protected $horaSalidaVuelta;
+    protected $horaSalida;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -90,7 +76,7 @@ class Viaje{
     protected $precio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="viaje")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="rutina")
      *
      * @var Usuario
      */
@@ -273,67 +259,35 @@ class Viaje{
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getFechaSalida()
+    public function getDias()
     {
-        return $this->fechaSalida;
+        return $this->dias;
     }
 
     /**
-     * @param \DateTime $fechaSalida
+     * @param string $dias
      */
-    public function setFechaSalida($fechaSalida)
+    public function setDias($dias)
     {
-        $this->fechaSalida = $fechaSalida;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getFechaVuelta()
-    {
-        return $this->fechaVuelta;
-    }
-
-    /**
-     * @param \DateTime $fechaVuelta
-     */
-    public function setFechaVuelta($fechaVuelta)
-    {
-        $this->fechaVuelta = $fechaVuelta;
+        $this->dias = $dias;
     }
 
     /**
      * @return mixed
      */
-    public function getHoraSalidaIda()
+    public function getHoraSalida()
     {
-        return $this->horaSalidaIda;
+        return $this->horaSalida;
     }
 
     /**
-     * @param mixed $horaSalidaIda
+     * @param mixed $horaSalida
      */
-    public function setHoraSalidaIda($horaSalidaIda)
+    public function setHoraSalida($horaSalida)
     {
-        $this->horaSalidaIda = $horaSalidaIda;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getHoraSalidaVuelta()
-    {
-        return $this->horaSalidaVuelta;
-    }
-
-    /**
-     * @param mixed $horaSalidaVuelta
-     */
-    public function setHoraSalidaVuelta($horaSalidaVuelta)
-    {
-        $this->horaSalidaVuelta = $horaSalidaVuelta;
+        $this->horaSalida = $horaSalida;
     }
 
     /**
@@ -351,4 +305,5 @@ class Viaje{
     {
         $this->precio = $precio;
     }
+
 }
