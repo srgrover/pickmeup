@@ -162,11 +162,11 @@
                                                     <a href="{{ path('ver_viaje', {'id' : rutina.id}) }}" class="btn btn-success btn-sm">
                                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                     </a>
-                                                    {% if (viaje.conductor.id is defined) and (viaje.conductor.id == app.user.id) %}
-                                                        <a href="{{ path('editar_viaje', {'id' : rutina.id}) }}" class="btn-edit-pub btn btn-default btn-sm">
+                                                    {% if (rutina.conductor.id is defined) and (rutina.conductor.id == app.user.id) %}
+                                                        <a href="{{ path('editar_rutina', {'id' : rutina.id}) }}" class="btn-edit-pub btn btn-default btn-sm">
                                                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                                         </a>
-                                                        <a href="{{ path('borrar_viaje', {'id' : viaje.id}) }}" class="btn btn-danger btn-sm">
+                                                        <a href="{{ path('borrar_rutina', {'id' : rutina.id}) }}" class="btn btn-danger btn-sm">
                                                             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                                                         </a>
                                                     {% endif %}

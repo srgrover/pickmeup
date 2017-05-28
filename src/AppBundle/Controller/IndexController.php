@@ -101,34 +101,27 @@ class IndexController extends Controller{
     }
 
     /**
-     * @Route("/viaje/{id}", name="ver_viaje")
-     * @param Viaje|null $id
+     * @Route("/viaje/ver/{id}", name="ver_viaje")
+     * @param Viaje $viaje
      * @return Response
      * @internal param Request $request
      */
-    public function viajeAction(Viaje $id){
-        /** @var EntityManager $em*/
-        $em = $this->getDoctrine()->getManager();
-
-        $viaje_repo = $em->getRepository("AppBundle:Viaje");
-        $viaje = $viaje_repo->findOneBy(['id' => $id]);
-
+    public function verViajeAction(Viaje $viaje){
         return $this->render(':Viaje:viaje.html.twig', [
             'viaje' => $viaje
         ]);
     }
 
 //    /**
-//     * @Route("/rutina/{id}", name="ver_rutina")
+//     * @Route("/rutina/ver/{id}", name="ver_rutina")
 //     * @param Request $request
+//     * @param Rutina $rutina
 //     * @return Response
 //     */
-//    public function rutinaAction(Request $request, Viaje $id = null){
-//        $publications = $this->getPublications($request);
-//
-//        return $this->render(':Viaje:viaje.html.twig',array(
-//            'pagination' => $publications
-//        ));
+//    public function rutinaAction(Rutina $rutina){
+//        return $this->render('rutina/rutina.html.twig', [
+//            'rutina' => $rutina
+//        ]);
 //    }
 
     /**
@@ -195,42 +188,39 @@ class IndexController extends Controller{
     public function addViajeAction(Request $request, Viaje $viaje = null){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $usuario = $this->getUser();
 
+        $usuario = $this->getUser();
         if ($viaje == null) {
             $viaje = new Viaje();
             $em->persist($viaje);
             $viaje->setConductor($usuario);
             $viaje->setFechaPublicacion(new \DateTime("now"));
         }
-
         $form = $this->createForm(AddViajeType::class, $viaje);
 
         $form->handleRequest($request);
-        if($form->isSubmitted()){
-            if($form->isValid()){
-
+        if($form->isSubmitted()) {
+            if ($form->isValid()) {
                 $flush = $em->flush();
 
-                if($flush == null){
+                if ($flush == null) {
                     if (null == $viaje) {
-                        $this->addFlash('estado', 'El viaje se ha creado correctamente');
-                    }else {
+                        $this->addFlash('estado', 'La rutina se ha creado correctamente');
+                    } else {
                         $this->addFlash('estado', 'Los cambios se han guardado correctamente');
                     }
-                }else{
+                } else {
                     if (null == $viaje) {
-                        $this->addFlash('error', 'Error al añadir el viaje');
-                    }else {
+                        $this->addFlash('error', 'Error al añadir la rutina');
+                    } else {
                         $this->addFlash('error', 'Los cambios no se han guardado correctamente');
                     }
                 }
-
-            }else{
+            } else {
                 if (null == $viaje) {
-                    $this->addFlash('error', 'El viaje no se ha creado porque el formulario no es válido');
-                }else {
-                    $this->addFlash('error', 'El viaje no se ha guardado porque el formulario no es válido');
+                    $this->addFlash('error', 'La rutina no se ha creado porque el formulario no es válido');
+                } else {
+                    $this->addFlash('error', 'Los cambios no se han guardado porque el formulario no es válido');
                 }
             }
 
@@ -292,8 +282,8 @@ class IndexController extends Controller{
     public function borrarRutinaAction(Rutina $rutina){
         $usuario = $this->getUser();
         if($rutina->getConductor()->getId() == $usuario->getId()) {
-            return $this->render(':Viaje:borrar.html.twig', [
-                'viaje' => $rutina
+            return $this->render(':rutina:borrar.html.twig', [
+                'rutina' => $rutina
             ]);
         }else{
             $this->addFlash('error', 'No tienes permisos para borrar este viaje');

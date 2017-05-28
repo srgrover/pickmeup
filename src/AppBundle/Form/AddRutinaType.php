@@ -104,11 +104,6 @@ class AddRutinaType extends AbstractType
                 'attr' => [
                     'class' => 'form-desc'
                 ]
-            ])
-            ->add('Añadir', SubmitType::class, [
-                "attr" => [
-                    "class" => "form-submit btn btn-success"
-                ]
             ]);
     }
     

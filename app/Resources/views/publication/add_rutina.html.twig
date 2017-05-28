@@ -1,11 +1,32 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
+    {% set ruta = app.request.get('_route') %}
     <div class="col-lg-6 box-form">
-        <h1>Añadir una rutina</h1>
+
+        <h1>
+            {% if ruta == 'add_rutina' %}
+                Añadir una rutina
+            {% else %}
+                Editar rutina
+            {% endif %}
+        </h1>
         <hr />
         {{ form_start(form, {'action':'', 'method':'POST'}) }}
-        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-success pull-right">
+                {% if ruta == 'add_rutina' %}
+                    <i class="fa fa-plus"></i>
+                    Añadir
+                {% else %}
+                    <i class="fa fa-save"></i>
+                    Guardar
+                {% endif %}
+            </button>
+        </div>
+        <div class="clearfix"></div>
         {{ form_end(form) }}
     </div>
 {% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="box-default text-center">
+        <h1>Confirmar eliminación de la rutina con la ruta</h1>
+        <h1>
+            {{ rutina.origen }}
+            <i class="fa fa-long-arrow-right"></i>
+            {{ rutina.destino }}
+        </h1>
+        <form method="post" action="{{ path('confirmar_borrar_rutina', {'id': rutina.id}) }}" name="confirmar">
+            <button type="submit" name="eliminar" class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+                Sí, quiero eliminarlo
+            </button>
+            <a href="{{ path('homepage') }}" class="btn btn-info">
+                <i class="fa fa-long-arrow-left"></i>
+                No, quiero volver
+            </a>
+        </form>
+        {{ rutina.conductor.id }}
+        {{ app.user.id }}
+    </div>
+
+{% endblock %}
