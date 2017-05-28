@@ -39,7 +39,6 @@ class UserType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'class' => 'form-nick disabled',
-                    'disabled'=> true
                 ]
             ])
             ->add('email', EmailType::class, [
@@ -47,7 +46,6 @@ class UserType extends AbstractType
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-email',
-                    'disabled'=> true
                 ]
             ])
             ->add('descripcion', TextareaType::class, [

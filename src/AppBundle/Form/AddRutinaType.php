@@ -25,14 +25,16 @@ class AddRutinaType extends AbstractType
                 'label' => 'Origen',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-origen form-control'
+                    'class' => 'form-origen form-control',
+                    'placeholder' => 'ej. Bailén'
                 ]
             ])
             ->add('destino', TextType::class, [
                 'label' => 'Destino',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-destino form-control'
+                    'class' => 'form-destino form-control',
+                    'placeholder' => 'ej. Linares'
                 ]
             ])
             ->add('plazasLibres', ChoiceType::class, [
@@ -42,17 +44,19 @@ class AddRutinaType extends AbstractType
                     '1' => 1,
                     '2' => 2,
                     '3' => 3,
-                    '4' => 4,
+                    '4' => 4
                 ],
                 'attr' => [
                     'class' => 'form-plazas form-control'
-                ]
+                ],
+                'placeholder' => 'Seleccione el número de plazas (máximo 4)'
             ])
             ->add('precio', MoneyType::class, [
                 'label' => 'Precio',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-precio form-control'
+                    'class' => 'form-precio form-control',
+                    'placeholder' => 'ej. 1 (Por viaje)'
                 ]
             ])
             ->add('dias', TextType::class, [
@@ -67,6 +71,10 @@ class AddRutinaType extends AbstractType
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-hora-salida'
+                ],
+                'placeholder' => [
+                    'hour' => "Hora",
+                    'minute' => 'Minuto'
                 ]
             ])
             ->add('maximoAtras', CheckboxType::class, [

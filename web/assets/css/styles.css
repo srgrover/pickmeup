@@ -11,6 +11,10 @@ li.active>a{
     color: #FFFFFF !important;
 }
 
+li.active a span.glyphicon-plus{
+    color: #FFFFFF;
+}
+
 .nav-tabs{
     border-bottom: 0;
 }
@@ -100,6 +104,11 @@ header nav .add-pub a:hover{
 
 .box-form input{
     margin-bottom: 10px;
+}
+
+.box-form h1{
+    padding-top: 15px;
+    font-weight: 300;
 }
 
 /* CONDUCTORES */

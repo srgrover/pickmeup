@@ -30,10 +30,10 @@ class IndexController extends Controller{
         $viajes = $this->getViajes($request);
         $rutinas = $this->getRutinas($request);
 
-        return $this->render(':publication:home.html.twig',array(
+        return $this->render(':publication:home.html.twig', [
             'viajes' => $viajes,
             'rutinas' => $rutinas
-        ));
+        ]);
     }
 
     public function getViajes($request){
@@ -44,8 +44,7 @@ class IndexController extends Controller{
         $viajes_repo = $em->getRepository('AppBundle:Viaje');
         $following_repo = $em->getRepository('AppBundle:Seguimiento');
 
-        /*SELECT * FROM `viaje` WHERE conductor_id = 3 OR conductor_id IN (SELECT seguidor_id FROM `seguimiento` WHERE usuario_id = 3)*/
-        $following = $following_repo->findBy(array('usuario' => $user));
+        $following = $following_repo->findBy(['usuario' => $user]);
 
         $following_array = array();
         foreach ($following as $follow){
@@ -77,7 +76,7 @@ class IndexController extends Controller{
         $viajes_repo = $em->getRepository('AppBundle:Rutina');
         $following_repo = $em->getRepository('AppBundle:Seguimiento');
 
-        $following = $following_repo->findBy(array('usuario' => $user));
+        $following = $following_repo->findBy(['usuario' => $user]);
 
         $following_array = array();
         foreach ($following as $follow){
@@ -107,16 +106,16 @@ class IndexController extends Controller{
      * @return Response
      * @internal param Request $request
      */
-    public function viajeAction(Viaje $id = null){
+    public function viajeAction(Viaje $id){
         /** @var EntityManager $em*/
         $em = $this->getDoctrine()->getManager();
 
         $viaje_repo = $em->getRepository("AppBundle:Viaje");
         $viaje = $viaje_repo->findOneBy(['id' => $id]);
 
-        return $this->render(':Viaje:viaje.html.twig',array(
+        return $this->render(':Viaje:viaje.html.twig', [
             'viaje' => $viaje
-        ));
+        ]);
     }
 
 //    /**
@@ -136,18 +135,18 @@ class IndexController extends Controller{
      * @Route("/rutina/editar/{id}", name="editar_rutina")
      * @Route("/rutina/añadir", name="add_rutina")
      * @param Request $request
-     * @param Viaje|null $rutina
+     * @param Rutina|null $rutina
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function addRutinaAction(Request $request, Rutina $rutina = null){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        $user = $this->getUser();
+        $usuario = $this->getUser();
         if ($rutina == null) {
             $rutina = new Rutina();
             $em->persist($rutina);
-            $rutina->setConductor($user);
+            $rutina->setConductor($usuario);
             $rutina->setFechaPublicacion(new \DateTime("now"));
         }
         $form = $this->createForm(AddRutinaType::class, $rutina);
@@ -181,12 +180,9 @@ class IndexController extends Controller{
             return $this->redirectToRoute('homepage');
         }
 
-
-
-
-        return $this->render(':publication:add_rutina.html.twig', array(
+        return $this->render(':publication:add_rutina.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -199,11 +195,13 @@ class IndexController extends Controller{
     public function addViajeAction(Request $request, Viaje $viaje = null){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
+        $usuario = $this->getUser();
 
-        if (null == $viaje) {
+        if ($viaje == null) {
             $viaje = new Viaje();
             $em->persist($viaje);
+            $viaje->setConductor($usuario);
+            $viaje->setFechaPublicacion(new \DateTime("now"));
         }
 
         $form = $this->createForm(AddViajeType::class, $viaje);
@@ -211,10 +209,6 @@ class IndexController extends Controller{
         $form->handleRequest($request);
         if($form->isSubmitted()){
             if($form->isValid()){
-                if (null == $viaje) {
-                    $viaje->setConductor($user);
-                    $viaje->setFechaPublicacion(new \DateTime("now"));
-                }
 
                 $flush = $em->flush();
 
@@ -243,9 +237,9 @@ class IndexController extends Controller{
             return $this->redirectToRoute('homepage');
         }
 
-        return $this->render(':publication:add_viaje.html.twig', array(
+        return $this->render(':publication:add_viaje.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**

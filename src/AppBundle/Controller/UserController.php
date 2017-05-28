@@ -138,6 +138,7 @@ class UserController extends Controller{
     public function editarUsuarioAction(Request $request){
         $user = $this->getUser();   //getUser() para recoger los datos de un usuario que ya esta logueado
         $user_image = $user->getImagenPerfil();
+        $user_image_f = $user->getImagenFondo();
         $form = $this->createForm(UserType::class, $user);  //Crea el formulario
 
         $form->handleRequest($request);    //Informacion de request se guarda aqui
@@ -178,13 +179,13 @@ class UserController extends Controller{
                     if(!empty($imagenFondo) && $imagenFondo != null){
                         $ext = $imagenFondo->guessExtension();
                         if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
-                            $nombre_imagen = 'wall_'.$user->getId().time().'.'.$ext;
-                            $imagenFondo->move("uploads/users", $nombre_imagen);
+                            $nombre_imagen_f = 'wall_'.$user->getId().time().'.'.$ext;
+                            $imagenFondo->move("uploads/users", $nombre_imagen_f);
 
-                            $user->setImagenFondo($nombre_imagen);
+                            $user->setImagenFondo($nombre_imagen_f);
                         }
                     }else{
-                        $user->setImagenFondo($user_image);
+                        $user->setImagenFondo($user_image_f);
                     }
 
                     $em->persist($user);
