@@ -39,6 +39,11 @@ li.active a span.glyphicon-plus{
     border-top: 0 !important;
 }
 
+.no-padding-lados{
+  padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 /* HEADER */
 
 nav{

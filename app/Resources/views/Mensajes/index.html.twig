@@ -1,6 +1,31 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    {{ titulo }}
+
+    <div class="col-lg-10 box-default no-padding-lados">
+        <h1 class="box-header">
+            Mensajes
+        </h1>
+
+        <div class="col-lg-5">
+            <h4>
+                Enviar mensaje
+            </h4>
+
+            {{ form_start(formulario) }}
+            {{ form_widget(formulario) }}
+            <div class="form-group">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <button type="submit" name="enviar" class="btn btn-success">
+                        <i class="fa fa-send"></i>
+                        Enviar
+                    </button>
+                </div>
+            </div>
+            {{ form_end(formulario) }}
+        </div>
+        <div class="clearfix"></div>
+    </div>
 {% endblock %}
 

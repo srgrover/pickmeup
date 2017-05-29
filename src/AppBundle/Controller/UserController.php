@@ -2,25 +2,19 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\PassType;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
-
 use AppBundle\Entity\Usuario;
 use AppBundle\Form\RegisterType;
 use AppBundle\Form\UserType;
 
 class UserController extends Controller{
-    private $session;
-
-    public function __construct(){
-        $this->session = new Session();
-    }
 
     /**
      * @Route("/Entrar", name="login")
@@ -285,6 +279,9 @@ class UserController extends Controller{
 
     /**
      * @Route("/perfil/{nick}", name="perfil_usuario")
+     * @param Request $request
+     * @param null $nick
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function perfilAction(Request $request, $nick = null){
         /** @var EntityManager $em*/
@@ -312,9 +309,6 @@ class UserController extends Controller{
             ->getQuery()
             ->getResult();
 
-//        $dql = "SELECT p FROM AppBundle:Viaje p WHERE p.conductor = $usuario_id ORDER BY p.id DESC";
-//        $query = $em->createQuery($dql);
-
         $paginador = $this->get("knp_paginator");
         $publicaciones = $paginador->paginate(
             $viajes,
@@ -325,6 +319,40 @@ class UserController extends Controller{
         return $this->render(':user:perfil.html.twig', [
             'usuario' => $usuario,
             'paginacion' => $publicaciones
+        ]);
+    }
+
+
+    /**
+     * @Route("/cambiar-contraseña", name="cambiar_contraseña")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function cambiarPassAction(Request $request){
+        $usuario = $this->getUser();
+
+        $form = $this->createForm(PassType::class, $usuario);
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+            try{
+                $claveFormulario = $form->get('nueva')->get('first')->getData();
+                if ($claveFormulario) {
+                    $clave = $this->get('security.password_encoder')
+                        ->encodePassword($usuario, $claveFormulario);
+                    $usuario->setPassword($clave);
+                }
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('estado','Contraseña cambiada con éxito!');
+                return $this->redirectToRoute('perfil_usuario');
+            }catch (Exception $exception){
+                $this->addFlash('error','Hubo algún problema al actualizar la contraseña');
+            }
+
+        }
+
+        return $this->render(':user:cambiar_pass.html.twig', [
+            'formulario' => $form->createView(),
+            'usuario' => $usuario
         ]);
     }
 }
