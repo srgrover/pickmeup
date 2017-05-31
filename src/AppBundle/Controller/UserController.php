@@ -301,30 +301,47 @@ class UserController extends Controller{
         $usuario_id = $usuario->getId();
 
         $viajes = $em->createQueryBuilder()
-            ->select('p')
-            ->from('AppBundle:Viaje', 'p')
-            ->where('p.conductor = :usuario')
-            ->orderBy('p.id', 'DESC')
+            ->select('v')
+            ->from('AppBundle:Viaje', 'v')
+            ->where('v.conductor = :usuario')
+            ->orderBy('v.id', 'DESC')
             ->setParameter('usuario', $usuario_id)
             ->getQuery()
             ->getResult();
 
-        $paginador = $this->get("knp_paginator");
-        $publicaciones = $paginador->paginate(
+        $rutinas = $em->createQueryBuilder()
+            ->select('r')
+            ->from('AppBundle:Rutina', 'r')
+            ->where('r.conductor = :usuario')
+            ->orderBy('r.id', 'DESC')
+            ->setParameter('usuario', $usuario_id)
+            ->getQuery()
+            ->getResult();
+
+        $pagina_viaje = $this->get("knp_paginator");
+        $pub_viajes = $pagina_viaje->paginate(
             $viajes,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        $pagina_rutina = $this->get("knp_paginator");
+        $pub_rutinas = $pagina_rutina->paginate(
+            $rutinas,
             $request->query->getInt('page', 1),
             5
         );
 
         return $this->render(':user:perfil.html.twig', [
             'usuario' => $usuario,
-            'paginacion' => $publicaciones
+            'viajes' => $pub_viajes,
+            'rutinas' => $pub_rutinas
         ]);
     }
 
 
     /**
-     * @Route("/cambiar-contraseña", name="cambiar_contraseña")
+     * @Route("/cambiar-contraseña", name="cambiar_pass")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */

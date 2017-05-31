@@ -70,7 +70,7 @@
                                             </td>
                                             <td>
                                                 <p>
-                                                    <span class="price-label">{{ viaje.precio }}€</span> por plaza
+                                                    <span class="price-label">{{ viaje.precio|number_format(2, ',', '.') }}€</span> por plaza
                                                 </p>
                                                 <p>
                                                     <span class="plazas-label">{{ viaje.plazasLibres }}</span> Plazas libres
@@ -151,7 +151,7 @@
                                             </td>
                                             <td>
                                                 <p>
-                                                    <span class="price-label">{{ rutina.precio }}€</span> por plaza
+                                                    <span class="price-label">{{ rutina.precio|number_format(2, ',', '.') }}€</span> por plaza
                                                 </p>
                                                 <p>
                                                     <span class="plazas-label">{{ rutina.plazasLibres }}</span> Plazas libres

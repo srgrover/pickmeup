@@ -98,13 +98,7 @@ class UserType extends AbstractType
                 'attr' => [
                     'class' => 'form-imgfondo'
                 ]
-            ])
-            ->add('Guardar', SubmitType::class, [
-                "attr" => [
-                    "class" => "form-submit btn btn-success"
-                ]
-            ])
-       ;
+            ]);
     }
     
     /**

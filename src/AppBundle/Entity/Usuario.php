@@ -57,6 +57,9 @@ class Usuario implements UserInterface, \Serializable {
      *     min = 8,
      *     minMessage = "La contraseña debe tener como mínimo 8 caracteres"
      * )
+     * @Assert\Regex(
+     *     pattern="/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/"
+     * )
      *
      * @var string
      */

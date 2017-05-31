@@ -1,14 +1,15 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class="container" style="padding-left: 0;">
+    <div class="col-lg-1"></div>
+    <div class="container col-lg-10" style="padding-left: 0;">
         <h4>
             <a href="{{ path('homepage') }}">
                 <i class="fa fa-long-arrow-left"></i>
                 Volver a la página principal
             </a>
         </h4>
-        <div class="col-lg-6 box-default pull-left vista-viaje">
+        <div class="col-lg-7 box-default pull-left vista-viaje">
             <h1 class="box-header">
                 {{ viaje.origen }}
                 <i class="fa fa-long-arrow-right"></i>
@@ -46,8 +47,8 @@
                     Salida {{ viaje.flexiblididad }}
                 </span>
                 <span>
-                    <i class="fa fa-info-circle"></i>
                     {% if viaje.maximoAtras %}
+                        <i class="fa fa-info-group"></i>
                         El conductor viaja con un máximo de 2 pasajeros en la parte de atrás
                     {% endif %}
                 </span>
@@ -66,18 +67,76 @@
                 <span>
                     {{ viaje.descripcion }}
                 </span>
-
+                <span>
+                    <a href="#" class="btn btn-primary">
+                        <i class="fa fa-send"></i>
+                        Contactar con el conductor
+                    </a>
+                </span>
             </div>
         </div>
         <div class="col-lg-1"></div>
-        <div class="col-lg-5 box-default pull-left vista-viaje">
-            <div class="col-lg-12 cabecera-plazas">
+        <div class="col-lg-4 box-default pull-left vista-viaje">
+            <div class="col-lg-12 row-list">
                 <span>
                     Aportación por plaza
                 </span>
                 <span class="precio pull-right">
-                    {{ viaje.precio }}€
+                    {{ viaje.precio|number_format(2,',','.') }}€
                 </span>
+                <div class="clearfix"></div>
+            </div>
+            <hr>
+            <div class="col-lg-12 row-list">
+                <span>
+                    Plazas disponibles
+                </span>
+                <span class="plazas-label pull-right">
+                    <label>{{ viaje.plazasLibres }}</label> <small>plazas</small>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-12 text-center row-reserva">
+                <span>
+                    Reserva ahora una plaza en este viaje
+                </span>
+                <button class="btn btn-warning">
+                    Reservar 1 plaza
+                </button>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="col-lg-1"></div>
+
+        <div class="col-lg-4 box-default pull-left vista-viaje box-conductor">
+            <h3>Conductor</h3>
+            <div class="col-lg-12 text-center">
+                <div class="avatar">
+                    {% if viaje.conductor.imagenPerfil == null %}
+                        <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                    {% else %}
+                        <img src="{{ asset('uploads/users/'~viaje.conductor.imagenPerfil) }}" alt="avatar" />
+                    {% endif %}
+                </div>
+                <h4>
+                    {{ viaje.conductor.nombre }} {{ viaje.conductor.apellidos }}
+                </h4>
+                <span>{{ viaje.conductor.nick }}</span>
+                <hr>
+                <h4 class="text-left">Coche</h4>
+                {% if viaje.conductor.vehiculo|length > 0 %}
+                    <span class="text-left">
+                        {{ viaje.conductor.vehiculo.marca }} {{ viaje.conductor.vehiculo.modelo }}
+                    </span>
+                    <span class="text-left">
+                        Color
+                        {{ viaje.conductor.vehiculo.color }}
+                    </span>
+                {% else %}
+                    <h5>El usuario no ha introducido informacinó sobre su vehículo</h5>
+                {% endif %}
+
                 <div class="clearfix"></div>
             </div>
         </div>

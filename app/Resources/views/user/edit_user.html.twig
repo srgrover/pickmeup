@@ -2,10 +2,25 @@
 
 {% block content %}
     <div class="col-lg-8 box-form">
-        <h2>Mis datos</h2>
+        <h2>Editar perfil</h2>
         <hr />
         {{ form_start(form, {'enctype':'multipart/form-data'}) }}
+        {{ form_widget(form) }}
+        <div class="col-lg-8"></div>
+        <div class="col-lg-4">
+            <a href="{{ path('cambiar_pass') }}" class="btn-link">
+                <i class="fa fa-retweet"></i>
+                Cambiar contraseña
+            </a>
+            &nbsp;
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-save"></i>
+                Guardar
+            </button>
+        </div>
+
         {{ form_end(form) }}
+        <div class="clearfix"></div>
     </div>
 {% endblock %}
 

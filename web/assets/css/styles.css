@@ -40,7 +40,7 @@ li.active a span.glyphicon-plus{
 }
 
 .no-padding-lados{
-  padding-left: 0 !important;
+    padding-left: 0 !important;
     padding-right: 0 !important;
 }
 
@@ -687,7 +687,8 @@ header nav .add-pub a:hover{
 
 .user-item .avatar,
 .publication-item .avatar,
-.box-anotacion-viaje .avatar{
+.box-anotacion-viaje .avatar,
+.box-conductor .avatar{
     background: #EEEEEE;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
@@ -710,7 +711,8 @@ header nav .add-pub a:hover{
 
 .user-item .avatar img,
 .publication-item .avatar img,
-.box-anotacion-viaje .avatar img{
+.box-anotacion-viaje .avatar img,
+.box-conductor .avatar img{
     height: 100%;
     text-align: center;
 }
@@ -722,20 +724,44 @@ header nav .add-pub a:hover{
     border-radius: 3px;
 }
 
-.cabecera-plazas{
+.row-list{
     padding-top: 15px;
+    border-bottom: 1px solid #EEEEEE;
 }
 
-.cabecera-plazas span{
+.row-list span{
     font-size: 18px;
     display: inline;
     color: #CCCCCC;
     float: left;
 }
 
-.cabecera-plazas span.precio{
+.row-list span.precio{
     font-weight: bold;
     font-size: 28px;
     color: #444444;
     margin-top: 0;
+}
+
+.row-list button .btn-warning{
+    width: 100%;
+}
+
+.row-reserva{
+    padding-bottom: 20px;
+}
+
+.box-conductor{
+    margin-top: 20px;
+}
+
+.box-conductor h3{
+    margin: 0;
+    padding: 10px;
+    background-color: rgb(0, 135, 187);
+    color: #FFFFFF;
+}
+
+.box-conductor .avatar{
+    margin-top: 5px;
 }

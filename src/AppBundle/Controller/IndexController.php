@@ -107,6 +107,13 @@ class IndexController extends Controller{
      * @internal param Request $request
      */
     public function verViajeAction(Viaje $viaje){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+
+
+
+
         return $this->render(':Viaje:viaje.html.twig', [
             'viaje' => $viaje
         ]);
