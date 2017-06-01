@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegisterType extends AbstractType
 {
@@ -19,67 +21,72 @@ class RegisterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre', TextType::class, array(
+            ->add('nombre', TextType::class, [
                 'label' => 'Nombre',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-name form-control'
-                )
-            ))
-            ->add('apellidos', TextType::class, array(
+                ]
+            ])
+            ->add('apellidos', TextType::class, [
                 'label' => 'Apellidos',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-surname form-control'
-                )
-            ))
-            ->add('nick', TextType::class, array(
+                ]
+            ])
+            ->add('nick', TextType::class, [
                 'label' => 'Nick',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-nick form-control nick-input'
-                )
-            ))
-            ->add('email', EmailType::class, array(
+                ]
+            ])
+            ->add('email', EmailType::class, [
                 'label' => 'Correo electrónico',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-email form-control'
-                )
-            ))
-            ->add('password', PasswordType::class, array(
+                ]
+            ])
+            ->add('password', PasswordType::class, [
                 'label' => 'Contraseña',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-password form-control'
-                )
-            ))
-            ->add('fechaNacimiento', BirthdayType::class, array(
+                ],
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\{8,16}$/'
+                    ])
+                ]
+            ])
+            ->add('fechaNacimiento', BirthdayType::class, [
                 'label' => 'Fecha de nacimiento',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-date'
-                )
-            ))
-            ->add('ciudad', TextType::class, array(
+                ]
+            ])
+            ->add('ciudad', TextType::class, [
                 'label' => 'Ciudad',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-city form-control'
-                )
-            ))
-            ->add('telefono', TextType::class, array(
+                ]
+            ])
+            ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-tlf form-control'
-                )
-            ))
-            ->add('Registrarse', SubmitType::class, array(
-                "attr" => array(
+                ]
+            ])
+            ->add('Registrarse', SubmitType::class, [
+                "attr" => [
                     "class" => "form-submit btn btn-success"
-                )
-            ))
+                ]
+            ])
        ;
     }
     
@@ -88,9 +95,9 @@ class RegisterType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Usuario'
-        ));
+        $resolver->setDefaults([
+            'data_class' => Usuario::class
+        ]);
     }
 
     /**

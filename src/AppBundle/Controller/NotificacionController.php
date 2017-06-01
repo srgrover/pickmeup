@@ -23,14 +23,10 @@ class NotificacionController extends Controller
             ->select('n')
             ->from('AppBundle:Notificacion', 'n')
             ->where('n.id_usuario = :usuario')
-            ->andWhere('n.leido = false')
             ->setParameter('usuario', $usuario_id)
             ->orderBy('n.created_at')
             ->getQuery()
             ->getResult();
-
-//        $dql = "SELECT n FROM AppBundle:Notificacion n WHERE n.id_usuario = $user_id ORDER BY n.id DESC";
-//        $query = $em->createQuery($dql);
 
         $paginator = $this->get('knp_paginator');
         $notifications = $paginator->paginate(

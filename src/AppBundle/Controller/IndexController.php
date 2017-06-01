@@ -3,9 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Rutina;
+use AppBundle\Entity\Vehiculo;
 use AppBundle\Entity\Viaje;
 use AppBundle\Form\AddRutinaType;
 use AppBundle\Form\AddViajeType;
+use AppBundle\Form\CocheType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -107,29 +109,24 @@ class IndexController extends Controller{
      * @internal param Request $request
      */
     public function verViajeAction(Viaje $viaje){
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-
-
-
-
 
         return $this->render(':Viaje:viaje.html.twig', [
             'viaje' => $viaje
         ]);
     }
 
-//    /**
-//     * @Route("/rutina/ver/{id}", name="ver_rutina")
-//     * @param Request $request
-//     * @param Rutina $rutina
-//     * @return Response
-//     */
-//    public function rutinaAction(Rutina $rutina){
-//        return $this->render('rutina/rutina.html.twig', [
-//            'rutina' => $rutina
-//        ]);
-//    }
+    /**
+    * @Route("/rutina/ver/{id}", name="ver_rutina")
+    * @param Rutina $rutina
+    * @return Response
+    * @internal param Request $request
+    */
+    public function verRutinaAction(Rutina $rutina){
+
+        return $this->render(':Viaje:viaje.html.twig', [
+            'rutina' => $rutina
+        ]);
+    }
 
     /**
      * @Route("/rutina/editar/{id}", name="editar_rutina")
@@ -321,6 +318,59 @@ class IndexController extends Controller{
             $this->addFlash('error', 'No tienes permisos para borrar esta rutina');
         }
         return $this->redirectToRoute('homepage');
+    }
+
+    /**
+     * @Route("/coche/editar/{id}", name="editar_coche")
+     * @Route("/coche/añadir", name="add_coche")
+     * @param Request $request
+     * @param Rutina|null $rutina
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function addCocheAction(Request $request, Vehiculo $coche = null){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $usuario = $this->getUser();
+        if ($coche == null) {
+            $coche = new Vehiculo();
+            $em->persist($coche);
+            $coche->setConductor($usuario);
+        }
+        $form = $this->createForm(CocheType::class, $coche);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $flush = $em->flush();
+
+                if ($flush == null) {
+                    if (null == $coche) {
+                        $this->addFlash('estado', 'El coche se ha creado correctamente');
+                    } else {
+                        $this->addFlash('estado', 'Los cambios se han guardado correctamente');
+                    }
+                } else {
+                    if (null == $coche) {
+                        $this->addFlash('error', 'Error al añadir el coche');
+                    } else {
+                        $this->addFlash('error', 'Los cambios no se han guardado correctamente');
+                    }
+                }
+            } else {
+                if (null == $coche) {
+                    $this->addFlash('error', 'El coche no se ha creado porque el formulario no es válido');
+                } else {
+                    $this->addFlash('error', 'Los cambios no se han guardado porque el formulario no es válido');
+                }
+            }
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render(':user:coche.html.twig', [
+            'formulario' => $form->createView(),
+        ]);
     }
 
 }

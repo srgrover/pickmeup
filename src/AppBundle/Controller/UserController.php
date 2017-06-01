@@ -81,23 +81,20 @@ class UserController extends Controller{
                     $flush = $em->flush();
 
                     if($flush == null){ //No devuelve ningun error
-                        $status = "Te has registrado correctamente";
+                        $this->addFlash('estado', 'Te has registrado correctamente');
 
-                        $this->session->getFlashBag()->add("status", $status);
-                        return $this->redirect("login");
+                        return $this->redirectToRoute("login");
                     }else{
-                        $status = "No te has registrado correctamente";
+                        $this->addFlash('error', 'No te has registrado correctamente');
                     }
 
                 }else{
-                    $status = "El usuario ya existe !!";
+                    $this->addFlash('error', 'Este usuario ya existe');
                 }
 
             }else{
-                $status = "No te has registrado correctamente !!";
+                $this->addFlash('error', 'No te has registrado correctamente');
             }
-
-            $this->session->getFlashBag()->add("status", $status);
         }
 
         return $this->render(':user:register.html.twig', [
@@ -137,69 +134,61 @@ class UserController extends Controller{
 
         $form->handleRequest($request);    //Informacion de request se guarda aqui
 
-        if($form->isSubmitted()){
-            if($form->isValid()){
-                $em = $this->getDoctrine()->getManager();
+        if ($form->isValid() && $form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
 
-                $user_isset = $em->createQueryBuilder()
-                    ->select('u')
-                    ->from('AppBundle:Usuario', 'u')
-                    ->where('u.email = :email')
-                    ->orWhere('u.nick = :nick')
-                    ->setParameter('email', $form->get("email")->getData())
-                    ->setParameter('nick', $form->get("nick")->getData())
-                    ->getQuery()
-                    ->getResult();
+            $user_isset = $em->createQueryBuilder()
+                ->select('u')
+                ->from('AppBundle:Usuario', 'u')
+                ->where('u.email = :email AND u.nick = :nick')
+                ->setParameter('email', $form->get("email")->getData())
+                ->setParameter('nick', $form->get("nick")->getData())
+                ->getQuery()
+                ->getResult();
 
-                if(count($user_isset) == 0 || ($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick())){
+            if(count($user_isset) == 0 || ($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick())){
+                //Fichero subido
+                $imagenPerfil = $form["imagenPerfil"]->getData();
 
-                    //Fichero subido
-                    $imagenPerfil = $form["imagenPerfil"]->getData();
+                if(!empty($imagenPerfil) && $imagenPerfil != null){
+                    $ext = $imagenPerfil->guessExtension();
+                    if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
+                        $nombre_imagen = $user->getId().time().'.'.$ext;
+                        $imagenPerfil->move("uploads/users", $nombre_imagen);
 
-                    if(!empty($imagenPerfil) && $imagenPerfil != null){
-                        $ext = $imagenPerfil->guessExtension();
-                        if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
-                            $nombre_imagen = $user->getId().time().'.'.$ext;
-                            $imagenPerfil->move("uploads/users", $nombre_imagen);
-
-                            $user->setImagenPerfil($nombre_imagen);
-                        }
-                    }else{
-                        $user->setImagenPerfil($user_image);
+                        $user->setImagenPerfil($nombre_imagen);
                     }
-
-                    $imagenFondo = $form["imagenFondo"]->getData();
-
-                    if(!empty($imagenFondo) && $imagenFondo != null){
-                        $ext = $imagenFondo->guessExtension();
-                        if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
-                            $nombre_imagen_f = 'wall_'.$user->getId().time().'.'.$ext;
-                            $imagenFondo->move("uploads/users", $nombre_imagen_f);
-
-                            $user->setImagenFondo($nombre_imagen_f);
-                        }
-                    }else{
-                        $user->setImagenFondo($user_image_f);
-                    }
-
-                    $em->persist($user);
-                    $flush = $em->flush();
-
-                    if($flush == null){ //No devuelve ningun error
-                        $this->addFlash('estado', 'Datos modificados correctamente');
-                    }else{
-                        $this->addFlash('error', 'Los datos no se han modificado correctamente FLUSH');
-                    }
-
                 }else{
-                    $this->addFlash('error', 'El usuario ya existe !!');
+                    $user->setImagenPerfil($user_image);
+                }
+
+                $imagenFondo = $form["imagenFondo"]->getData();
+
+                if(!empty($imagenFondo) && $imagenFondo != null){
+                    $ext = $imagenFondo->guessExtension();
+                    if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
+                        $nombre_imagen_f = 'wall_'.$user->getId().time().'.'.$ext;
+                        $imagenFondo->move("uploads/users", $nombre_imagen_f);
+
+                        $user->setImagenFondo($nombre_imagen_f);
+                    }
+                }else{
+                    $user->setImagenFondo($user_image_f);
+                }
+
+                $em->persist($user);
+                $flush = $em->flush();
+
+                if($flush == null){ //No devuelve ningun error
+                    $this->addFlash('estado', 'Datos modificados correctamente');
+                    return $this->redirectToRoute('perfil_usuario');
+                }else{
+                    $this->addFlash('error', 'Los datos no se han modificado correctamente FLUSH');
                 }
 
             }else{
-                $this->addFlash('error', 'Los datos no se han modificado correctamente NO VALIDO');
+                $this->addFlash('error', 'El usuario ya existe !!');
             }
-
-            return $this->redirect('my-data');
         }
 
         return $this->render(':user:edit_user.html.twig', [

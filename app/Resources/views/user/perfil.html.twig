@@ -133,6 +133,34 @@
         </div>
         <div class="col-lg-1"></div>
 
+        <div class="col-lg-7 col-md-12 col-sm-12 box-default box-ajustado no-padding-bottom">
+            <h1 class="box-header">
+                MI COCHE
+            </h1>
+            <div class="container box-coche">
+                {% if usuario.vehiculo|length > 0 %}
+                    <span>
+                        Marca: {{ usuario.vehiculo.marca }}
+                    </span>
+                    <span>
+                        Modelo: {{ usuario.vehiculo.modelo }}
+                    </span>
+                    <span>
+                        Color: {{ usuario.vehiculo.color }}
+                    </span>
+                    <span>
+                        Plazas: {{ usuario.vehiculo.plazas }}
+                    </span>
+                {% else %}
+                    <h3>Aún no has añadido información sobre tu coche</h3>
+                    <a href="{{ path('add_coche') }}" class="btn btn-success">
+                        <i class="fa fa-plus"></i>
+                        Añade una información ahora
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
         <div class="col-lg-12 col-md-12 col-sm-12 box-ajustado">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist">

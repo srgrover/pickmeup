@@ -2,15 +2,15 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-//use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class UserType extends AbstractType
 {
@@ -22,14 +22,14 @@ class UserType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'label' => 'Nombre',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-name'
                 ]
             ])
             ->add('apellidos', TextType::class, [
                 'label' => 'Apellidos',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-surname'
                 ]
@@ -43,9 +43,16 @@ class UserType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo electrónico',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-email',
+                ]
+            ])
+            ->add('password', PasswordType::class, [
+                'label' => 'Contraseña',
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-email hidden',
                 ]
             ])
             ->add('descripcion', TextareaType::class, [
@@ -107,7 +114,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Usuario'
+            'data_class' => Usuario::class
         ]);
     }
 
