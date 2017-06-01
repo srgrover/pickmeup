@@ -17,10 +17,17 @@ class MensajeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $usuario = $options['empty_data'];
         $builder
             ->add('receptor', EntityType::class, [
-                'label' => 'Nombre',
-                'required' => 'required',
+                'query_builder' => function($er) use($usuario){
+                    return $usuario;
+                },
+                'choice_label' => function($usuario){
+                    return $usuario->getNombre()." ".$usuario->getApellidos();
+                },
+                'label' => 'Para: ',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-receptor'
                 ]

@@ -9,9 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 //use Symfony\Component\HttpFoundation\Request;
 
-class MensajeController extends Controller
-{
-
+class MensajeController extends Controller{
     /**
      * @Route("/mensajes", name="mensajes")
      */
@@ -21,7 +19,9 @@ class MensajeController extends Controller
         $usuario = $this->getUser();
 
         $mensaje = new Mensaje();
-        $formulario = $this->createForm(MensajeType::class, $mensaje);
+        $formulario = $this->createForm(MensajeType::class, $mensaje,[
+            'empty_data' => $usuario
+        ]);
 
         return $this->render(':Mensajes:index.html.twig', [
             "formulario" => $formulario->createView()
