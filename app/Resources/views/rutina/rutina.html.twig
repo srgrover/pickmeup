@@ -1,18 +1,19 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class="container" style="padding-left: 0;">
+    <div class="col-lg-1"></div>
+    <div class="container col-lg-10" style="padding-left: 0;">
         <h4>
             <a href="{{ path('homepage') }}">
                 <i class="fa fa-long-arrow-left"></i>
                 Volver a la página principal
             </a>
         </h4>
-        <div class="col-lg-6 box-default pull-left vista-viaje">
+        <div class="col-lg-7 box-default pull-left vista-viaje">
             <h1 class="box-header">
-                {{ viaje.origen }}
+                {{ rutina.origen }}
                 <i class="fa fa-long-arrow-right"></i>
-                {{ viaje.destino }}
+                {{ rutina.destino }}
             </h1>
             <div class="col-lg-3">
                 <span>
@@ -31,53 +32,127 @@
             <div class="col-lg-5">
                 <span>
                     <i class="fa fa-circle-o text-success"></i>
-                    {{ viaje.origen }}
+                    {{ rutina.origen }}
                 </span>
                 <span>
                     <i class="fa fa-circle-o text-danger"></i>
-                    {{ viaje.destino }}
+                    {{ rutina.destino }}
                 </span>
                 <span>
                     <i class="fa fa-calendar"></i>
-                    {{ viaje.fechaSalida|date('D\\. d \\d\\e M') }} - {{ viaje.horaSalidaIda|date('H:i') }}
+                    {#{% set dias = rutina.dias|split('') %}#}
+                    {#{% for dia in dias %}#}
+                        {#{% set d = loop.index %}#}
+                        {#{% switch d %}#}
+                            {#{% case "L" %}Lunes,#}
+                            {#{% case "M" %}Martes,#}
+                            {#{% case "X" %}Miercoles,#}
+                            {#{% case "J" %}Jueves,#}
+                            {#{% case "V" %}Viernes#}
+                            {#{% default %}De Lunes a Viernes#}
+                        {#{% endswitch %}#}
+                    {#{% endfor %}#}
+                     {{ rutina.dias }} - {{ rutina.horaSalida|date('H:i') }}
                 </span>
                 <span>
                     <i class="fa fa-clock-o"></i>
-                    Salida {{ viaje.flexiblididad }}
+                    Salida {{ rutina.flexiblididad }}
                 </span>
                 <span>
-                    <i class="fa fa-info-circle"></i>
-                    {% if viaje.maximoAtras %}
+                    {% if rutina.maximoAtras %}
+                        <i class="fa fa-info-group"></i>
                         El conductor viaja con un máximo de 2 pasajeros en la parte de atrás
                     {% endif %}
                 </span>
             </div>
             <div class="col-lg-11 box-anotacion-viaje">
                 <div class="avatar">
-                    {% if viaje.conductor.imagenPerfil == null %}
+                    {% if rutina.conductor.imagenPerfil == null %}
                         <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
                     {% else %}
-                        <img src="{{ asset('uploads/users/'~viaje.conductor.imagenPerfil) }}" alt="avatar" />
+                        <img src="{{ asset('uploads/users/'~rutina.conductor.imagenPerfil) }}" alt="avatar" />
                     {% endif %}
                 </div>
                 <h4>
-                    {{ viaje.conductor.nombre }} {{ viaje.conductor.apellidos }}
+                    {{ rutina.conductor.nombre }} {{ rutina.conductor.apellidos }}
                 </h4>
                 <span>
-                    {{ viaje.descripcion }}
+                    {{ rutina.descripcion }}
                 </span>
-
+                <span>
+                    <a href="#" class="btn btn-primary">
+                        <i class="fa fa-send"></i>
+                        Contactar con el conductor
+                    </a>
+                </span>
             </div>
         </div>
         <div class="col-lg-1"></div>
-        <div class="col-lg-5 box-default pull-left vista-viaje">
-            <div class="col-lg-12 cabecera-plazas">
+        <div class="col-lg-4 box-default pull-left vista-viaje">
+            <div class="col-lg-12 row-list">
                 <span>
                     Aportación por plaza
                 </span>
                 <span class="precio pull-right">
-                    {{ viaje.precio }}€
+                    {{ rutina.precio|number_format(2,',','.') }}€
                 </span>
+                <div class="clearfix"></div>
+            </div>
+            <hr>
+            <div class="col-lg-12 row-list">
+                <span>
+                    Plazas disponibles
+                </span>
+                <span class="plazas-label pull-right">
+                    <label>{{ rutina.plazasLibres }}</label> <small>plazas</small>
+                </span>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-lg-12 text-center row-reserva">
+                <span>
+                    Reserva ahora una plaza en este viaje
+                </span>
+                <button class="btn btn-warning">
+                    Reservar 1 plaza
+                </button>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="col-lg-1"></div>
+
+        <div class="col-lg-4 box-default pull-left vista-viaje box-conductor">
+            <h3>Conductor</h3>
+            <div class="col-lg-12 text-center">
+                <div class="avatar">
+                    {% if rutina.conductor.imagenPerfil == null %}
+                        <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                    {% else %}
+                        <img src="{{ asset('uploads/users/'~rutina.conductor.imagenPerfil) }}" alt="avatar" />
+                    {% endif %}
+                </div>
+                <h4>
+                    <a href="{{ path('perfil_usuario', {'nick' : rutina.conductor.nick}) }}">
+                        {{ rutina.conductor.nombre }} {{ rutina.conductor.apellidos }}
+                    </a>
+                </h4>
+                <span>{{ rutina.conductor.nick }}</span>
+                <hr>
+                <h4 class="text-left">Coche</h4>
+                {% if rutina.conductor.vehiculo|length > 0 %}
+                    <h4 class="col-lg-3 col-sm-12">
+                        <small>Marca</small><br>{{ rutina.conductor.vehiculo.marca }}
+                    </h4>
+                    <h4 class="col-lg-3 col-sm-12">
+                        <small>Modelo</small><br>{{ rutina.conductor.vehiculo.modelo }}
+                    </h4>
+                    <h4 class="col-lg-3 col-sm-12">
+                        <small>Color</small><br>{{ rutina.conductor.vehiculo.color }}
+                    </h4>
+                {% else %}
+                    <h5>El usuario no ha introducido información sobre su vehículo</h5>
+                {% endif %}
+
                 <div class="clearfix"></div>
             </div>
         </div>

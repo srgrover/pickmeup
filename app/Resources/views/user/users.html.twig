@@ -9,9 +9,10 @@
     </div>
     <div class="col-lg-11 box-form">
         <h1>Conductores</h1>
+        <hr>
         <div class="count">
             <span class="label label-primary">
-                Conductores: {{ pagination.getTotalItemCount }} <!-- obtiene el total de items del array pagination -->
+                Conductores: {{ pagination|length }} <!-- obtiene el total de items del array pagination -->
             </span>
         </div>
         <hr />

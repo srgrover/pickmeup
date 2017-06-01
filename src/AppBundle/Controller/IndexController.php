@@ -123,7 +123,7 @@ class IndexController extends Controller{
     */
     public function verRutinaAction(Rutina $rutina){
 
-        return $this->render(':Viaje:viaje.html.twig', [
+        return $this->render('rutina/rutina.html.twig', [
             'rutina' => $rutina
         ]);
     }

@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
 
 class RegisterType extends AbstractType
@@ -56,8 +57,8 @@ class RegisterType extends AbstractType
                     'class' => 'form-password form-control'
                 ],
                 'constraints' => [
-                    new Regex([
-                        'pattern' => '/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\{8,16}$/'
+                    new Length([
+                        'min' => 8
                     ])
                 ]
             ])

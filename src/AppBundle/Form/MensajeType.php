@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Mensaje;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,20 +18,20 @@ class MensajeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-//            ->add('receptor', TextType::class, array(
-//                'label' => 'Nombre',
-//                'required' => 'required',
-//                'attr' => array(
-//                    'class' => 'form-receptor'
-//                )
-//            ))
-            ->add('mensaje', TextareaType::class, array(
+            ->add('receptor', EntityType::class, [
+                'label' => 'Nombre',
+                'required' => 'required',
+                'attr' => [
+                    'class' => 'form-receptor'
+                ]
+            ])
+            ->add('mensaje', TextareaType::class, [
                 'label' => 'Mensaje',
                 'required' => 'required',
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-mensaje'
-                )
-            ));
+                ]
+            ]);
     }
     
     /**
@@ -38,8 +39,8 @@ class MensajeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => Mensaje::class
-        ));
+        ]);
     }
 }

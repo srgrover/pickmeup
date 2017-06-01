@@ -44,6 +44,10 @@ li.active a span.glyphicon-plus{
     padding-right: 0 !important;
 }
 
+.alert-default{
+    background: #CCCCCC;
+}
+
 /* HEADER */
 
 nav{
@@ -119,8 +123,7 @@ header nav .add-pub a:hover{
 .box-form h2{
     font-size: 30px;
     font-weight: 300;
-    padding: 15px;
-    padding-bottom: 0;
+    padding: 15px 15px 0;
 }
 
 /* CONDUCTORES */
@@ -302,9 +305,8 @@ header nav .add-pub a:hover{
 
 .box-items .name-surname{
     float: left;
-    font-size: 40px;
+    font-size: 30px;
     padding: 10px;
-    margin-left: 30px;
 }
 
 .box-items .name-surname a{
