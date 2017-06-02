@@ -37,12 +37,19 @@ class AddViajeType extends AbstractType
                     'class' => 'form-destino'
                 ]
             ])
-            ->add('plazasLibres', NumberType::class, [
+            ->add('plazasLibres', ChoiceType::class, [
                 'label' => 'Plazas libres',
                 'required' => 'required',
+                'choices' => [
+                    '1' => 1,
+                    '2' => 2,
+                    '3' => 3,
+                    '4' => 4
+                ],
                 'attr' => [
-                    'class' => 'form-plazas'
-                ]
+                    'class' => 'form-plazas form-control'
+                ],
+                'placeholder' => 'Seleccione el número de plazas (máximo 4)'
             ])
             ->add('precio', MoneyType::class, [
                 'label' => 'Precio',

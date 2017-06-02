@@ -21,6 +21,8 @@ class SeguimientoController extends Controller{
 
     /**
      * @Route("/follow", name="following_follow", methods="POST")
+     * @param Request $request
+     * @return Response
      */
     public function followAction(Request $request){
         $user = $this->getUser();                        //Obtenemos el usuario actual
@@ -43,18 +45,18 @@ class SeguimientoController extends Controller{
             $notificacion = $this->get('app.notificacion_service');
             $notificacion->set($followed, 'follow', $user->getId());
 
-            $status = "Ahora estas siguiendo a este usuario.";
+            $status = 'Ahora estas siguiendo a este usuario.';
         }else{
-            $status = "No se ha podido seguir a este usuario.";
-
+            $status = 'No se ha podido seguir a este usuario.';
         }
-
         return new Response($status);
     }
 
 
     /**
      * @Route("/unfollow", name="following_unfollow", methods="POST")
+     * @param Request $request
+     * @return Response
      */
     public function unfollowAction(Request $request){
         $user = $this->getUser();                        //Obtenemos el usuario actual
@@ -85,6 +87,9 @@ class SeguimientoController extends Controller{
 
     /**
      * @Route("/siguiendo/{nick}", name="siguiendo_usuarios")
+     * @param Request $request
+     * @param null $nick
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function siguiendoAction(Request $request, $nick = null){
         $em = $this->getDoctrine()->getManager();
@@ -101,12 +106,22 @@ class SeguimientoController extends Controller{
         }
 
         $usuario_id = $usuario->getId();
-        $dql = "SELECT f FROM AppBundle:Seguimiento f WHERE f.usuario = $usuario_id ORDER BY f.id DESC";
-        $query = $em->createQuery($dql);
+
+        $siguiendo_consulta = $em->createQueryBuilder()
+            ->select('f')
+            ->from('AppBundle:Seguimiento', 'f')
+            ->where('f.usuario = :usuario')
+            ->setParameter('usuario', $usuario_id)
+            ->orderBy('f.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+//        $dql = "SELECT f FROM AppBundle:Seguimiento f WHERE f.usuario = $usuario_id ORDER BY f.id DESC";
+//        $query = $em->createQuery($dql);
 
         $paginador = $this->get("knp_paginator");
         $siguiendo = $paginador->paginate(
-            $query,
+            $siguiendo_consulta,
             $request->query->getInt('page', 1),
             5
         );
@@ -116,13 +131,14 @@ class SeguimientoController extends Controller{
             'perfil_usuario' => $usuario,
             'paginacion' => $siguiendo
         ));
-
-
     }
 
 
     /**
      * @Route("/seguidores/{nick}", name="usuarios_seguidores")
+     * @param Request $request
+     * @param null $nick
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function seguidoresAction(Request $request, $nick = null){
         $em = $this->getDoctrine()->getManager();
@@ -139,12 +155,22 @@ class SeguimientoController extends Controller{
         }
 
         $usuario_id = $usuario->getId();
-        $dql = "SELECT f FROM AppBundle:Seguimiento f WHERE f.seguidor = $usuario_id ORDER BY f.id DESC";
-        $query = $em->createQuery($dql);
+
+        $seguidor_consulta = $em->createQueryBuilder()
+            ->select('f')
+            ->from('AppBundle:Seguimiento', 'f')
+            ->where('f.seguidor = :usuario')
+            ->setParameter('usuario', $usuario_id)
+            ->orderBy('f.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+//        $dql = "SELECT f FROM AppBundle:Seguimiento f WHERE f.seguidor = $usuario_id ORDER BY f.id DESC";
+//        $query = $em->createQuery($dql);
 
         $paginador = $this->get("knp_paginator");
         $seguidor = $paginador->paginate(
-            $query,
+            $seguidor_consulta,
             $request->query->getInt('page', 1),
             5
         );
@@ -154,7 +180,5 @@ class SeguimientoController extends Controller{
             'perfil_usuario' => $usuario,
             'paginacion' => $seguidor
         ));
-
-
     }
 }

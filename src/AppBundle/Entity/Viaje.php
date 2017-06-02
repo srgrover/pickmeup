@@ -118,6 +118,13 @@ class Viaje{
     protected $maximoAtras = false;
 
     /**
+     * @ORM\Column(type="boolean", nullable=false)
+     *
+     * @var boolean
+     */
+    protected $activo = true;
+
+    /**
      * @return int
      */
     public function getId()
@@ -351,4 +358,21 @@ class Viaje{
     {
         $this->precio = $precio;
     }
+
+    /**
+     * @return bool
+     */
+    public function isActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * @param bool $activo
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+    }
+
 }

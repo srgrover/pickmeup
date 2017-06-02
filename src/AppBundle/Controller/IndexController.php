@@ -55,6 +55,7 @@ class IndexController extends Controller{
 
         $query = $viajes_repo->createQueryBuilder('p')
             ->where('p.conductor = (:user_id) OR p.conductor IN (:following)')
+            ->andWhere('p.activo = true')
             ->setParameter('user_id', $user->getId())
             ->setParameter('following', $following_array)
             ->orderBy('p.id', 'DESC')
@@ -87,6 +88,7 @@ class IndexController extends Controller{
 
         $query = $viajes_repo->createQueryBuilder('p')
             ->where('p.conductor = (:user_id) OR p.conductor IN (:following)')
+            ->andWhere('p.activo = true')
             ->setParameter('user_id', $user->getId())
             ->setParameter('following', $following_array)
             ->orderBy('p.id', 'DESC')
@@ -265,7 +267,7 @@ class IndexController extends Controller{
         $usuario = $this->getUser();
         if($viaje->getConductor()->getId() == $usuario->getId()){
             try {
-                $em->remove($viaje);
+                $viaje->setActivo(false);
                 $em->flush();
                 $this->addFlash('estado', 'Viaje eliminado con éxito');
             }
@@ -307,7 +309,7 @@ class IndexController extends Controller{
         $usuario = $this->getUser();
         if($rutina->getConductor()->getId() == $usuario->getId()){
             try {
-                $em->remove($rutina);
+                $rutina->setActivo(false);
                 $em->flush();
                 $this->addFlash('estado', 'Rutina eliminado con éxito');
             }
@@ -324,8 +326,9 @@ class IndexController extends Controller{
      * @Route("/coche/editar/{id}", name="editar_coche")
      * @Route("/coche/añadir", name="add_coche")
      * @param Request $request
-     * @param Rutina|null $rutina
+     * @param Vehiculo|null $coche
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @internal param Rutina|null $rutina
      */
     public function addCocheAction(Request $request, Vehiculo $coche = null){
         /** @var EntityManager $em */
@@ -365,12 +368,54 @@ class IndexController extends Controller{
                 }
             }
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('perfil_usuario');
         }
 
-        return $this->render(':user:coche.html.twig', [
+        return $this->render('coche/coche.html.twig', [
             'formulario' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("coche/eliminar/{id}", name="borrar_coche", methods={"GET"})
+     * @param Vehiculo $coche
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function borrarCocheAction(Vehiculo $coche){
+        $usuario = $this->getUser();
+        if($coche->getConductor()->getId() == $usuario->getId()) {
+            return $this->render(':coche:borrar.html.twig', [
+                'coche' => $coche
+            ]);
+        }else{
+            $this->addFlash('error', 'No tienes permisos para borrar este viaje');
+            return $this->redirectToRoute('homepage');
+        }
+    }
+
+
+    /**
+     * @Route("coche/eliminar/{id}", name="confirmar_borrar_coche", methods={"POST"})
+     * @param Vehiculo $coche
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function borrarCocheDeVerdadAction(Vehiculo $coche){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $usuario = $this->getUser();
+        if($coche->getConductor()->getId() == $usuario->getId()){
+            try {
+                $em->remove($coche);
+                $em->flush();
+                $this->addFlash('estado', 'Rutina eliminado con éxito');
+            }
+            catch(Exception $e) {
+                $this->addFlash('error', 'No se han podido eliminar la rutina');
+            }
+        }else{
+            $this->addFlash('error', 'No tienes permisos para borrar esta rutina');
+        }
+        return $this->redirectToRoute('perfil_usuario');
     }
 
 }

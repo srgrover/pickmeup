@@ -1,0 +1,36 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="box-default text-center col-lg-10 col-sm-12">
+        <h1>¿Realmente quieres borrar este coche?</h1>
+        <hr>
+        <div class="col-lg-2"></div>
+        <div class="container box-coche col-lg-10">
+                <h3 class="col-lg-2 col-sm-12">
+                    <small>Marca</small> <br> {{ coche.marca }}
+                </h3>
+                <h3 class="col-lg-2 col-sm-12">
+                    <small>Modelo</small> <br> {{ coche.modelo }}
+                </h3>
+                <h3 class="col-lg-2 col-sm-12">
+                    <small>Color</small> <br> {{ coche.color }}
+                </h3>
+                <h3 class="col-lg-2 col-sm-12">
+                    <small>Plazas</small> <br> {{ coche.plazas }}
+                </h3>
+        </div>
+        <div class="clearfix"></div>
+        <hr>
+        <form method="post" action="{{ path('confirmar_borrar_coche', {'id': coche.id}) }}" name="confirmar">
+            <a href="{{ path('perfil_usuario') }}" class="btn btn-info">
+                <i class="fa fa-long-arrow-left"></i>
+                No, quiero volver
+            </a>
+            <button type="submit" name="eliminar" class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+                Sí, quiero eliminarlo
+            </button>
+        </form>
+    </div>
+
+{% endblock %}

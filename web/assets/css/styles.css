@@ -45,11 +45,23 @@ li.active a span.glyphicon-plus{
 }
 
 .alert-default{
-    background: #CCCCCC;
+    background: #8abccc;
+}
+
+.text-white{
+    color: #FFFFFF !important;
+}
+
+.box-default h1{
+    padding-top: 15px;
+    font-weight: 300;
+}
+
+.float-none{
+    float: none !important;
 }
 
 /* HEADER */
-
 nav{
     border-bottom: 0 !important;
 }
@@ -367,9 +379,22 @@ header nav .add-pub a:hover{
     display: block;
 }
 
+.modal-bio h3{
+    margin-top: 5px;
+}
+
 .box-coche{
     padding-bottom: 20px;
 }
+
+.box-coche h3{
+    margin: 20px 15px 10px;
+}
+
+.box-header .dropdown{
+    display: inline;
+}
+
 
 /* NOTIFICACIONES */
 

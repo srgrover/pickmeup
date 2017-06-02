@@ -30,7 +30,7 @@
                         </a>
                         <div class="clearfix"></div>
                         <span class="nickname">
-                        {{ usuario.nick }} - <small>Miembro desde el {{ usuario.activacion | date('d \\d\\e F \\d\\e\\l Y') }}</small>
+                        {{ usuario.nick }} - <small>Miembro desde el {{ usuario.activacion | date | localizeddate('long', 'none', 'es') }}</small>
                     </span>
                     </div>
                 </div>
@@ -60,9 +60,19 @@
                                 <h4 class="modal-title" id="myModalLabel">SOBRE MÍ</h4>
                             </div>
                             <div class="modal-body modal-bio">
-                                <h3>
-                                    {{ usuario.nombre }} {{ usuario.apellidos }} <small>{{ usuario.nick }}</small>
+                                <div class="col-lg-5"></div>
+                                <div class="avatar float-none">
+                                    {% if usuario.imagenPerfil == null %}
+                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                                    {% else %}
+                                        <img src="{{ asset('uploads/users/'~usuario.imagenPerfil) }}" alt="avatar" />
+                                    {% endif %}
+                                </div>
+
+                                <h3 class="text-center">
+                                    {{ usuario.nombre }} {{ usuario.apellidos }} <br><small>{{ usuario.nick }}</small>
                                 </h3>
+                                <hr>
                                 <div class="col-lg-12">
                                     <div class="col-lg-6">
                                         <span>{{ usuario.ciudad }} {% if usuario.provincia  != null %}({{ usuario.provincia }}){% endif %}{% if usuario.pais != null %}, {{ usuario.pais }}{% endif %}</span>
@@ -90,6 +100,7 @@
                                     <div class="clearfix"></div>
                                 </div>
                             </div>
+                            <hr>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             </div>
@@ -136,6 +147,31 @@
         <div class="col-lg-7 col-md-12 col-sm-12 box-default box-ajustado no-padding-bottom">
             <h1 class="box-header">
                 MI COCHE
+
+                {% if usuario.id == app.user.id %}
+                    {% if usuario.vehiculo|length > 0 %}
+                        <div class="dropdown pull-right">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Gestionar
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li>
+                                    <a href="{{ path('editar_coche', {'id' : usuario.vehiculo.id}) }}">
+                                        <i class="fa fa-edit"></i>
+                                        Editar
+                                    </a>
+                                </li>
+                                <li class="bg-danger">
+                                    <a href="{{ path('borrar_coche', {'id' : usuario.vehiculo.id}) }}" class="text-white">
+                                        <i class="fa fa-trash"></i>
+                                        Borrar
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </h1>
             <div class="container box-coche">
                 {% if usuario.vehiculo|length > 0 %}
@@ -260,7 +296,7 @@
                                     <h3>Aún no hay viajes activos</h3>
                                     {% if usuario.id == app.user.id %}
                                         <a href="{{ path('add_viaje') }}" class="btn btn-success">
-                                            <i class="fa fa-user-plus"></i>
+                                            <i class="fa fa-plus"></i>
                                             Añade un viaje
                                         </a>
                                     {% endif %}
@@ -353,7 +389,7 @@
                                     <h3>Aún no hay rutinas activas.</h3>
                                     {% if usuario.id == app.user.id %}
                                         <a href="{{ path('add_rutina') }}" class="btn btn-success">
-                                            <i class="fa fa-user-plus"></i>
+                                            <i class="fa fa-plus"></i>
                                             Añade una rutina
                                         </a>
                                     {% endif %}

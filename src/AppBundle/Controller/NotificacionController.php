@@ -7,8 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class NotificacionController extends Controller
-{
+class NotificacionController extends Controller{
     /**
      * @Route("/notificaciones", name="notificaciones")
      * @param Request $request
@@ -24,7 +23,7 @@ class NotificacionController extends Controller
             ->from('AppBundle:Notificacion', 'n')
             ->where('n.id_usuario = :usuario')
             ->setParameter('usuario', $usuario_id)
-            ->orderBy('n.created_at')
+            ->orderBy('n.created_at', 'DESC')
             ->getQuery()
             ->getResult();
 
@@ -57,5 +56,4 @@ class NotificacionController extends Controller
 
         return new Response(count($notificaciones));
     }
-
 }

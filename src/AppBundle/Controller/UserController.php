@@ -45,55 +45,58 @@ class UserController extends Controller{
             return $this->redirect('home');
         }
 
-        $user = new Usuario();
-        $form = $this->createForm(RegisterType::class, $user);
+        $usuario = new Usuario();
+        $form = $this->createForm(RegisterType::class, $usuario);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted()){
-            if($form->isValid()){
-                $em = $this->getDoctrine()->getManager();
+        if ($form->isValid() && $form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
 
-                $query = $em->createQueryBuilder()
-                    ->select('u')
-                    ->from('AppBundle:Usuario', 'u')
-                    ->where('u.email = :email')
-                    ->orWhere('u.nick = :nick')
-                    ->setParameter('email', $form->get("email")->getData())
-                    ->setParameter('nick', $form->get("nick")->getData())
-                    ->getQuery();
+            $query = $em->createQueryBuilder()
+                ->select('u')
+                ->from('AppBundle:Usuario', 'u')
+                ->where('u.email = :email')
+                ->orWhere('u.nick = :nick')
+                ->setParameter('email', $form->get("email")->getData())
+                ->setParameter('nick', $form->get("nick")->getData())
+                ->getQuery();
 
-                $user_isset = $query->getResult();
+            $user_isset = $query->getResult();
 
-                if(count($user_isset) == 0){
+            if(count($user_isset) == 0){
 
-                    $factory = $this->get("security.encoder_factory");
-                    $encoder = $factory->getEncoder($user);
 
-                    $password = $encoder->encodePassword($form->get("password")->getData(), $user->getSalt());
+                $claveRegistro = $form->get("password")->getData();
+                if ($claveRegistro) {
+                    $clave = $this->get('security.password_encoder')
+                        ->encodePassword($usuario, $claveRegistro);
+                    $usuario->setPassword($clave);
+                }
 
-                    $user->setPassword($password);
-                    $user->setImagenPerfil(null);
-                    $user->setImagenFondo(null);
-                    $user->setActivacion(new \DateTime("now"));
 
-                    $em->persist($user);
-                    $flush = $em->flush();
+//                $factory = $this->get("security.encoder_factory");
+//                $encoder = $factory->getEncoder($usuario);
+//                $password = $encoder->encodePassword($form->get("password")->getData(), $usuario->getSalt());
+//                $usuario->setPassword($password);
 
-                    if($flush == null){ //No devuelve ningun error
-                        $this->addFlash('estado', 'Te has registrado correctamente');
+                $usuario->setImagenPerfil(null);
+                $usuario->setImagenFondo(null);
+                $usuario->setActivacion(new \DateTime("now"));
 
-                        return $this->redirectToRoute("login");
-                    }else{
-                        $this->addFlash('error', 'No te has registrado correctamente');
-                    }
+                $em->persist($usuario);
+                $flush = $em->flush();
 
+                if($flush == null){ //No devuelve ningun error
+                    $this->addFlash('estado', 'Te has registrado correctamente');
+
+                    return $this->redirectToRoute("login");
                 }else{
-                    $this->addFlash('error', 'Este usuario ya existe');
+                    $this->addFlash('error', 'No te has registrado correctamente');
                 }
 
             }else{
-                $this->addFlash('error', 'No te has registrado correctamente');
+                $this->addFlash('error', 'Este usuario ya existe');
             }
         }
 

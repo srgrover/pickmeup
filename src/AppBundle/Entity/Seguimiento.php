@@ -40,6 +40,13 @@ class Seguimiento{
     protected $seguidor;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    protected $fecha;
+
+    /**
      * @return int
      */
     public function getId()
@@ -85,6 +92,22 @@ class Seguimiento{
     public function setSeguidor($seguidor)
     {
         $this->seguidor = $seguidor;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * @param \DateTime $fecha
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
     }
 
 }
