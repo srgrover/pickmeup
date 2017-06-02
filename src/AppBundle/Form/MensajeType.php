@@ -20,8 +20,9 @@ class MensajeType extends AbstractType
         $usuario = $options['empty_data'];
         $builder
             ->add('receptor', EntityType::class, [
+                'class' => 'AppBundle\Entity\Usuario',
                 'query_builder' => function($er) use($usuario){
-                    return $usuario;
+                    return $er->getUsuariosSiguiendo($usuario);
                 },
                 'choice_label' => function($usuario){
                     return $usuario->getNombre()." ".$usuario->getApellidos();

@@ -65,20 +65,12 @@ class UserController extends Controller{
             $user_isset = $query->getResult();
 
             if(count($user_isset) == 0){
-
-
                 $claveRegistro = $form->get("password")->getData();
                 if ($claveRegistro) {
                     $clave = $this->get('security.password_encoder')
                         ->encodePassword($usuario, $claveRegistro);
                     $usuario->setPassword($clave);
                 }
-
-
-//                $factory = $this->get("security.encoder_factory");
-//                $encoder = $factory->getEncoder($usuario);
-//                $password = $encoder->encodePassword($form->get("password")->getData(), $usuario->getSalt());
-//                $usuario->setPassword($password);
 
                 $usuario->setImagenPerfil(null);
                 $usuario->setImagenFondo(null);
@@ -201,6 +193,7 @@ class UserController extends Controller{
 
 
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/usuarios", name="users")
      * @param Request $request
      * @return Response
@@ -230,6 +223,7 @@ class UserController extends Controller{
 
 
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/buscar", name="user_search")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -270,6 +264,7 @@ class UserController extends Controller{
 
 
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/perfil/{nick}", name="perfil_usuario")
      * @param Request $request
      * @param null $nick
@@ -333,6 +328,7 @@ class UserController extends Controller{
 
 
     /**
+     * @Security("has_role('ROLE_USER')")
      * @Route("/cambiar-contraseña", name="cambiar_pass")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
