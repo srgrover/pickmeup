@@ -4,33 +4,17 @@
 
     <div class="col-lg-10 box-default no-padding-lados">
         <h1 class="box-header">
-            Mensajes
+            Mensajes Enviados
         </h1>
-
-        <div class="col-lg-6">
-            <h4>
-                Enviar mensaje
-            </h4>
-            <hr>
-            {{ form_start(formulario) }}
-            {{ form_widget(formulario) }}
-            <div class="form-group">
-
-                <div class="col-sm-12">
-                    <button type="submit" name="enviar" class="btn btn-success pull-right">
-                        <i class="fa fa-send"></i>
-                        Enviar
-                    </button>
-                    <a href="{{ path('mensajes_enviados') }}" class="btn btn-warning">
-                        Mensajes enviados
-                    </a>
-                </div>
-            </div>
-            {{ form_end(formulario) }}
-        </div>
-        <div class="col-lg-6">
-            <h4>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-5">
+            <a href="{{ path('mensajes') }}" class="btn btn-warning">
                 Mensajes recibidos
+            </a>
+        </div>
+        <div class="col-lg-5">
+            <h4>
+                Mensajes enviados
             </h4>
             <hr>
             <div class="box-content box-mensajes">
@@ -74,7 +58,11 @@
                     {% endfor %}
                 {% else %}
                     <div class="col-lg-12">
-                        <h3 class="text-center">Aún no tienes mensajes en tu bandeja de entrada.</h3>
+                        <h3>Aún no tienes mensajes privados enviados.</h3>
+                        <a href="{{ path('mensajes') }}" class="btn btn-primary">
+                            <i class="fa fa-user-send"></i>
+                            Manda un mensaje
+                        </a>
                     </div>
                 {% endif %}
 

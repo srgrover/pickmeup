@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use AppBundle\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,35 +23,35 @@ class RegisterType extends AbstractType
         $builder
             ->add('nombre', TextType::class, [
                 'label' => 'Nombre',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-name form-control'
                 ]
             ])
             ->add('apellidos', TextType::class, [
                 'label' => 'Apellidos',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-surname form-control'
                 ]
             ])
             ->add('nick', TextType::class, [
                 'label' => 'Nick',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-nick form-control nick-input'
                 ]
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo electrónico',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-email form-control'
                 ]
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Contraseña',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-password form-control'
                 ],
@@ -60,23 +61,41 @@ class RegisterType extends AbstractType
                     ])
                 ]
             ])
-            ->add('fechaNacimiento', BirthdayType::class, [
+            ->add('fechaNacimiento', DateType::class, [
                 'label' => 'Fecha de nacimiento',
-                'required' => 'required',
+                'required' => true,
+                'years' => range(1930,Date('Y')),
+                'placeholder' => [
+                    'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
+                ],
                 'attr' => [
                     'class' => 'form-date'
                 ]
             ])
             ->add('ciudad', TextType::class, [
                 'label' => 'Ciudad',
-                'required' => 'required',
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-city form-control'
+                ]
+            ])
+            ->add('provincia', TextType::class, [
+                'label' => 'Provincia',
+                'required' => true,
+                'attr' => [
+                    'class' => 'form-city form-control'
+                ]
+            ])
+            ->add('pais', TextType::class, [
+                'label' => 'País',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-city form-control'
                 ]
             ])
             ->add('telefono', TextType::class, [
                 'label' => 'Teléfono',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-tlf form-control'
                 ]
