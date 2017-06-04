@@ -62,6 +62,21 @@
                     {% endif %}
                     {% if app.user != null %}
                         <ul class="nav navbar-nav navbar-right">
+                            {% if app.user.isAdmin %}
+                                <li class="dropdown {% if ruta == 'administracion' %}active{% endif %}">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('add_rutina') }}">
+                                                <span class="fa fa-cogs" aria-hidden="true"></span>
+                                                Administración
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
                             <li class="dropdown add-pub text-success {% if ruta == 'add_viaje' or ruta == 'add_rutina' %}active{% endif %}">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>

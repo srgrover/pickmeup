@@ -6,13 +6,12 @@
         <h1 class="box-header">
             Mensajes Enviados
         </h1>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-5">
+        <div class="col-lg-6 mark text-center">
             <a href="{{ path('mensajes') }}" class="btn btn-warning">
-                Mensajes recibidos
+                Ir a mensajes recibidos
             </a>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-6">
             <h4>
                 Mensajes enviados
             </h4>
@@ -27,10 +26,10 @@
                                 </a>
                                 -
                                 ({{ mensaje.emisor.nick }})
-                                -
-                                <span class="pub-date">
-                                ({{ mensaje.fechaEnviado|date('d-m-Y') }})
-                            </span>
+                                
+                                <span>
+                                    {{ mensaje.fechaEnviado|date|localizeddate('long', 'none', 'es') }}
+                                </span>
                             </p>
                             <div class="avatar">
                                 {% if mensaje.emisor.imagenPerfil == null %}
@@ -44,6 +43,10 @@
                                 <table width="100%">
                                     <tr>
                                         <td>
+                                            Para:
+                                            <a href="{{ path('perfil_usuario', {'nick':mensaje.receptor.nick}) }}">
+                                                {{ mensaje.receptor.nombre }} {{ mensaje.receptor.apellidos }}
+                                            </a>
                                             <p>
                                                 {{ mensaje.mensaje }}
                                             </p>

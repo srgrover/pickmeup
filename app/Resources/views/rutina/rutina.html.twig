@@ -40,18 +40,6 @@
                 </span>
                 <span>
                     <i class="fa fa-calendar"></i>
-                    {#{% set dias = rutina.dias|split('') %}#}
-                    {#{% for dia in dias %}#}
-                        {#{% set d = loop.index %}#}
-                        {#{% switch d %}#}
-                            {#{% case "L" %}Lunes,#}
-                            {#{% case "M" %}Martes,#}
-                            {#{% case "X" %}Miercoles,#}
-                            {#{% case "J" %}Jueves,#}
-                            {#{% case "V" %}Viernes#}
-                            {#{% default %}De Lunes a Viernes#}
-                        {#{% endswitch %}#}
-                    {#{% endfor %}#}
                      {{ rutina.dias }} - {{ rutina.horaSalida|date('H:i') }}
                 </span>
                 <span>
@@ -80,10 +68,11 @@
                     {{ rutina.descripcion }}
                 </span>
                 <span>
-                    <a href="#" class="btn btn-primary">
+                    <a href="{{ path('mensajes', {'id':rutina.conductor}) }}" class="btn btn-primary">
                         <i class="fa fa-send"></i>
                         Contactar con el conductor
                     </a>
+                    Ve a mensajes y mandale un mensaje
                 </span>
             </div>
         </div>

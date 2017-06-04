@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Mensaje;
+use AppBundle\Entity\Usuario;
 use AppBundle\Form\MensajeType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,12 +18,15 @@ use Symfony\Component\HttpFoundation\Response;
 class MensajeController extends Controller{
     /**
      * @Route("/mensajes", name="mensajes")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function indexAction(Request $request){
+    public function indexAction(Request $request, Usuario $usuario = null){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        $usuario = $this->getUser();
-
+        if ($usuario == null){
+            $usuario = $this->getUser();
+        }
         $mensaje = new Mensaje();
         $formulario = $this->createForm(MensajeType::class, $mensaje,[
             'empty_data' => $usuario
@@ -56,6 +60,8 @@ class MensajeController extends Controller{
 
     /**
      * @Route("/mensajes/enviados", name="mensajes_enviados")
+     * @param Request $request
+     * @return Response
      */
     public function enviadosAction(Request $request){
         $mensajes_privados = $this->getMensajesPrivados($request, 'enviado'); //Mensajes enviados
@@ -68,26 +74,19 @@ class MensajeController extends Controller{
     public function getMensajesPrivados($request, $tipo = null){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-
         $usuario = $this->getUser();
 
-        if($tipo == 'enviado'){
-            $query = $em->createQueryBuilder()
-                ->select('m')
-                ->from('AppBundle:Mensaje', 'm')
-                ->where('m.emisor = :usuario')
-                ->orderBy('m.fechaEnviado', 'DESC')
-                ->setParameter('usuario', $usuario->getId())
-                ->getQuery();
-        }else{
-            $query = $em->createQueryBuilder()
-                ->select('m')
-                ->from('AppBundle:Mensaje', 'm')
-                ->where('m.receptor = :usuario')
-                ->orderBy('m.fechaEnviado', 'DESC')
-                ->setParameter('usuario', $usuario->getId())
-                ->getQuery();
-        }
+        $query = $em->createQueryBuilder()
+            ->select('m')
+            ->from('AppBundle:Mensaje', 'm');
+            if($tipo == 'enviado'){
+                $query->where('m.emisor = :usuario');
+            }else{
+                $query->where('m.receptor = :usuario');
+            }
+            $query->orderBy('m.fechaEnviado', 'DESC')
+            ->setParameter('usuario', $usuario->getId())
+            ->getQuery();
 
         $paginador = $this->get('knp_paginator');
         $paginacion = $paginador->paginate(

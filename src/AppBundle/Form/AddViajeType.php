@@ -7,12 +7,10 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 class AddViajeType extends AbstractType
@@ -27,14 +25,16 @@ class AddViajeType extends AbstractType
                 'label' => 'Origen',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-origen'
+                    'class' => 'form-origen',
+                    'placeholder' => 'ej. Bailén'
                 ]
             ])
             ->add('destino', TextType::class, [
                 'label' => 'Destino',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-destino'
+                    'class' => 'form-destino',
+                    'placeholder' => 'ej. Sevilla'
                 ]
             ])
             ->add('plazasLibres', ChoiceType::class, [
@@ -55,7 +55,8 @@ class AddViajeType extends AbstractType
                 'label' => 'Precio',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-precio form-control'
+                    'class' => 'form-precio form-control',
+                    'placeholder' => 'ej. 5'
                 ]
             ])
             ->add('fechaSalida', BirthdayType::class, [
@@ -63,6 +64,9 @@ class AddViajeType extends AbstractType
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-salida'
+                ],
+                'placeholder' => [
+                    'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
                 ]
             ])
             ->add('horaSalidaIda', TimeType::class, [
@@ -70,6 +74,9 @@ class AddViajeType extends AbstractType
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-hora-salida'
+                ],
+                'placeholder' => [
+                    'hour' => 'Hora', 'minute' => 'Minuto'
                 ]
             ])
             ->add('fechaVuelta', BirthdayType::class, [
@@ -77,6 +84,9 @@ class AddViajeType extends AbstractType
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-vuelta'
+                ],
+                'placeholder' => [
+                    'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
                 ]
             ])
             ->add('horaSalidaVuelta', TimeType::class, [
@@ -84,6 +94,9 @@ class AddViajeType extends AbstractType
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-hora-vuelta'
+                ],
+                'placeholder' => [
+                    'hour' => 'Hora', 'minute' => 'Minuto'
                 ]
             ])
 //            ->add('Lunes-Viernes', CheckboxType::class, array(
@@ -119,13 +132,7 @@ class AddViajeType extends AbstractType
                 'attr' => [
                     'class' => 'form-desc form-control'
                 ]
-            ])
-            ->add('Añadir', SubmitType::class, [
-                "attr" => [
-                    "class" => "form-submit btn btn-success"
-                ]
-            ])
-       ;
+            ]);
     }
     
     /**

@@ -245,7 +245,7 @@ class IndexController extends Controller{
      */
     public function borrarViajeAction(Viaje $viaje){
         $usuario = $this->getUser();
-        if($viaje->getConductor()->getId() == $usuario->getId()) {
+        if($viaje->getConductor()->getId() == $usuario->getId() || $this->getUser()->isAdmin()) {
             return $this->render(':Viaje:borrar.html.twig', [
                 'viaje' => $viaje
             ]);
@@ -265,7 +265,7 @@ class IndexController extends Controller{
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         $usuario = $this->getUser();
-        if($viaje->getConductor()->getId() == $usuario->getId()){
+        if($viaje->getConductor()->getId() == $usuario->getId() || $this->getUser()->isAdmin()){
             try {
                 $viaje->setActivo(false);
                 $em->flush();
@@ -287,7 +287,7 @@ class IndexController extends Controller{
      */
     public function borrarRutinaAction(Rutina $rutina){
         $usuario = $this->getUser();
-        if($rutina->getConductor()->getId() == $usuario->getId()) {
+        if($rutina->getConductor()->getId() == $usuario->getId() || $this->getUser()->isAdmin()) {
             return $this->render(':rutina:borrar.html.twig', [
                 'rutina' => $rutina
             ]);
@@ -307,7 +307,7 @@ class IndexController extends Controller{
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         $usuario = $this->getUser();
-        if($rutina->getConductor()->getId() == $usuario->getId()){
+        if($rutina->getConductor()->getId() == $usuario->getId() || $this->getUser()->isAdmin()){
             try {
                 $rutina->setActivo(false);
                 $em->flush();
@@ -333,33 +333,47 @@ class IndexController extends Controller{
     public function addCocheAction(Request $request, Vehiculo $coche = null){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-
         $usuario = $this->getUser();
+
+
         if ($coche == null) {
             $coche = new Vehiculo();
             $em->persist($coche);
             $coche->setConductor($usuario);
         }
+
+
         $form = $this->createForm(CocheType::class, $coche);
 
         $form->handleRequest($request);
         if($form->isSubmitted()) {
             if ($form->isValid()) {
-                $flush = $em->flush();
+                if($coche->getConductor()->getId() == $usuario->getId() || $this->getUser()->isAdmin()) {
+                    try{
+                        $flush = $em->flush();
 
-                if ($flush == null) {
-                    if (null == $coche) {
-                        $this->addFlash('estado', 'El coche se ha creado correctamente');
-                    } else {
-                        $this->addFlash('estado', 'Los cambios se han guardado correctamente');
-                    }
-                } else {
-                    if (null == $coche) {
-                        $this->addFlash('error', 'Error al añadir el coche');
-                    } else {
-                        $this->addFlash('error', 'Los cambios no se han guardado correctamente');
+                        if ($flush == null) {
+                            if (null == $coche) {
+                                $this->addFlash('estado', 'El coche se ha creado correctamente');
+                            } else {
+                                $this->addFlash('estado', 'Los cambios se han guardado correctamente');
+                            }
+                        } else {
+                            if (null == $coche) {
+                                $this->addFlash('error', 'Error al añadir el coche');
+                            } else {
+                                $this->addFlash('error', 'Los cambios no se han guardado correctamente');
+                            }
+                        }
+                    }catch (Exception $exception){
+                        if (null == $coche) {
+                            $this->addFlash('error', 'No tienes permisos para agregar este vehículo');
+                        } else {
+                            $this->addFlash('error', 'No puedes modificar este vehículo');
+                        }
                     }
                 }
+
             } else {
                 if (null == $coche) {
                     $this->addFlash('error', 'El coche no se ha creado porque el formulario no es válido');
