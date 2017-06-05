@@ -32,6 +32,10 @@ class IndexController extends Controller{
         $viajes = $this->getViajes($request);
         $rutinas = $this->getRutinas($request);
 
+        if($this->getUser()->isAdmin()){
+            return $this->redirectToRoute('administracion');
+        }
+
         return $this->render(':publication:home.html.twig', [
             'viajes' => $viajes,
             'rutinas' => $rutinas

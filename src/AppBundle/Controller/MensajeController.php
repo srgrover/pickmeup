@@ -19,6 +19,7 @@ class MensajeController extends Controller{
     /**
      * @Route("/mensajes", name="mensajes")
      * @param Request $request
+     * @param Usuario|null $usuario
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function indexAction(Request $request, Usuario $usuario = null){

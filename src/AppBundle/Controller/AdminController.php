@@ -2,17 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Rutina;
-use AppBundle\Entity\Vehiculo;
-use AppBundle\Entity\Viaje;
-use AppBundle\Form\AddRutinaType;
-use AppBundle\Form\AddViajeType;
-use AppBundle\Form\CocheType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @package AppBundle\Controller
  * @Security("is_granted('ROLE_ADMIN')")
  */
-class IndexController extends Controller{
+class AdminController extends Controller{
 
     /**
      * @Route("/administracion", name="administracion")
@@ -29,12 +22,19 @@ class IndexController extends Controller{
      * @return Response
      */
     public function IndexAction(Request $request){
+        $usuario = $this->getUser();
         $viajes = $this->getViajes($request);
         $rutinas = $this->getRutinas($request);
+        $usuarios = $this->getUsuarios($request);
+        $mensajes = $this->getMensajes($request);
 
-        return $this->render(':publication:home.html.twig', [
+
+        return $this->render('admin/index.html.twig', [
+            'admin' => $usuario,
             'viajes' => $viajes,
-            'rutinas' => $rutinas
+            'rutinas' => $rutinas,
+            'usuarios' => $usuarios,
+            'mensajes' => $mensajes
         ]);
     }
 
@@ -48,14 +48,14 @@ class IndexController extends Controller{
             ->orderBy('p.fechaPublicacion', 'DESC')
             ->getQuery();
 
-//        $paginator = $this->get('knp_paginator');
-//        $pagination = $paginator->paginate(
-//            $query,
-//            $request->query->getInt('page', 1),
-//            5
-//        );
+        $paginador = $this->get('knp_paginator');
+        $paginacion = $paginador->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
 
-        return $query;
+        return $paginacion;
     }
 
     public function getRutinas($request){
@@ -68,13 +68,47 @@ class IndexController extends Controller{
             ->orderBy('p.fechaPublicacion', 'DESC')
             ->getQuery();
 
-//        $paginator = $this->get('knp_paginator');
-//        $pagination = $paginator->paginate(
-//            $query,
-//            $request->query->getInt('page', 1),
-//            5
-//        );
+        $paginador = $this->get('knp_paginator');
+        $paginacion = $paginador->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
 
-        return $query;
+        return $paginacion;
+    }
+
+    public function getUsuarios($request){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $usuarios_repo = $em->getRepository('AppBundle:Usuario');
+        $usuarios = $usuarios_repo->findAll();
+
+        $paginador = $this->get('knp_paginator');
+        $paginacion = $paginador->paginate(
+            $usuarios,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        return $paginacion;
+    }
+
+    public function getMensajes($request){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $mensaje_repo = $em->getRepository('AppBundle:Mensaje');
+        $mensajes = $mensaje_repo->findAll();
+
+        $paginador = $this->get('knp_paginator');
+        $paginacion = $paginador->paginate(
+            $mensajes,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        return $paginacion;
     }
 }

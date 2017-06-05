@@ -118,21 +118,24 @@ class UserController extends Controller{
     /**
      * @Security("has_role('ROLE_USER')")
      * @Route("/perfil/editar", name="user_edit")
+     * @Route("/perfil/editar/{id}", name="editar_a_usuario")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function editarUsuarioAction(Request $request){
-        $user = $this->getUser();   //getUser() para recoger los datos de un usuario que ya esta logueado
-        $user_image = $user->getImagenPerfil();
-        $user_image_f = $user->getImagenFondo();
-        $form = $this->createForm(UserType::class, $user);  //Crea el formulario
+    public function editarUsuarioAction(Request $request, Usuario $usuario = null){
+        if ($usuario == null){
+            $usuario = $this->getUser();   //getUser() para recoger los datos de un usuario que ya esta logueado
+        }
+        $usuario_image = $usuario->getImagenPerfil();
+        $usuario_image_f = $usuario->getImagenFondo();
+        $form = $this->createForm(UserType::class, $usuario);  //Crea el formulario
 
         $form->handleRequest($request);    //Informacion de request se guarda aqui
 
         if ($form->isValid() && $form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
 
-            $user_isset = $em->createQueryBuilder()
+            $usuario_isset = $em->createQueryBuilder()
                 ->select('u')
                 ->from('AppBundle:Usuario', 'u')
                 ->where('u.email = :email AND u.nick = :nick')
@@ -141,20 +144,20 @@ class UserController extends Controller{
                 ->getQuery()
                 ->getResult();
 
-            if(count($user_isset) == 0 || ($user->getEmail() == $user_isset[0]->getEmail() && $user->getNick() == $user_isset[0]->getNick())){
+            if(count($usuario_isset) == 0 || ($usuario->getEmail() == $usuario_isset[0]->getEmail() && $usuario->getNick() == $usuario_isset[0]->getNick())){
                 //Fichero subido
                 $imagenPerfil = $form["imagenPerfil"]->getData();
 
                 if(!empty($imagenPerfil) && $imagenPerfil != null){
                     $ext = $imagenPerfil->guessExtension();
                     if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
-                        $nombre_imagen = $user->getId().time().'.'.$ext;
+                        $nombre_imagen = $usuario->getId().time().'.'.$ext;
                         $imagenPerfil->move("uploads/users", $nombre_imagen);
 
-                        $user->setImagenPerfil($nombre_imagen);
+                        $usuario->setImagenPerfil($nombre_imagen);
                     }
                 }else{
-                    $user->setImagenPerfil($user_image);
+                    $usuario->setImagenPerfil($usuario_image);
                 }
 
                 $imagenFondo = $form["imagenFondo"]->getData();
@@ -162,21 +165,26 @@ class UserController extends Controller{
                 if(!empty($imagenFondo) && $imagenFondo != null){
                     $ext = $imagenFondo->guessExtension();
                     if($ext == 'jpg' || $ext == 'jpeg' || $ext == 'png' || $ext == 'gif'){
-                        $nombre_imagen_f = 'wall_'.$user->getId().time().'.'.$ext;
+                        $nombre_imagen_f = 'wall_'.$usuario->getId().time().'.'.$ext;
                         $imagenFondo->move("uploads/users", $nombre_imagen_f);
 
-                        $user->setImagenFondo($nombre_imagen_f);
+                        $usuario->setImagenFondo($nombre_imagen_f);
                     }
                 }else{
-                    $user->setImagenFondo($user_image_f);
+                    $usuario->setImagenFondo($usuario_image_f);
                 }
 
-                $em->persist($user);
+                $em->persist($usuario);
                 $flush = $em->flush();
 
                 if($flush == null){ //No devuelve ningun error
                     $this->addFlash('estado', 'Datos modificados correctamente');
-                    return $this->redirectToRoute('perfil_usuario');
+                    if($this->getUser()->isAdmin()){
+                        return $this->redirectToRoute('administracion');
+                    }else{
+                        return $this->redirectToRoute('perfil_usuario');
+                    }
+
                 }else{
                     $this->addFlash('error', 'Los datos no se han modificado correctamente FLUSH');
                 }
