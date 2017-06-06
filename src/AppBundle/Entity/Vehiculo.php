@@ -61,6 +61,13 @@ class Vehiculo{
     protected $color;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     *
+     * @var boolean
+     */
+    protected $activo;
+
+    /**
      * @return int
      */
     public function getId()
@@ -154,6 +161,22 @@ class Vehiculo{
     public function setColor($color)
     {
         $this->color = $color;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * @param bool $activo
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
     }
 
 }

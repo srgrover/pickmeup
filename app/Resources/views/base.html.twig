@@ -24,18 +24,20 @@
             <link href="{{ asset('assets/css/styles.css') }}" type="text/css" rel="stylesheet" >
         {% endblock %}
     </head>
-    <body {% if app.user.isAdmin() %} class="hold-transition skin-blue sidebar-mini" {% endif %}>
-        <section id="content" {% if app.user.isAdmin() %}class="no-margin"{% endif %}>
+    <body {% if app.user and app.user.isAdmin() %} class="hold-transition skin-blue sidebar-mini" {% endif %}>
+        <section id="content" {% if app.user and app.user.isAdmin() %}class="no-margin"{% endif %}>
             {% block body %}{% endblock %}
+            <div class="push"></div>
         </section>
-        <footer class="col-lg-12">
-            <hr />
+        {% block footer %}
+        <footer>
             <div class="container">
-                <p class="text-muted">
+                <p class="text-center">
                     Desarrollo de una web para compartir viajes - Jonathan Moya Moreno - copyright &copy; 2017
                 </p>
             </div>
         </footer>
+        {% endblock %}
         <script type="text/javascript">
             var URL = "{{ app.request.getSchemeAndHttpHost() }}";
         </script>

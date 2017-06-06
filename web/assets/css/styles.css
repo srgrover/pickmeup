@@ -807,3 +807,26 @@ header nav .add-pub a:hover{
 .box-conductor .avatar{
     margin-top: 5px;
 }
+
+/* STICKY FOOTER */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin: 0 0 70px; /* bottom = footer height */
+}
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 70px;
+    width: 100%;
+    background-color: #1b6d85;
+    padding-top: 20px;
+}
+
+footer p{
+    color: #FFFFFF;
+}

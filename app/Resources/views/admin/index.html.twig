@@ -143,28 +143,13 @@
                                     <small>Administrador</small>
                                 </p>
                             </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-                            </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="{{ path('logout') }}" class="btn btn-primary btn-flat">
+                                        <i class="fa fa-sign-out"></i>
+                                        Salir
+                                    </a>
                                 </div>
                             </li>
                         </ul>
@@ -210,7 +195,7 @@
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
-                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="header">MENÚ PRINCIPAL</li>
                     <li class="treeview">
                         <a href="#">
                             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
@@ -480,12 +465,24 @@
                     <div class="box-body">
                         <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                             <div class="row">
+                                <div class="col-lg-10">
+
+                                </div>
+                                <div class="col-lg-2">
+                                    <a href="{{ path('Register') }}" class="btn btn-success">
+                                        <i class="fa fa-plus"></i>
+                                        Añadir nuevo
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div class="row">
                                 <div class="col-sm-12">
                                     <table id="example1" class="table table-bordered table-striped table-hover dataTable"
                                            role="grid" aria-describedby="example1_info">
                                         <thead>
                                         <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
                                                 colspan="1" aria-sort="ascending"
                                                 aria-label="Rendering engine: activate to sort column descending"
                                                 style="width: 168px;">Imagen
@@ -518,9 +515,9 @@
                                         <tr role="row" class="odd">
                                             <td class="sorting_1">
                                                 {% if usuario.imagenPerfil == null %}
-                                                    <img src="{{ asset('assets/images/default-avatar.jpg') }}" class="img-circle" width="40px" alt="avatar" />
+                                                    <img src="{{ asset('assets/images/default-avatar.jpg') }}" class="img-circle" width="30px" alt="avatar" />
                                                 {% else %}
-                                                    <img src="{{ asset('uploads/users/'~usuario.imagenPerfil) }}" class="img-circle" width="40px" alt="avatar" />
+                                                    <img src="{{ asset('uploads/users/'~usuario.imagenPerfil) }}" class="img-circle" width="30px" alt="avatar" />
                                                 {% endif %}
                                             </td>
                                             <td>
@@ -543,7 +540,7 @@
                                                 <a href="{{ path('editar_a_usuario', {'id': usuario.id}) }}">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                                <a href="#">
+                                                <a href="{{ path('borrar_usuario', {'id' : usuario.id}) }}">
                                                     <i class="fa fa-power-off text-danger"></i>
                                                 </a>
                                             </td>
@@ -779,13 +776,7 @@
         </div>
         <!-- /.content-wrapper -->
 
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 2.3.8
-            </div>
-            <strong>Copyright &copy; 2014-2016 <a href="http://almsaeedstudio.com">Almsaeed Studio</a>.</strong> All rights
-            reserved.
-        </footer>
+
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

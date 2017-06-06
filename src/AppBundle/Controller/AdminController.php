@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Usuario;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,6 +38,45 @@ class AdminController extends Controller{
             'usuarios' => $usuarios,
             'mensajes' => $mensajes
         ]);
+    }
+
+    /**
+     * @Route("/eliminar/usuario/{id}", name="borrar_usuario", methods={"GET"})
+     * @param Usuario $usuario
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function borrarUsuarioAction(Usuario $usuario)
+    {
+        return $this->render(':admin:borrarUsuario.html.twig', [
+            'usuario' => $usuario
+        ]);
+    }
+
+    /**
+     * @Route("/eliminar/usuario/{id}", name="confirmar_borrar_usuario", methods={"POST"})
+     * @param Usuario $usuario
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function borrarDeVerdadAction(Usuario $usuario){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        try {
+            foreach($usuario->getViajes() as $viaje) {
+                $viaje->setActivo(false);
+            }
+            foreach($usuario->getRutinas() as $rutina) {
+                $rutina->setActivo(false);
+            }
+            $usuario->getVehiculo()->setActivo(false);
+
+            $usuario->setEstado(false);
+            $em->flush();
+            $this->addFlash('estado', 'El usuario se ha eliminado con éxito');
+        }
+        catch(Exception $e) {
+            $this->addFlash('error', 'Hubo algún error. No se ha podido eliminar el usuario');
+        }
+        return $this->redirectToRoute('administracion');
     }
 
     public function getViajes($request){

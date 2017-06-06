@@ -1,0 +1,19 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <div class="admin-panel text-center box-default col-lg-8">
+        <h1>Confirmar eliminación de {{ usuario.nombre }} {{ usuario.apellidos }} ({{ usuario.nick }})</h1>
+        <form method="post" action="{{ path('confirmar_borrar_usuario', {'id': usuario.id}) }}" name="confirmar">
+            <a href="{{ path('administracion') }}" class="btn btn-info">
+                <i class="fa fa-arrow-left"></i>
+                No, quiero volver
+            </a>
+            <button type="submit" name="eliminar" class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+                Sí, quiero eliminarlo
+            </button>
+
+        </form>
+    </div>
+
+{% endblock %}

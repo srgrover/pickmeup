@@ -41,7 +41,7 @@ class UserController extends Controller{
      * @return Response
      */
     public function RegisterAction(Request $request){
-        if(is_object($this->getUser())){        //El usuario está logueado
+        if(is_object($this->getUser()) && !$this->getUser()->isAdmin()){        //El usuario está logueado
             return $this->redirect('home');
         }
 
@@ -120,6 +120,7 @@ class UserController extends Controller{
      * @Route("/perfil/editar", name="user_edit")
      * @Route("/perfil/editar/{id}", name="editar_a_usuario")
      * @param Request $request
+     * @param Usuario|null $usuario
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editarUsuarioAction(Request $request, Usuario $usuario = null){
@@ -188,7 +189,6 @@ class UserController extends Controller{
                 }else{
                     $this->addFlash('error', 'Los datos no se han modificado correctamente FLUSH');
                 }
-
             }else{
                 $this->addFlash('error', 'El usuario ya existe !!');
             }

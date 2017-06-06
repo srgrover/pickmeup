@@ -184,14 +184,14 @@ class Usuario implements UserInterface, \Serializable {
      *
      * @var Viaje
      */
-    protected $viaje;
+    protected $viajes;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Rutina", mappedBy="conductor")
      *
      * @var Rutina
      */
-    protected $rutina;
+    protected $rutinas;
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Vehiculo", mappedBy="conductor")
@@ -559,17 +559,33 @@ class Usuario implements UserInterface, \Serializable {
     /**
      * @return Viaje
      */
-    public function getViaje()
+    public function getViajes()
     {
-        return $this->viaje;
+        return $this->viajes;
     }
 
     /**
-     * @param Viaje $viaje
+     * @param Viaje $viajes
      */
-    public function setViaje($viaje)
+    public function setViajes($viajes)
     {
-        $this->viaje = $viaje;
+        $this->viajes = $viajes;
+    }
+
+    /**
+     * @return Rutina
+     */
+    public function getRutinas()
+    {
+        return $this->rutinas;
+    }
+
+    /**
+     * @param Rutina $rutinas
+     */
+    public function setRutinas($rutinas)
+    {
+        $this->rutinas = $rutinas;
     }
 
     /**
@@ -641,7 +657,8 @@ class Usuario implements UserInterface, \Serializable {
      */
     public function __construct()
     {
-        $this->viaje = new ArrayCollection();
+        $this->viajes = new ArrayCollection();
+        $this->rutinas = new ArrayCollection();
         $this->notificacion = new ArrayCollection();
         $this->emisor = new ArrayCollection();
         $this->receptor = new ArrayCollection();
@@ -666,7 +683,7 @@ class Usuario implements UserInterface, \Serializable {
      */
     public function addViaje(Viaje $viaje)
     {
-        $this->viaje[] = $viaje;
+        $this->viajes[] = $viaje;
 
         return $this;
     }
@@ -678,7 +695,31 @@ class Usuario implements UserInterface, \Serializable {
      */
     public function removeViaje(Viaje $viaje)
     {
-        $this->viaje->removeElement($viaje);
+        $this->viajes->removeElement($viaje);
+    }
+
+    /**
+     * Add rutina
+     *
+     * @param Rutina $rutinas
+     *
+     * @return Usuario
+     */
+    public function addRutinas(Rutina $rutinas)
+    {
+        $this->rutinas[] = $rutinas;
+
+        return $this;
+    }
+
+    /**
+     * Remove rutina
+     *
+     * @param Rutina $rutinas
+     */
+    public function removeRutinas(Rutina $rutinas)
+    {
+        $this->rutinas->removeElement($rutinas);
     }
 
     /**
