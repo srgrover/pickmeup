@@ -42,91 +42,81 @@
                     <li class="dropdown messages-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">4</span>
+                            <span class="label label-success label-notifications-msg"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 4 messages</li>
+                            <li class="header">Tienes <span class="label-notifications-msg"></span> mensajes sin leer</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
+                                    {% for mensaje in mensajes_admin %}
                                     <li><!-- start message -->
                                         <a href="#">
                                             <div class="pull-left">
-                                                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                                {% if mensaje.emisor.imagenPerfil == null %}
+                                                    <img src="{{ asset('assets/images/default-avatar.jpg') }}" class="img-circle"
+                                                         alt="avatar"/>
+                                                {% else %}
+                                                    <img src="{{ asset('uploads/users/'~mensaje.emisor.imagenPerfil) }}" class="img-circle" alt="avatar"/>
+                                                {% endif %}
                                             </div>
                                             <h4>
-                                                Support Team
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                {{ admin.nombre }} {{ admin.apellidos }}
+                                                <small>
+                                                    <i class="fa fa-clock-o"></i>
+                                                    {{ mensaje.fechaEnviado|date|localizeddate('short','none','es') }}
+                                                </small>
                                             </h4>
-                                            <p>Why not buy a new awesome theme?</p>
+                                            <p>{{ mensaje.mensaje }}</p>
                                         </a>
                                     </li>
                                     <!-- end message -->
+                                    {% endfor %}
                                 </ul>
                             </li>
-                            <li class="footer"><a href="#">See All Messages</a></li>
+                            <li class="footer">
+                                <a href="{{ path('mensajes') }}">
+                                    Ver todos los mensajes
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <!-- Notifications: style can be found in dropdown.less -->
                     <li class="dropdown notifications-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning">10</span>
+                            <span class="label label-warning label-notifications"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 10 notifications</li>
+                            <li class="header">Tienes <span class="label-notifications"></span> notificaciones</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
-                                    <li>
-                                        <a href="#">
-                                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                        </a>
-                                    </li>
+                                    {% for notif in notif_admin  %}
+                                        {% set usuario_notif = notif.tipoId|get_user %}
+                                        {% set usuario_seg = notif.idUsuario|get_user %}
+                                        <li>
+                                        {% if notif.tipo == 'follow' %}
+                                            <a style="white-space: normal">
+                                                <i class="fa fa-retweet text-primary"></i>
+                                                {{ usuario_notif.nombre }} {{ usuario_notif.apellidos }} ahora sigue a
+                                                {{ usuario_seg.nombre }} {{ usuario_seg.apellidos }}
+                                            </a>
+                                        {% endif %}
+                                        </li>
+                                    {% endfor %}
                                 </ul>
                             </li>
-                            <li class="footer"><a href="#">View all</a></li>
-                        </ul>
-                    </li>
-                    <!-- Tasks: style can be found in dropdown.less -->
-                    <li class="dropdown tasks-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-flag-o"></i>
-                            <span class="label label-danger">9</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 9 tasks</li>
-                            <li>
-                                <!-- inner menu: contains the actual data -->
-                                <ul class="menu">
-                                    <li><!-- Task item -->
-                                        <a href="#">
-                                            <h3>
-                                                Design some buttons
-                                                <small class="pull-right">20%</small>
-                                            </h3>
-                                            <div class="progress xs">
-                                                <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                    <span class="sr-only">20% Complete</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- end task item -->
-                                </ul>
-                            </li>
-                            <li class="footer">
-                                <a href="#">View all tasks</a>
-                            </li>
+                            <li class="footer"><a href="{{ path('all_notificaciones') }}">Ver todo</a></li>
                         </ul>
                     </li>
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             {% if admin.imagenPerfil == null %}
-                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" class="user-image" alt="avatar" />
+                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" width="" class="user-image" alt="avatar"/>
                             {% else %}
-                                <img src="{{ asset('uploads/users/'~admin.imagenPerfil) }}" alt="avatar" />
+                                <img src="{{ asset('uploads/users/'~admin.imagenPerfil) }}" width="" class="user-image" alt="avatar"/>
                             {% endif %}
                             <span class="hidden-xs">{{ admin.nombre }} {{ admin.apellidos }}</span>
                         </a>
@@ -134,9 +124,9 @@
                             <!-- User image -->
                             <li class="user-header">
                                 {% if admin.imagenPerfil == null %}
-                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" class="img-circle" alt="avatar" />
+                                    <img src="{{ asset('assets/images/default-avatar.jpg') }}" class="img-circle" alt="avatar"/>
                                 {% else %}
-                                    <img src="{{ asset('uploads/users/'~admin.imagenPerfil) }}" alt="avatar" />
+                                    <img src="{{ asset('uploads/users/'~admin.imagenPerfil) }}" class="img-circle" alt="avatar"/>
                                 {% endif %}
                                 <p>
                                     {{ admin.nombre }} {{ admin.apellidos }} - {{ admin.nick }}
@@ -145,6 +135,12 @@
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">
+                                <div class="pull-left">
+                                    <a href="{{ path('user_edit') }}" class="btn btn-primary btn-flat">
+                                        <i class="fa fa-edit"></i>
+                                        Editar
+                                    </a>
+                                </div>
                                 <div class="pull-right">
                                     <a href="{{ path('logout') }}" class="btn btn-primary btn-flat">
                                         <i class="fa fa-sign-out"></i>
@@ -170,9 +166,9 @@
                 <div class="user-panel">
                     <div class="pull-left image">
                         {% if admin.imagenPerfil == null %}
-                            <img src="{{ asset('assets/images/default-avatar.jpg') }}" class="img-circle" alt="avatar" />
+                            <img src="{{ asset('assets/images/default-avatar.jpg') }}" width="" class="img-circle" alt="avatar"/>
                         {% else %}
-                            <img src="{{ asset('uploads/users/'~admin.imagenPerfil) }}" alt="avatar" />
+                            <img src="{{ asset('uploads/users/'~admin.imagenPerfil) }}" width="" class="img-circle" alt="avatar"/>
                         {% endif %}
                     </div>
                     <div class="pull-left info">
@@ -183,188 +179,87 @@
                     </div>
                 </div>
                 <!-- search form -->
-                <form action="#" method="get" class="sidebar-form">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Search...">
-                        <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-                    </div>
-                </form>
+                {#<form action="#" method="get" class="sidebar-form">#}
+                    {#<div class="input-group">#}
+                        {#<input type="text" name="q" class="form-control" placeholder="Search...">#}
+                        {#<span class="input-group-btn">#}
+                {#<button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>#}
+                {#</button>#}
+              {#</span>#}
+                    {#</div>#}
+                {#</form>#}
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
                 <ul class="sidebar-menu">
                     <li class="header">MENÚ PRINCIPAL</li>
-                    <li class="treeview">
+                    <li class="active">
                         <a href="#">
-                            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-                            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+                            <i class="fa fa-dashboard"></i> <span>Administración</span>
                         </a>
-                        <ul class="treeview-menu">
-                            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                        </ul>
                     </li>
-                    <li class="treeview active">
-                        <a href="#">
-                            <i class="fa fa-files-o"></i>
-                            <span>Layout Options</span>
-                            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                            <li><a href="boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                            <li><a href="fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                            <li class="active"><a href="collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="../widgets.html">
-                            <i class="fa fa-th"></i> <span>Widgets</span>
-                            <span class="pull-right-container">
-              <small class="label pull-right bg-green">new</small>
-            </span>
+                    <li class="">
+                        <a href="{{ path('users') }}">
+                            <i class="fa fa-group"></i>
+                            <span>Usuarios</span>
                         </a>
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i class="fa fa-pie-chart"></i>
-                            <span>Charts</span>
+                            <i class="fa fa-plus"></i>
+                            <span>Añadir</span>
                             <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="../charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a></li>
-                            <li><a href="../charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a></li>
-                            <li><a href="../charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a></li>
-                            <li><a href="../charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-laptop"></i>
-                            <span>UI Elements</span>
-                            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="../UI/general.html"><i class="fa fa-circle-o"></i> General</a></li>
-                            <li><a href="../UI/icons.html"><i class="fa fa-circle-o"></i> Icons</a></li>
-                            <li><a href="../UI/buttons.html"><i class="fa fa-circle-o"></i> Buttons</a></li>
-                            <li><a href="../UI/sliders.html"><i class="fa fa-circle-o"></i> Sliders</a></li>
-                            <li><a href="../UI/timeline.html"><i class="fa fa-circle-o"></i> Timeline</a></li>
-                            <li><a href="../UI/modals.html"><i class="fa fa-circle-o"></i> Modals</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-edit"></i> <span>Forms</span>
-                            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="../forms/general.html"><i class="fa fa-circle-o"></i> General Elements</a></li>
-                            <li><a href="../forms/advanced.html"><i class="fa fa-circle-o"></i> Advanced Elements</a></li>
-                            <li><a href="../forms/editors.html"><i class="fa fa-circle-o"></i> Editors</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-table"></i> <span>Tables</span>
-                            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="../tables/simple.html"><i class="fa fa-circle-o"></i> Simple tables</a></li>
-                            <li><a href="../tables/data.html"><i class="fa fa-circle-o"></i> Data tables</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="../calendar.html">
-                            <i class="fa fa-calendar"></i> <span>Calendar</span>
-                            <span class="pull-right-container">
-              <small class="label pull-right bg-red">3</small>
-              <small class="label pull-right bg-blue">17</small>
-            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="../mailbox/mailbox.html">
-                            <i class="fa fa-envelope"></i> <span>Mailbox</span>
-                            <span class="pull-right-container">
-              <small class="label pull-right bg-yellow">12</small>
-              <small class="label pull-right bg-green">16</small>
-              <small class="label pull-right bg-red">5</small>
-            </span>
-                        </a>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-folder"></i> <span>Examples</span>
-                            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="../examples/invoice.html"><i class="fa fa-circle-o"></i> Invoice</a></li>
-                            <li><a href="../examples/profile.html"><i class="fa fa-circle-o"></i> Profile</a></li>
-                            <li><a href="../examples/login.html"><i class="fa fa-circle-o"></i> Login</a></li>
-                            <li><a href="../examples/register.html"><i class="fa fa-circle-o"></i> Register</a></li>
-                            <li><a href="../examples/lockscreen.html"><i class="fa fa-circle-o"></i> Lockscreen</a></li>
-                            <li><a href="../examples/404.html"><i class="fa fa-circle-o"></i> 404 Error</a></li>
-                            <li><a href="../examples/500.html"><i class="fa fa-circle-o"></i> 500 Error</a></li>
-                            <li><a href="../examples/blank.html"><i class="fa fa-circle-o"></i> Blank Page</a></li>
-                            <li><a href="../examples/pace.html"><i class="fa fa-circle-o"></i> Pace Page</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="#">
-                            <i class="fa fa-share"></i> <span>Multilevel</span>
-                            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
                             <li>
-                                <a href="#"><i class="fa fa-circle-o"></i> Level One
-                                    <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
+                                <a href="{{ path('Register') }}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Usuario
                                 </a>
-                                <ul class="treeview-menu">
-                                    <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-circle-o"></i> Level Two
-                                            <span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                                        </a>
-                                        <ul class="treeview-menu">
-                                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                            <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
                             </li>
-                            <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
+                            <li>
+                                <a href="{{ path('add_viaje') }}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Viaje
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('add_rutina') }}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Rutina
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('add_coche') }}">
+                                    <i class="fa fa-circle-o"></i>
+                                    Coche
+                                </a>
+                            </li>
                         </ul>
                     </li>
-                    <li><a href="../../documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
-                    <li class="header">LABELS</li>
-                    <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
+                    <li>
+                        <a href="{{ path('mensajes') }}">
+                            <i class="fa fa-envelope"></i> <span>Mensajes</span>
+                            <span class="pull-right-container">
+                                <small class="label pull-right bg-green label-notifications-msg"></small>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="treeview">
+                        <a href="{{ path('all_notificaciones') }}">
+                            <i class="fa fa-bell"></i> <span>Notificaciones</span>
+                            <span class="pull-right-container">
+                                <small class="label pull-right bg-green label-notifications"></small>
+                            </span>
+
+                        </a>
+                    </li>
+
+                    <li class="header">MÁS</li>
+                    <li><a href="#"><i class="fa fa-book"></i> <span>Contacto</span></a></li>
+                    <li><a href="#"><i class="fa fa-question"></i> <span>Ayuda</span></a></li>
+                    <li><a href="#"><i class="fa fa-info"></i> <span>Información</span></a></li>
                 </ul>
             </section>
             <!-- /.sidebar -->
@@ -377,13 +272,20 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
-                    Sidebar Collapsed
-                    <small>Layout with collapsed sidebar on load</small>
+                    Panel de administracion
+                    <small>PICKME<strong>UP!</strong></small>
                 </h1>
                 <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li><a href="#">Layout</a></li>
-                    <li class="active">Collapsed Sidebar</li>
+                    <li>
+                        <a href="{{ path('administracion') }}">
+                            <i class="fa fa-dashboard"></i>
+                            Administración
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('administracion') }}">Inicio</a>
+                    </li>
+                    <li>Vista general</li>
                 </ol>
             </section>
 
@@ -399,7 +301,7 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Usuarios registrados</span>
-                                <h3 class="text-center">{{ usuarios|length }}</h3>
+                                <h3 class="text-center">{{ total_usuarios }}</h3>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -414,7 +316,7 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Viajes añadidos</span>
-                                <h3 class="text-center">{{ viajes|length }}</h3>
+                                <h3 class="text-center">{{ total_viajes }}</h3>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -433,7 +335,7 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Rutinas añadidas</span>
-                                <h3 class="text-center">{{ rutinas|length }}</h3>
+                                <h3 class="text-center">{{ total_rutinas }}</h3>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -448,7 +350,7 @@
 
                             <div class="info-box-content">
                                 <span class="info-box-text">Total de mensajes</span>
-                                <h3 class="text-center">{{ mensajes|length }}</h3>
+                                <h3 class="text-center">{{ total_mensajes }}</h3>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -478,7 +380,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="example1" class="table table-bordered table-striped table-hover dataTable"
+                                    <table id="example1"
+                                           class="table table-bordered table-striped table-hover dataTable"
                                            role="grid" aria-describedby="example1_info">
                                         <thead>
                                         <tr role="row">
@@ -512,39 +415,55 @@
                                         </thead>
                                         <tbody>
                                         {% for usuario in usuarios %}
-                                        <tr role="row" class="odd">
-                                            <td class="sorting_1">
-                                                {% if usuario.imagenPerfil == null %}
-                                                    <img src="{{ asset('assets/images/default-avatar.jpg') }}" class="img-circle" width="30px" alt="avatar" />
-                                                {% else %}
-                                                    <img src="{{ asset('uploads/users/'~usuario.imagenPerfil) }}" class="img-circle" width="30px" alt="avatar" />
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {{ usuario.nombre }}
-                                            </td>
-                                            <td>
-                                                {{ usuario.apellidos }}
-                                            </td>
-                                            <td>
-                                                {{ usuario.nick }}
-                                            </td>
-                                            <td>
-                                                {% if usuario.estado == true %}
-                                                    <label class="label label-success">Activo</label>
-                                                {% else %}
-                                                    <label class="label label-danger">Activo</label>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                <a href="{{ path('editar_a_usuario', {'id': usuario.id}) }}">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <a href="{{ path('borrar_usuario', {'id' : usuario.id}) }}">
-                                                    <i class="fa fa-power-off text-danger"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                            <tr role="row"
+                                                class="odd {% if usuario.estado == false %}alert alert-warning{% endif %}">
+                                                <td class="sorting_1">
+                                                    {% if usuario.imagenPerfil == null %}
+                                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% else %}
+                                                        <img src="{{ asset('uploads/users/'~usuario.imagenPerfil) }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {{ usuario.nombre }}
+                                                </td>
+                                                <td>
+                                                    {{ usuario.apellidos }}
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('perfil_usuario', {'nick':usuario.nick}) }}">
+                                                        {{ usuario.nick }}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {% if usuario.estado == true %}
+                                                        <label class="label label-success">Activo</label>
+                                                    {% else %}
+                                                        <label class="label label-danger">Inactivo</label>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <a href="{{ path('editar_a_usuario', {'id': usuario.id}) }}"
+                                                       data-toggle="tooltip" title="Editar">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    {% if usuario.estado %}
+                                                        <a href="{{ path('borrar_usuario', {'id' : usuario.id}) }}"
+                                                           data-toggle="tooltip" title="Desactivar">
+                                                            <i class="fa fa-power-off text-danger"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ path('activar_usuario', {'id' : usuario.id}) }}"
+                                                           data-toggle="tooltip" title="Activar">
+                                                            <i class="fa fa-power-off text-success"></i>
+                                                        </a>
+                                                    {% endif %}
+
+                                                </td>
+                                            </tr>
+
                                         {% endfor %}
                                         </tbody>
                                     </table>
@@ -572,7 +491,8 @@
                         <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="example1" class="table table-bordered table-striped table-hover dataTable"
+                                    <table id="example1"
+                                           class="table table-bordered table-striped table-hover dataTable"
                                            role="grid" aria-describedby="example1_info">
                                         <thead>
                                         <tr role="row">
@@ -610,7 +530,8 @@
                                         </thead>
                                         <tbody>
                                         {% for viaje in viajes %}
-                                            <tr role="row" class="odd">
+                                            <tr role="row"
+                                                class="odd {% if viaje.activo == false %}alert alert-warning{% endif %}">
                                                 <td class="sorting_1">
                                                     <i class="fa fa-circle-o text-success"></i>
                                                     {{ viaje.origen }}
@@ -637,12 +558,26 @@
                                                     {% endif %}
                                                 </td>
                                                 <td>
-                                                    <a href="{{ path('editar_viaje', {'id': viaje.id}) }}">
+                                                    <a href="{{ path('editar_viaje', {'id': viaje.id}) }}"
+                                                       data-toggle="tooltip" title="Editar">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <a href="#">
-                                                        <i class="fa fa-power-off text-danger"></i>
+                                                    {% if viaje.activo %}
+                                                        <a href="{{ path('borrar_viaje', {'id' : viaje.id}) }}"
+                                                           data-toggle="tooltip" title="Desactivar">
+                                                            <i class="fa fa-power-off text-danger"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ path('activar_viaje', {'id' : viaje.id}) }}"
+                                                           data-toggle="tooltip" title="Activar">
+                                                            <i class="fa fa-power-off text-success"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                    <a href="{{ path('ver_viaje', {'id': viaje.id}) }}"
+                                                       data-toggle="tooltip" title="Ver viaje" class="pull-right">
+                                                        <i class="fa fa-eye text-success"></i>
                                                     </a>
+
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -672,7 +607,8 @@
                         <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <table id="example1" class="table table-bordered table-striped table-hover dataTable"
+                                    <table id="example1"
+                                           class="table table-bordered table-striped table-hover dataTable"
                                            role="grid" aria-describedby="example1_info">
                                         <thead>
                                         <tr role="row">
@@ -710,7 +646,8 @@
                                         </thead>
                                         <tbody>
                                         {% for rutina in rutinas %}
-                                            <tr role="row" class="odd">
+                                            <tr role="row"
+                                                class="odd {% if rutina.activo == false %}alert alert-warning{% endif %}">
                                                 <td class="sorting_1">
                                                     <i class="fa fa-circle-o text-success"></i>
                                                     {{ rutina.origen }}
@@ -737,11 +674,24 @@
                                                     {% endif %}
                                                 </td>
                                                 <td>
-                                                    <a href="{{ path('editar_rutina', {'id': rutina.id}) }}">
+                                                    <a href="{{ path('editar_rutina', {'id': rutina.id}) }}"
+                                                       data-toggle="tooltip" title="Editar">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
-                                                    <a href="#">
-                                                        <i class="fa fa-power-off text-danger"></i>
+                                                    {% if rutina.activo %}
+                                                        <a href="{{ path('borrar_rutina', {'id': rutina.id}) }}"
+                                                           data-toggle="tooltip" title="Desactivar">
+                                                            <i class="fa fa-power-off text-danger"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{{ path('activar_rutina', {'id': rutina.id}) }}"
+                                                           data-toggle="tooltip" title="Activar">
+                                                            <i class="fa fa-power-off text-success"></i>
+                                                        </a>
+                                                    {% endif %}
+                                                    <a href="{{ path('ver_rutina', {'id': rutina.id}) }}"
+                                                       data-toggle="tooltip" title="Ver rutina" class="pull-right">
+                                                        <i class="fa fa-eye text-success"></i>
                                                     </a>
                                                 </td>
                                             </tr>
@@ -763,11 +713,99 @@
                 </div>
 
 
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">MENSAJES ENVIADOS EN LA APLICACIÓN</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table id="example1"
+                                           class="table table-bordered table-striped table-hover dataTable"
+                                           role="grid" aria-describedby="example1_info">
+                                        <thead>
+                                        <tr role="row">
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending"
+                                                style="width: 168px;">Emisor
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-label="Browser: activate to sort column ascending"
+                                                style="width: 208px;">Receptor
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
+                                                style="width: 183px;">Fecha
+                                            </th>
+                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
+                                                style="width: 183px;">Mensaje
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for mensaje_u in mensajes %}
+                                            <tr role="row" class="odd">
+                                                <td class="sorting_2">
+                                                    {% if mensaje_u.emisor.imagenPerfil == null %}
+                                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% else %}
+                                                        <img src="{{ asset('uploads/users/'~mensaje_u.emisor.imagenPerfil) }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% endif %}
+                                                    <a href="{{ path('perfil_usuario', {'nick': mensaje_u.emisor.nick}) }}">
+                                                        {{ mensaje_u.emisor.nombre }} {{ mensaje_u.emisor.apellidos }}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    {% if mensaje_u.receptor.imagenPerfil == null %}
+                                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% else %}
+                                                        <img src="{{ asset('uploads/users/'~mensaje_u.receptor.imagenPerfil) }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% endif %}
+                                                    <a href="{{ path('perfil_usuario', {'nick': mensaje_u.receptor.nick}) }}">
+                                                        {{ mensaje_u.receptor.nombre }} {{ mensaje_u.receptor.apellidos }}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <i class="fa fa-calendar"></i>
+                                                    {{ mensaje_u.fechaEnviado|date|localizeddate('long','none','es') }}
+                                                </td>
+                                                <td>
+                                                    {{ mensaje_u.mensaje }}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-11">
+                                    <div class="navigation">
+                                        {{ knp_pagination_render(mensajes) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="callout callout-info">
                     <h4>Tip!</h4>
 
-                    <p>Add the sidebar-collapse class to the body tag to get this layout. You should combine this option with a
-                        fixed layout if you have a long sidebar. Doing that will prevent your page content from getting stretched
+                    <p>Add the sidebar-collapse class to the body tag to get this layout. You should combine this option
+                        with a
+                        fixed layout if you have a long sidebar. Doing that will prevent your page content from getting
+                        stretched
                         vertically.</p>
                 </div>
                 <!-- /.box -->
@@ -775,7 +813,6 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-
 
 
         <!-- Control Sidebar -->
@@ -958,7 +995,8 @@
                         <div class="form-group">
                             <label class="control-sidebar-subheading">
                                 Delete chat history
-                                <a href="javascript:void(0)" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
+                                <a href="javascript:void(0)" class="text-red pull-right"><i
+                                            class="fa fa-trash-o"></i></a>
                             </label>
                         </div>
                         <!-- /.form-group -->

@@ -76,7 +76,7 @@ class Rutina{
     protected $precio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="rutina")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="rutinas")
      *
      * @var Usuario
      */

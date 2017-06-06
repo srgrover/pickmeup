@@ -1,7 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-
+<div class="container mt-2">
     <div class="col-lg-10 box-default no-padding-lados">
         <h1 class="box-header">
             Mensajes
@@ -45,7 +45,7 @@
                                 ({{ mensaje.emisor.nick }})
                                 -
                                 <span class="pub-date">
-                                ({{ mensaje.fechaEnviado|date('d-m-Y') }})
+                                ({{ mensaje.fechaEnviado|date|localizeddate('short','none','es') }})
                             </span>
                             </p>
                             <div class="avatar">
@@ -87,5 +87,6 @@
 
         <div class="clearfix"></div>
     </div>
+</div>
 {% endblock %}
 

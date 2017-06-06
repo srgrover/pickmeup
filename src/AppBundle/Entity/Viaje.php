@@ -90,7 +90,7 @@ class Viaje{
     protected $precio;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="viaje")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="viajes")
      *
      * @var Usuario
      */

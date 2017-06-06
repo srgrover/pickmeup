@@ -107,9 +107,29 @@ header nav .add-pub a:hover{
     color: #FFFFFF !important;
 }
 
+.mt-1{
+    margin-top: 10px;
+}
+
+.mt-2{
+    margin-top: 20px;
+}
+
+.mt-3{
+    margin-top: 30px;
+}
+
+.mt-4{
+    margin-top: 40px;
+}
+
+.mt-5{
+    margin-top: 50px;
+}
+
 /* CONTENT */
 #content{
-    margin-top: 80px;
+    margin-top: 55px;
 }
 
 /* REGISTRO */
@@ -262,6 +282,12 @@ header nav .add-pub a:hover{
 
 .price-label, .plazas-label{
     font-size: 25px;
+}
+
+.box-busqueda-viajes{
+    padding: 15px;
+    background-color: #017ebc;
+    margin-bottom: 20px;
 }
 
 /* AÑADIR RUTINA */

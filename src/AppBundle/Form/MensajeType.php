@@ -22,7 +22,11 @@ class MensajeType extends AbstractType
             ->add('receptor', EntityType::class, [
                 'class' => 'AppBundle\Entity\Usuario',
                 'query_builder' => function($er) use($usuario){
-                    return $er->getUsuariosSiguiendo($usuario);
+                    if ($usuario->isAdmin()){
+                        return $er->getAllUsuarios();
+                    }else{
+                        return $er->getUsuariosSiguiendo($usuario);
+                    }
                 },
                 'choice_label' => function($usuario){
                     return $usuario->getNombre()." ".$usuario->getApellidos();

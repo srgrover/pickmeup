@@ -2,8 +2,13 @@
 
 {% block content %}
     {% set ruta = app.request.get('_route') %}
+    <h4 style="padding-left: 20px;">
+        <a href="{{ path('homepage') }}">
+            <i class="fa fa-long-arrow-left"></i>
+            Volver a la página principal
+        </a>
+    </h4>
     <div class="col-lg-6 box-form">
-
         <h1>
             {% if ruta == 'add_rutina' %}
                 Añadir una rutina

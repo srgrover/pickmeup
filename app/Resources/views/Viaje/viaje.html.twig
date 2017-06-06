@@ -68,11 +68,43 @@
                     {{ viaje.descripcion }}
                 </span>
                 <span>
-                    <a href="#" class="btn btn-primary">
+                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#mensaje">
                         <i class="fa fa-send"></i>
                         Contactar con el conductor
                     </a>
                 </span>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="mensaje" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Enviar mensaje a
+                            <a href="{{ path('perfil_usuario', {'nick': viaje.conductor.nick}) }}">
+                                {{ viaje.conductor.nombre }} {{ viaje.conductor.apellidos }}
+                            </a>
+                        </h4>
+                    </div>
+                    {{ form_start(formulario) }}
+                    <div class="modal-body">
+                        {{ form_widget(formulario) }}
+                        <p class="text-muted text-center">
+                            <i class="fa fa-warning"></i>
+                            Evita enviar contraseñas, números de teléfono y demás información sensible.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-send"></i>
+                            Enviar
+                        </button>
+                    </div>
+                    {{ form_end(formulario) }}
+                </div>
             </div>
         </div>
         <div class="col-lg-1"></div>
@@ -128,13 +160,17 @@
                 <hr>
                 <h4 class="text-left">Coche</h4>
                 {% if viaje.conductor.vehiculo|length > 0 %}
-                    <span class="text-left">
-                        {{ viaje.conductor.vehiculo.marca }} {{ viaje.conductor.vehiculo.modelo }}
-                    </span>
-                    <span class="text-left">
-                        Color
-                        {{ viaje.conductor.vehiculo.color }}
-                    </span>
+                    <div class="col-lg-1"></div>
+                    <h4 class="col-lg-3 col-sm-12">
+                        <small>Marca</small><br>{{ viaje.conductor.vehiculo.marca }}
+                    </h4>
+                    <h4 class="col-lg-3 col-sm-12">
+                        <small>Modelo</small><br>{{ viaje.conductor.vehiculo.modelo }}
+                    </h4>
+                    <h4 class="col-lg-3 col-sm-12">
+                        <small>Color</small><br>{{ viaje.conductor.vehiculo.color }}
+                    </h4>
+                    <div class="col-lg-1"></div>
                 {% else %}
                     <h5>El usuario no ha introducido información sobre su vehículo</h5>
                 {% endif %}

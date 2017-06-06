@@ -27,7 +27,6 @@
     <body {% if app.user and app.user.isAdmin() %} class="hold-transition skin-blue sidebar-mini" {% endif %}>
         <section id="content" {% if app.user and app.user.isAdmin() %}class="no-margin"{% endif %}>
             {% block body %}{% endblock %}
-            <div class="push"></div>
         </section>
         {% block footer %}
         <footer>

@@ -30,7 +30,7 @@ class Mensaje{
      *
      * @var \DateTime
      */
-    protected $fechaEnviado;
+    protected $fecha_enviado;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="emisor")
@@ -81,15 +81,15 @@ class Mensaje{
      */
     public function getFechaEnviado()
     {
-        return $this->fechaEnviado;
+        return $this->fecha_enviado;
     }
 
     /**
-     * @param mixed $fechaEnviado
+     * @param mixed $fecha_enviado
      */
-    public function setFechaEnviado($fechaEnviado)
+    public function setFechaEnviado($fecha_enviado)
     {
-        $this->fechaEnviado = $fechaEnviado;
+        $this->fecha_enviado = $fecha_enviado;
     }
 
     /**

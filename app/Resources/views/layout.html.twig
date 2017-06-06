@@ -151,7 +151,7 @@
         </nav>
     {% endblock %}
     </header>
-    <div class="container{% if app.user and app.user.isAdmin() %} no-padding{% endif %}" style="width: 100%;">
+    <div class="container no-padding-lados {% if app.user and app.user.isAdmin() %} no-padding{% endif %}" style="width: 100%;">
         {% if app.session.flashBag.has('estado') %}
             {% set mensajes = app.session.flashBag.get('estado') %}
             {% for mensaje in mensajes %}

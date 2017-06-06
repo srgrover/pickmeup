@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Mensaje;
-use AppBundle\Entity\Usuario;
 use AppBundle\Form\MensajeType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,15 +18,13 @@ class MensajeController extends Controller{
     /**
      * @Route("/mensajes", name="mensajes")
      * @param Request $request
-     * @param Usuario|null $usuario
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @internal param Usuario|null $usuario
      */
-    public function indexAction(Request $request, Usuario $usuario = null){
+    public function indexAction(Request $request){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
-        if ($usuario == null){
-            $usuario = $this->getUser();
-        }
+        $usuario = $this->getUser();
         $mensaje = new Mensaje();
         $formulario = $this->createForm(MensajeType::class, $mensaje,[
             'empty_data' => $usuario
@@ -85,7 +82,7 @@ class MensajeController extends Controller{
             }else{
                 $query->where('m.receptor = :usuario');
             }
-            $query->orderBy('m.fechaEnviado', 'DESC')
+            $query->orderBy('m.fecha_enviado', 'DESC')
             ->setParameter('usuario', $usuario->getId())
             ->getQuery();
 
@@ -101,6 +98,8 @@ class MensajeController extends Controller{
 
     /**
      * @Route("/mensajes/no-leidos", name="mensajes_no_leidos")
+     * @param Request $request
+     * @return Response
      */
     public function noLeidosAction(Request $request){
         /** @var EntityManager $em */

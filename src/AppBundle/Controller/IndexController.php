@@ -2,12 +2,15 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Mensaje;
 use AppBundle\Entity\Rutina;
 use AppBundle\Entity\Vehiculo;
 use AppBundle\Entity\Viaje;
 use AppBundle\Form\AddRutinaType;
 use AppBundle\Form\AddViajeType;
 use AppBundle\Form\CocheType;
+use AppBundle\Form\fastMensajeType;
+use AppBundle\Form\MensajeType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -110,13 +113,38 @@ class IndexController extends Controller{
 
     /**
      * @Route("/viaje/ver/{id}", name="ver_viaje")
+     * @param Request $request
      * @param Viaje $viaje
      * @return Response
      * @internal param Request $request
      */
-    public function verViajeAction(Viaje $viaje){
+    public function verViajeAction(Request $request, Viaje $viaje){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $mensaje = new Mensaje();
+        $formulario = $this->createForm(fastMensajeType::class, $mensaje);
+
+        $formulario->handleRequest($request);
+
+        if($formulario->isSubmitted() && $formulario->isValid()){
+            $mensaje->setEmisor($this->getUser());
+            $mensaje->setReceptor($viaje->getConductor());
+            $mensaje->setFechaEnviado(new \DateTime('now'));
+            $mensaje->setLeido(false);
+
+            $em->persist($mensaje);
+            $flush = $em->flush();
+
+            if($flush == null){
+                $this->addFlash('estado','El mensaje se ha enviado correctamente');
+                return $this->redirectToRoute('mensajes');
+            }else{
+                $this->addFlash('error','Hubo un problema al enviar el mensaje');
+            }
+        }
 
         return $this->render(':Viaje:viaje.html.twig', [
+            "formulario" => $formulario->createView(),
             'viaje' => $viaje
         ]);
     }
@@ -127,9 +155,34 @@ class IndexController extends Controller{
     * @return Response
     * @internal param Request $request
     */
-    public function verRutinaAction(Rutina $rutina){
+    public function verRutinaAction(Request $request, Rutina $rutina){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        $mensaje = new Mensaje();
+        $formulario = $this->createForm(fastMensajeType::class, $mensaje);
+
+        $formulario->handleRequest($request);
+
+        if($formulario->isSubmitted() && $formulario->isValid()){
+            $mensaje->setEmisor($this->getUser());
+            $mensaje->setReceptor($rutina->getConductor());
+            $mensaje->setFechaEnviado(new \DateTime('now'));
+            $mensaje->setLeido(false);
+
+            $em->persist($mensaje);
+            $flush = $em->flush();
+
+            if($flush == null){
+                $this->addFlash('estado','El mensaje se ha enviado correctamente');
+                return $this->redirectToRoute('mensajes');
+            }else{
+                $this->addFlash('error','Hubo un problema al enviar el mensaje');
+            }
+        }
+
 
         return $this->render('rutina/rutina.html.twig', [
+            "formulario" => $formulario->createView(),
             'rutina' => $rutina
         ]);
     }
@@ -315,7 +368,7 @@ class IndexController extends Controller{
             try {
                 $rutina->setActivo(false);
                 $em->flush();
-                $this->addFlash('estado', 'Rutina eliminado con éxito');
+                $this->addFlash('estado', 'Rutina eliminada con éxito');
             }
             catch(Exception $e) {
                 $this->addFlash('error', 'No se han podido eliminar la rutina');

@@ -24,4 +24,14 @@ class UsuarioRepository extends EntityRepository{
 
         return $usuarios;
     }
+
+    public function getAllUsuarios(){
+        $em = $this->getEntityManager();
+
+        $usuario_repo = $em->getRepository('AppBundle:Usuario');
+        $usuarios = $usuario_repo->createQueryBuilder('u')
+            ->orderBy('u.id', 'DESC');
+
+        return $usuarios;
+    }
 }
