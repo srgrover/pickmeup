@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Rutina;
 use AppBundle\Entity\Usuario;
 use AppBundle\Entity\Viaje;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -142,8 +143,11 @@ class NotificacionController extends Controller{
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function confirmarViajeAction(Usuario $conductor, Usuario $usuario, Viaje $viaje){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
         try{
             $viaje->setPlazasLibres($viaje->getPlazasLibres()-1);
+            $em->flush();
             $notificacion = $this->get('app.notificacion_service');
             $notificacion->set($usuario, 'Vaceptado', $conductor->getId(), $viaje->getId(), 'viaje');
             $this->addFlash('estado', 'La respuesta se ha mandado al usuario');
@@ -157,14 +161,54 @@ class NotificacionController extends Controller{
      * @Route("rutina/aceptar/{conductor}/{usuario}/{viaje}", name="confirmar_plaza_rutina")
      * @param Usuario $conductor
      * @param Usuario $usuario
-     * @param Rutina $viaje
+     * @param Rutina $rutina
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function confirmarRutinaAction(Usuario $conductor, Usuario $usuario, Rutina $viaje){
+    public function confirmarRutinaAction(Usuario $conductor, Usuario $usuario, Rutina $rutina){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        try{
+            $rutina->setPlazasLibres($rutina->getPlazasLibres()-1);
+            $em->flush();
+            $notificacion = $this->get('app.notificacion_service');
+            $notificacion->set($usuario, 'Raceptado', $conductor->getId(), $rutina->getId(), 'rutina');
+            $this->addFlash('estado', 'La respuesta se ha mandado al usuario');
+        }catch (Exception $exception){
+            $this->addFlash('error', 'Hubo algún problema al procesar la petición');
+        }
+        return $this->redirectToRoute('notificaciones');
+    }
+
+    /**
+     * @Route("viaje/denegar/{conductor}/{usuario}/{viaje}", name="denegar_plaza_viaje")
+     * @param Usuario $conductor
+     * @param Usuario $usuario
+     * @param Viaje $viaje
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function denegarViajeAction(Usuario $conductor, Usuario $usuario, Viaje $viaje){
         try{
             $viaje->setPlazasLibres($viaje->getPlazasLibres()-1);
             $notificacion = $this->get('app.notificacion_service');
-            $notificacion->set($usuario, 'Raceptado', $conductor->getId(), $viaje->getId(), 'rutina');
+            $notificacion->set($usuario, 'Vdenegado', $conductor->getId(), $viaje->getId(), 'viaje');
+            $this->addFlash('estado', 'La respuesta se ha mandado al usuario');
+        }catch (Exception $exception){
+            $this->addFlash('error', 'Hubo algún problema al procesar la petición');
+        }
+        return $this->redirectToRoute('notificaciones');
+    }
+
+    /**
+     * @Route("rutina/denegar/{conductor}/{usuario}/{viaje}", name="denegar_plaza_rutina")
+     * @param Usuario $conductor
+     * @param Usuario $usuario
+     * @param Rutina $viaje
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function denegarRutinaAction(Usuario $conductor, Usuario $usuario, Rutina $viaje){
+        try{
+            $notificacion = $this->get('app.notificacion_service');
+            $notificacion->set($usuario, 'Rdenegado', $conductor->getId(), $viaje->getId(), 'rutina');
             $this->addFlash('estado', 'La respuesta se ha mandado al usuario');
         }catch (Exception $exception){
             $this->addFlash('error', 'Hubo algún problema al procesar la petición');

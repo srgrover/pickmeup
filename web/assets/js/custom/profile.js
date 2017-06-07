@@ -21,4 +21,8 @@ $(document).ready(function () {
     ias.extension(new IASNoneLeftExtension({
         text: 'No hay mas publicaciones para mostrar' //Texto que saldrá cuando se acaben los datos a mostrar
     }));
+
+    ias.on('ready', function (event) {
+        followButtons();
+    })
 });

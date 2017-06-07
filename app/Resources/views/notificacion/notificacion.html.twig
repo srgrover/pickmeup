@@ -30,11 +30,11 @@
                                         {{ viaje_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ viaje_notif.destino }}
                                         </a>
                                         <div class="mt-1 col-lg-12">
-                                            <a href="{{ path('confirmar_plaza_viaje',{'conductor': viaje_notif.conductor.id, 'usuario': app.user.id, 'viaje': viaje_notif.id}) }}" class="btn btn-success btn-sm">
+                                            <a href="{{ path('confirmar_plaza_viaje',{'conductor': viaje_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': viaje_notif.id}) }}" class="btn btn-success btn-sm">
                                                 <i class="fa fa-check"></i>
                                                 Aceptar
                                             </a>
-                                            <a href="#" class="btn btn-danger btn-sm">
+                                            <a href="{{ path('denegar_plaza_viaje',{'conductor': viaje_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': viaje_notif.id}) }}" class="btn btn-danger btn-sm">
                                                 <i class="fa fa-remove"></i>
                                                 No aceptar
                                             </a>
@@ -49,17 +49,16 @@
                                         {{ rutina_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ rutina_notif.destino }}
                                         </a>
                                         <div class="mt-1 col-lg-12">
-                                            <a href="{{ path('confirmar_plaza_rutina',{'conductor': rutina_notif.conductor.id, 'usuario': app.user.id, 'viaje': rutina_notif.id}) }}" class="btn btn-success btn-sm">
+                                            <a href="{{ path('confirmar_plaza_rutina',{'conductor': rutina_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': rutina_notif.id}) }}" class="btn btn-success btn-sm">
                                                 <i class="fa fa-check"></i>
                                                 Aceptar
                                             </a>
-                                            <a href="#" class="btn btn-danger btn-sm">
+                                            <a href="{{ path('denegar_plaza_rutina',{'conductor': rutina_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': rutina_notif.id}) }}" class="btn btn-danger btn-sm">
                                                 <i class="fa fa-remove"></i>
                                                 No aceptar
                                             </a>
                                         </div>
                                         <div class="clearfix"></div>
-
                                     {% endif %}
                                 {% endif %}
 
@@ -75,9 +74,26 @@
                                         {% set rutina_notif = notificacion.rutaId|get_rutina %}
                                         <a href="{{ path('perfil_usuario', {'nick': usuario_notif.nick}) }}" class="label_notif label label-info">{{ usuario_notif.nombre }} {{ usuario_notif.apellidos }}</a>
                                         ha aceptado tu plaza en la ruta
-                                        <a href="{{ path('ver_viaje', {'id':rutina_notif.id}) }}" class="label_notif label label-primary col-form-label-lg">
+                                        <a href="{{ path('ver_rutina', {'id':rutina_notif.id}) }}" class="label_notif label label-primary col-form-label-lg">
                                             {{ rutina_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ rutina_notif.destino }}
                                         </a>
+                                {% endif %}
+
+                                {#DENEGADO DE PLAZAS#}
+                                {% if notificacion.tipo == "Vdenegado" %}
+                                    {% set viaje_notif = notificacion.rutaId|get_viaje %}
+                                    <a href="{{ path('perfil_usuario', {'nick': usuario_notif.nick}) }}" class="label_notif label label-info">{{ usuario_notif.nombre }} {{ usuario_notif.apellidos }}</a>
+                                    lamentablemente no ha aceptado tu plaza en su viaje
+                                    <a href="{{ path('ver_viaje', {'id':viaje_notif.id}) }}" class="label_notif label label-primary col-form-label-lg">
+                                        {{ viaje_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ viaje_notif.destino }}
+                                    </a>
+                                {% elseif notificacion.tipo == "Rdenegado" %}
+                                    {% set rutina_notif = notificacion.rutaId|get_rutina %}
+                                    <a href="{{ path('perfil_usuario', {'nick': usuario_notif.nick}) }}" class="label_notif label label-info">{{ usuario_notif.nombre }} {{ usuario_notif.apellidos }}</a>
+                                    lamentablemente no ha aceptado tu plaza en su ruta
+                                    <a href="{{ path('ver_rutina', {'id':rutina_notif.id}) }}" class="label_notif label label-primary col-form-label-lg">
+                                        {{ rutina_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ rutina_notif.destino }}
+                                    </a>
                                 {% endif %}
 
                             </div>

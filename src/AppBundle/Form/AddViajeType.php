@@ -67,7 +67,8 @@ class AddViajeType extends AbstractType
                 ],
                 'placeholder' => [
                     'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
-                ]
+                ],
+                'years' => range(Date('Y'), Date('Y')+5)
             ])
             ->add('horaSalidaIda', TimeType::class, [
                 'label' => 'Hora de salida',
@@ -87,7 +88,8 @@ class AddViajeType extends AbstractType
                 ],
                 'placeholder' => [
                     'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
-                ]
+                ],
+                'years' => range(Date('Y'), Date('Y')+5)
             ])
             ->add('horaSalidaVuelta', TimeType::class, [
                 'label' => 'Hora de Vuelta',

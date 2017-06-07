@@ -1,6 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block javascripts %}
+    <script src="{{ asset('assets/js/custom/botonSeguir.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/custom/profile.js') }}"></script>
 {% endblock %}
 
@@ -31,8 +32,13 @@
                         <div class="clearfix"></div>
                         <span class="nickname">
                         {{ usuario.nick }} - <small>Miembro desde el {{ usuario.activacion | date | localizeddate('long', 'none', 'es') }}</small>
-                    </span>
+                        </span>
                     </div>
+                    {% if usuario|following(app.user) == true %}
+                        <label class="label label-default disabled label-sm">
+                            Te sigue
+                        </label>
+                    {% endif %}
                 </div>
 
                 <div class="col-lg-4 info-usuario text-right">
@@ -45,10 +51,29 @@
                             Editar perfil
                         </a>
                     {% else %}
-                        <a href="{{ path('following_follow') }}" class="btn btn-success">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                            SEGUIR
-                        </a>
+                        {% if app.user.id != usuario.id %}
+                            <div class="pull-right buttons-following">
+                                <button class="btn btn-sm btn-success btn-follow
+                                    {% if app.user|following(usuario) == true %}
+                                        hidden
+                                    {% endif %}
+                                    " 
+                                    data-followed="{{ usuario.id }}" onclick="return window.location.reload()">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                    Seguir viajes
+                                </button>
+
+                                <button class="btn btn-sm btn-danger btn-unfollow
+                                    {% if app.user|following(usuario) == false %}
+                                        hidden
+                                    {% endif %}
+                                    "
+                                        data-followed="{{ usuario.id }}" onclick="return window.location.reload()">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    Dejar de seguir
+                                </button>
+                            </div>
+                        {% endif %}
                     {% endif %}
                 </div>
                 <!-- Modal Info Usuario-->

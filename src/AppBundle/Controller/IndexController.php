@@ -325,7 +325,7 @@ class IndexController extends Controller{
                 }
             }
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirect('/rutina/ver/'.$rutina->getId());
         }
 
         return $this->render(':publication:add_rutina.html.twig', [
@@ -360,26 +360,26 @@ class IndexController extends Controller{
 
                 if ($flush == null) {
                     if (null == $viaje) {
-                        $this->addFlash('estado', 'La rutina se ha creado correctamente');
+                        $this->addFlash('estado', 'El viaje se ha creado correctamente');
                     } else {
                         $this->addFlash('estado', 'Los cambios se han guardado correctamente');
                     }
                 } else {
                     if (null == $viaje) {
-                        $this->addFlash('error', 'Error al añadir la rutina');
+                        $this->addFlash('error', 'Error al añadir el viaje');
                     } else {
                         $this->addFlash('error', 'Los cambios no se han guardado correctamente');
                     }
                 }
             } else {
                 if (null == $viaje) {
-                    $this->addFlash('error', 'La rutina no se ha creado porque el formulario no es válido');
+                    $this->addFlash('error', 'El viaje no se ha creado porque el formulario no es válido');
                 } else {
                     $this->addFlash('error', 'Los cambios no se han guardado porque el formulario no es válido');
                 }
             }
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirect('/viaje/ver/'.$viaje->getId());
         }
 
         return $this->render(':publication:add_viaje.html.twig', [
@@ -579,5 +579,40 @@ class IndexController extends Controller{
             $this->addFlash('error', 'No tienes permisos para borrar esta rutina');
         }
         return $this->redirectToRoute('perfil_usuario');
+    }
+
+    /**
+     * @Route("viaje/añadir/plaza/{id}", name="add_plaza_viaje")
+     * @param Viaje $viaje
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function añadirPlazaViajeAction(Viaje $viaje){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        try{
+            $viaje->setPlazasLibres((int)$viaje->getPlazasLibres()+1);
+            $this->addFlash('estado', 'Se ha añadido una plaza a tu rutina');
+        }catch (Exception $exception){
+            $this->addFlash('error', 'Hubo algún problema al añadir la plaza');
+        }
+        return $this->redirect('/viaje/ver/'.$viaje->getId());
+    }
+
+    /**
+     * @Route("rutina/añadir/plaza/{id}", name="add_plaza_rutina")
+     * @param Rutina $rutina
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function añadirPlazaRutinaAction(Rutina $rutina){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        try{
+            $rutina->setPlazasLibres((int)$rutina->getPlazasLibres()+1);
+            $em->flush();
+            $this->addFlash('estado', 'Se ha añadido una plaza a tu rutina');
+        }catch (Exception $exception){
+            $this->addFlash('error', 'Hubo algún problema al añadir la plaza');
+        }
+        return $this->redirect('/rutina/ver/'.$rutina->getId());
     }
 }

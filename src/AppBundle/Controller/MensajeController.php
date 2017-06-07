@@ -42,13 +42,14 @@ class MensajeController extends Controller{
 
             if($flush == null){
                 $this->addFlash('estado','El mensaje se ha enviado correctamente');
-                return $this->redirectToRoute('mensajes');
+                return $this->redirectToRoute('mensajes_enviados');
             }else{
                 $this->addFlash('error','Hubo un problema al enviar el mensaje');
             }
         }
 
         $mensajes_privados = $this->getMensajesPrivados($request); //Mensajes recibidos
+        $this->marcarLeido($em, $usuario);
 
         return $this->render(':Mensajes:index.html.twig', [
             "formulario" => $formulario->createView(),
@@ -115,4 +116,29 @@ class MensajeController extends Controller{
 
         return new Response($contar_no_leidos);
     }
+
+
+    private function marcarLeido($em, $usuario){
+        /** @var EntityManager $em */
+
+        $respuesta = false;
+        $mensaje_repo = $em->getRepository('AppBundle:Mensaje');
+        $mensajes = $mensaje_repo->findBy([
+            'receptor' => $usuario,
+            'leido' => false
+        ]);
+
+        foreach ($mensajes as $msg){
+            $msg->setLeido(true);
+            $em->persist($msg);
+        }
+
+        $flush = $em->flush();
+        if($flush == null){
+            $respuesta = true;
+        }
+
+        return $respuesta;
+    }
+
 }

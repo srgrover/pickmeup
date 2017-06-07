@@ -2,8 +2,6 @@
 
 namespace AppBundle\Form;
 
-use AppBundle\Entity\Semana;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

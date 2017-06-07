@@ -69,6 +69,10 @@ li.active a span.glyphicon-plus{
     font-weight: 300;
 }
 
+.label-sm{
+    font-size: small !important;
+}
+
 .float-none{
     float: none !important;
 }

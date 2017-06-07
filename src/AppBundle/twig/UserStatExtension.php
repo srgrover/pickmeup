@@ -12,24 +12,26 @@ class UserStatExtension extends \Twig_Extension{
     }
 
     public function getFilters(){
-        return array(
-            new \Twig_SimpleFilter('user_stats', array($this, 'userStatsFilter'))
-        );
+        return [
+            new \Twig_SimpleFilter('user_stats', [$this, 'userStatsFilter'])
+        ];
     }
 
     public function userStatsFilter($user){
         $following_repo = $this->doctrine->getRepository('AppBundle:Seguimiento');
-        $publication_repo = $this->doctrine->getRepository('AppBundle:Viaje');
+        $viaje_repo = $this->doctrine->getRepository('AppBundle:Viaje');
+        $rutina_repo = $this->doctrine->getRepository('AppBundle:Rutina');
 
-        $user_following = $following_repo->findBy(array('usuario' => $user));       //Usuarios que estoy siguiendo
-        $followers = $following_repo->findBy(array('seguidor' => $user));           //Usuarios que estoy siguiendo
-        $user_publication = $publication_repo->findBy(array('conductor' => $user)); //Viajes de un conductor
+        $user_following = $following_repo->findBy(['usuario' => $user]);       //Usuarios que estoy siguiendo
+        $followers = $following_repo->findBy(['seguidor' => $user]);           //Usuarios que me siguen
+        $viajes = $viaje_repo->findBy(['conductor' => $user,'activo' => true]);                 //Viajes de un conductor
+        $rutinas = $rutina_repo->findBy(['conductor' => $user,'activo' => true]);               //Rutinas de un conductor
 
-        $result = array(
+        $result = [
             'siguiendo' => count($user_following),
             'seguidores' => count($followers),
-            'publicaciones' => count($user_publication)
-        );
+            'publicaciones' => count($viajes) + count($rutinas)
+        ];
 
         return $result;
 
