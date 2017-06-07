@@ -9,8 +9,14 @@
 namespace AppBundle\Services;
 
 use AppBundle\Entity\Notificacion;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
+/**
+ * Class NotificacionService
+ * @package AppBundle\Services
+ * @Security("has_role('ROLE_USER')")
+ */
 class NotificacionService{
 
     public $manager;
@@ -20,7 +26,7 @@ class NotificacionService{
     }
 
     //Guarda una notificación en la base de datos
-    public function set($usuario, $tipo, $tipoId, $extra = null){
+    public function set($usuario, $tipo, $tipoId, $ruta_id, $tipo_ruta, $extra = null){
         $status = false;
         $em = $this->manager;
 
@@ -28,6 +34,8 @@ class NotificacionService{
         $notificacion->setIdUsuario($usuario);
         $notificacion->setTipo($tipo);
         $notificacion->setTipoId($tipoId);
+        $notificacion->setRutaId($ruta_id);
+        $notificacion->setTipoRuta($tipo_ruta);
         $notificacion->setLeido(false);
         $notificacion->setCreatedAt(new \DateTime("now"));
         $notificacion->setExtra($extra);

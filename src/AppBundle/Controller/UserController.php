@@ -212,6 +212,7 @@ class UserController extends Controller{
         $usuarios = $em->createQueryBuilder()
             ->select('u')
             ->from('AppBundle:Usuario', 'u')
+            ->where('u.estado = true')
             ->orderBy('u.id', 'ASC')
             ->getQuery()
             ->getResult();

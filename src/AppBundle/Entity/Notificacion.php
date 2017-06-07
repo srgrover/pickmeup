@@ -47,6 +47,20 @@ class Notificacion{
     protected $tipo_id;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var integer
+     */
+    protected $ruta_id;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $tipo_ruta;
+
+    /**
      * @ORM\Column(type="boolean", nullable=false)
      *
      * @var boolean
@@ -129,6 +143,38 @@ class Notificacion{
     public function setTipoId($tipo_id)
     {
         $this->tipo_id = $tipo_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRutaId()
+    {
+        return $this->ruta_id;
+    }
+
+    /**
+     * @param int $ruta_id
+     */
+    public function setRutaId($ruta_id)
+    {
+        $this->ruta_id = $ruta_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTipoRuta()
+    {
+        return $this->tipo_ruta;
+    }
+
+    /**
+     * @param int $tipo_ruta
+     */
+    public function setTipoRuta($tipo_ruta)
+    {
+        $this->tipo_ruta = $tipo_ruta;
     }
 
     /**

@@ -24,7 +24,9 @@
             <link href="{{ asset('assets/css/styles.css') }}" type="text/css" rel="stylesheet" >
         {% endblock %}
     </head>
-    <body {% if app.user and app.user.isAdmin() %} class="hold-transition skin-blue sidebar-mini" {% endif %}>
+    {% set ruta = app.request.get('_route') %}
+    <body {% if app.user and app.user.isAdmin() %} class="hold-transition skin-blue sidebar-mini" {% endif %}
+            {% if ruta == 'login' or ruta == 'Register' %} class="page-login" {% endif %}>
         <section id="content" {% if app.user and app.user.isAdmin() %}class="no-margin"{% endif %}>
             {% block body %}{% endblock %}
         </section>

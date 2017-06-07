@@ -1,15 +1,15 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class="col-lg-4 box-form">
+    <div class="col-lg-4 box-form box-login">
         <h2>Identificarse</h2>
         <hr />
 
         <form action="{{ path('login_check') }}" method="post">
-            <label>Email</label>
+            <label for="username">Email</label>
             <input type="email" id="username" name="_username" value="{{ last_username }}" class="form-control" />
 
-            <label>Contraseña</label>
+            <label for="password">Contraseña</label>
             <input type="password" id="password" name="_password" class="form-control" />
 
             <input type="submit" value="Entrar" class="btn btn-success" />

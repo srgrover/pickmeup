@@ -43,7 +43,7 @@
                                         hidden
                                     {% endif %}
                                     "
-                                    data-followed="{{ user.id }}">
+                                    data-followed="{{ user.id }}" onclick="return window.location.reload()">
                                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                 Seguir viajes
                             </button>
@@ -53,7 +53,7 @@
                                         hidden
                                     {% endif %}
                                     "
-                                    data-followed="{{ user.id }}">
+                                    data-followed="{{ user.id }}" onclick="return window.location.reload()">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 Dejar de seguir
                             </button>

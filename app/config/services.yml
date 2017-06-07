@@ -37,6 +37,22 @@ services:
         tags:
             - { name: twig.extension }
 
+    get_viaje.twig_extension:
+        class: AppBundle\twig\getViajeExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+        - { name: twig.extension }
+
+    get_rutina.twig_extension:
+        class: AppBundle\twig\getRutinaExtension
+        public: false
+        arguments:
+            doctrine: "@doctrine"
+        tags:
+        - { name: twig.extension }
+
     app.notificacion_service:
         class: AppBundle\Services\NotificacionService
         arguments: ["@doctrine.orm.entity_manager"]

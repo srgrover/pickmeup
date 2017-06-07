@@ -132,9 +132,9 @@
                 <span>
                     Reserva ahora una plaza en este viaje
                 </span>
-                <button class="btn btn-warning">
+                <a href="{{ path('peticion_viaje', {'conductor':viaje.conductor.id, 'usuario':app.user.id, 'viaje':viaje.id}) }}" class="btn btn-warning">
                     Reservar 1 plaza
-                </button>
+                </a>
                 <div class="clearfix"></div>
             </div>
         </div>

@@ -21,33 +21,4 @@ $(document).ready(function () {
     ias.extension(new IASNoneLeftExtension({
         text: 'No hay mas publicaciones para mostrar' //Texto que saldrá cuando se acaben los datos a mostrar
     }));
-
-    ias.on('ready', function (event) {
-        Buttons();
-    });
-
-    ias.on('rendered', function (event) {
-        Buttons();
-    });
-
 });
-
-function Buttons() {
-    $(".pub-long-time").unbind("click").mouseenter(function () {
-        $(this).parent().find('.pub-date').fadeIn();
-    });
-
-    $(".pub-long-time").unbind("click").mouseleave(function () {
-        $(this).parent().find('.pub-date').fadeOut();
-    });
-
-    $(".btn-delete-pub").unbind("click").click(function () {
-        $.ajax({
-            url: URL+'/publicacion/eliminar/'+$(this).attr("data-id"),
-            type: 'GET',
-            success: function (response) {
-                location.reload();
-            }
-        });
-    });
-}

@@ -3,26 +3,24 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 use AppBundle\Entity\Seguimiento;
 
-
+/**
+ * Class SeguimientoController
+ * @package AppBundle\Controller
+ * @Security("has_role('ROLE_USER')")
+ */
 class SeguimientoController extends Controller{
-    private $session;
-
-    public function __construct(){
-        $this->session = new Session();
-    }
-
 
     /**
      * @Route("/follow", name="following_follow", methods="POST")
      * @param Request $request
-     * @return Response
+     * @return boolean
      */
     public function followAction(Request $request){
         $user = $this->getUser();                        //Obtenemos el usuario actual
@@ -43,13 +41,14 @@ class SeguimientoController extends Controller{
 
         if($flush == null){                         //Si no da fallo
             $notificacion = $this->get('app.notificacion_service');
-            $notificacion->set($followed, 'follow', $user->getId());
+            $notificacion->set($followed, 'follow', $user->getId(),null,null);
 
-            $status = 'Ahora estas siguiendo a este usuario.';
+            $this->addFlash('estado', 'Ahora estas siguiendo a este usuario.');
         }else{
-            $status = 'No se ha podido seguir a este usuario.';
+            $this->addFlash('error', 'No se ha podido seguir a este usuario');
         }
-        return new Response($status);
+
+        die();
     }
 
 
@@ -71,17 +70,16 @@ class SeguimientoController extends Controller{
             "seguidor" => $followed_id
         ));
 
-
         $em->remove($followed);
         $flush = $em->flush();  //Para que guarde los cambios
 
         if($flush == null){     //Si no da fallo
-            $status = "Has dejado de seguir a este usuario.";
+            $this->addFlash('estado', 'Has dejado de seguir a este usuario');
         }else{
-            $status = "No se ha podido dejar de seguir a este usuario.";
+            $this->addFlash('error', "No se ha podido dejar de seguir a este usuario.");
         }
 
-        return new Response($status);
+        die();
     }
 
 
@@ -115,9 +113,6 @@ class SeguimientoController extends Controller{
             ->orderBy('f.id', 'DESC')
             ->getQuery()
             ->getResult();
-
-//        $dql = "SELECT f FROM AppBundle:Seguimiento f WHERE f.usuario = $usuario_id ORDER BY f.id DESC";
-//        $query = $em->createQuery($dql);
 
         $paginador = $this->get("knp_paginator");
         $siguiendo = $paginador->paginate(

@@ -10,7 +10,6 @@ use AppBundle\Form\AddRutinaType;
 use AppBundle\Form\AddViajeType;
 use AppBundle\Form\CocheType;
 use AppBundle\Form\fastMensajeType;
-use AppBundle\Form\MensajeType;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -42,6 +41,90 @@ class IndexController extends Controller{
         return $this->render(':publication:home.html.twig', [
             'viajes' => $viajes,
             'rutinas' => $rutinas
+        ]);
+    }
+
+    /**
+     * @Route("/buscar/rutas", name="buscar_rutas")
+     * @param Request $request
+     * @return Response
+     */
+    public function buscarAction(Request $request){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $origen = trim($request->query->get("origen", null));
+        $destino = trim($request->query->get("destino", null));
+
+
+        if($origen == null){
+            $viajes = $em->createQueryBuilder()
+                ->select('v')
+                ->from('AppBundle:Viaje', 'v')
+                ->where('v.destino LIKE :search')
+                ->andWhere('v.activo = true')
+                ->orderBy('v.fechaPublicacion', 'ASC')
+                ->setParameter('search', "%$destino%")
+                ->getQuery()
+                ->getResult();
+
+            $rutinas = $em->createQueryBuilder()
+                ->select('r')
+                ->from('AppBundle:Rutina', 'r')
+                ->where('r.destino LIKE :search')
+                ->andWhere('r.activo = true')
+                ->orderBy('r.fechaPublicacion', 'ASC')
+                ->setParameter('search', "%$destino%")
+                ->getQuery()
+                ->getResult();
+        }elseif($destino == null){
+            $this->addFlash('error', 'Al menos debes introducir un destino');
+            return $this->redirectToRoute('homepage');
+        }else{
+            $viajes = $em->createQueryBuilder()
+                ->select('v')
+                ->from('AppBundle:Viaje', 'v')
+                ->where('v.origen LIKE :origen')
+                ->andWhere('v.destino LIKE :destino')
+                ->andWhere('v.activo = true')
+                ->orderBy('v.fechaPublicacion', 'ASC')
+                ->setParameter('origen', "%$origen%")
+                ->setParameter('destino', "%$destino%")
+                ->getQuery()
+                ->getResult();
+
+            $rutinas = $em->createQueryBuilder()
+                ->select('r')
+                ->from('AppBundle:Rutina', 'r')
+                ->where('r.origen LIKE :origen')
+                ->andWhere('r.destino LIKE :destino')
+                ->andWhere('r.activo = true')
+                ->orderBy('r.fechaPublicacion', 'ASC')
+                ->setParameter('origen', "%$origen%")
+                ->setParameter('destino', "%$destino%")
+                ->getQuery()
+                ->getResult();
+        }
+
+        $paginador_viajes = $this->get('knp_paginator');
+
+        $viajes_pag = $paginador_viajes->paginate(
+            $viajes,
+            $request->query->getInt('page', 1),       //page es la variable de la url
+            5                                               //5 usuarios por pagina
+        );
+
+        $paginador_rutinas = $this->get('knp_paginator');
+
+        $rutinas_pag = $paginador_rutinas->paginate(
+            $rutinas,
+            $request->query->getInt('page', 1),       //page es la variable de la url
+            5                                               //5 usuarios por pagina
+        );
+
+        return $this->render(':publication:buscar.html.twig', [
+            'viajes' => $viajes_pag,
+            'rutinas' => $rutinas_pag
         ]);
     }
 
@@ -145,7 +228,7 @@ class IndexController extends Controller{
 
         return $this->render(':Viaje:viaje.html.twig', [
             "formulario" => $formulario->createView(),
-            'viaje' => $viaje
+            'viaje' => $viaje,
         ]);
     }
 
@@ -183,7 +266,7 @@ class IndexController extends Controller{
 
         return $this->render('rutina/rutina.html.twig', [
             "formulario" => $formulario->createView(),
-            'rutina' => $rutina
+            'rutina' => $rutina,
         ]);
     }
 
@@ -205,7 +288,16 @@ class IndexController extends Controller{
             $rutina->setConductor($usuario);
             $rutina->setFechaPublicacion(new \DateTime("now"));
         }
-        $form = $this->createForm(AddRutinaType::class, $rutina);
+
+        $dias = $em->createQueryBuilder()
+            ->select('d')
+            ->from('AppBundle:Semana', 'd')
+            ->getQuery()
+            ->getResult();
+
+        $form = $this->createForm(AddRutinaType::class, $rutina,[
+            'empty_data' => $dias
+        ]);
 
         $form->handleRequest($request);
         if($form->isSubmitted()) {
@@ -488,5 +580,4 @@ class IndexController extends Controller{
         }
         return $this->redirectToRoute('perfil_usuario');
     }
-
 }

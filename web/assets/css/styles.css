@@ -1,6 +1,8 @@
 /* GENERAL */
 body{
-    background: #EEEEEE;
+    background-image: linear-gradient(to top, rgba(240, 240, 240, 0.7) 100%, rgba(0,0,0,0.0) 100%), url(/assets/images/fondoGris.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 li.active{
@@ -44,8 +46,18 @@ li.active a span.glyphicon-plus{
     padding-right: 0 !important;
 }
 
+.alert{
+    margin-bottom: 0 !important;
+}
+
 .alert-default{
     background: #8abccc;
+}
+
+.alert-notificacion{
+    background: #EEEEEF;
+    border-radius: 0;
+    border: 1px solid #DDDDDD;
 }
 
 .text-white{
@@ -130,6 +142,16 @@ header nav .add-pub a:hover{
 /* CONTENT */
 #content{
     margin-top: 55px;
+}
+
+/* LOGIN */
+.page-login{
+    background: url('/assets/images/login_back.jpg') center right ;
+    background-size: cover;
+}
+
+.box-login{
+    opacity: 0.98;
 }
 
 /* REGISTRO */
@@ -285,9 +307,10 @@ header nav .add-pub a:hover{
 }
 
 .box-busqueda-viajes{
-    padding: 15px;
-    background-color: #017ebc;
+    padding: 25px;
     margin-bottom: 20px;
+    background: linear-gradient(to top, rgba(0, 100, 185, 0.85) 100%, rgba(0, 0, 0, 0.0) 100%), url('/assets/images/wall_busq.jpg') bottom;
+    background-size: cover;
 }
 
 /* AÑADIR RUTINA */
@@ -438,9 +461,10 @@ header nav .add-pub a:hover{
     padding-top: 20px;
 }
 
-.notification-item .usuario_notif{
+.notification-item .label_notif{
     color: #FFFFFF;
     font-weight: bold;
+    font-size: 100%;
 }
 
 /* CARD PERFIL */

@@ -2,6 +2,9 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Semana;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -17,12 +20,12 @@ class AddRutinaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options){
+        $dias = $options['empty_data'];
         $builder
             ->add('origen', TextType::class, [
                 'label' => 'Origen',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-origen form-control',
                     'placeholder' => 'ej. Bailén'
@@ -30,7 +33,7 @@ class AddRutinaType extends AbstractType
             ])
             ->add('destino', TextType::class, [
                 'label' => 'Destino',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-destino form-control',
                     'placeholder' => 'ej. Linares'
@@ -38,7 +41,7 @@ class AddRutinaType extends AbstractType
             ])
             ->add('plazasLibres', ChoiceType::class, [
                 'label' => 'Plazas libres',
-                'required' => 'required',
+                'required' => true,
                 'choices' => [
                     '1' => 1,
                     '2' => 2,
@@ -52,22 +55,29 @@ class AddRutinaType extends AbstractType
             ])
             ->add('precio', MoneyType::class, [
                 'label' => 'Precio',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-precio form-control',
                     'placeholder' => 'ej. 1 (Por viaje)'
                 ]
             ])
-            ->add('dias', TextType::class, [
-                'label' => 'Días',
-                'required' => 'required',
+            ->add('dias', EntityType::class, [
+                'class' => 'AppBundle\Entity\Usuario',
+                'query_builder' => function($er) use($dias){
+                    return $er->findAll();
+                },
+                'choice_label' => function($dias){
+                    return $dias->getDia();
+                },
+                'label' => 'Para: ',
+                'required' => true,
                 'attr' => [
-                    'class' => 'form-dias form-control'
+                    'class' => 'form-receptor'
                 ]
             ])
             ->add('horaSalida', TimeType::class, [
                 'label' => 'Hora de salida',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-hora-salida'
                 ],
@@ -85,7 +95,7 @@ class AddRutinaType extends AbstractType
             ])
             ->add('flexiblididad', ChoiceType::class, [
                 'label' => 'Flexibilidad',
-                'required' => 'required',
+                'required' => true,
                 'choices'  => [
                     'Justo a tiempo' => 'Justo a tiempo',
                     'En +/- 15 minutos' => 'En +/- 15 minutos',
@@ -123,6 +133,4 @@ class AddRutinaType extends AbstractType
     {
         return 'appbundle_rutina';
     }
-
-
 }

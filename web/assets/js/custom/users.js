@@ -41,7 +41,6 @@ function followButtons() {
             type: 'POST',
             data: {followed: $(this).attr("data-followed")},    //followed es la variable que se le pasará por POST
             success: function (response) {
-                console.log(response);
             }
         });
     });
@@ -54,7 +53,6 @@ function followButtons() {
             type: 'POST',
             data: {followed: $(this).attr("data-followed")},    //followed es la variable que se le pasará por POST
             success: function (response) {
-                console.log(response);
             }
         });
     });

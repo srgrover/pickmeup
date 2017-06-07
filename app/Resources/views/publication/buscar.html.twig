@@ -7,24 +7,22 @@
 
 {% block content %}
     <div class="container col-lg-12 box-busqueda-viajes">
-        <div class="container col-lg-12 box-color">
-            <form action="{{ path('buscar_rutas') }}" method="GET" name="busca_ruta">
-                <div class="col-lg-1"></div>
-                <div class="col-lg-4">
-                    <input type="text" id="origen" name="origen" class="form-control col-lg-4" placeholder="Origen" />
-                </div>
-                <div class="col-lg-4">
-                    <input type="text" id="destino" name="destino" class="form-control col-lg-4" placeholder="Destino" />
-                </div>
-                <div class="col-lg-2">
-                    <button type="submit" class="btn btn-default">
-                        <i class="fa fa-search"></i>
-                        Buscar
-                    </button>
-                </div>
-                <div class="col-lg-1"></div>
-            </form>
-        </div>
+        <form action="{{ path('buscar_rutas') }}" method="GET" name="busca_ruta">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-4">
+                <input type="text" id="origen" name="origen" class="form-control col-lg-4" placeholder="Origen" />
+            </div>
+            <div class="col-lg-4">
+                <input type="text" id="destino" name="destino" class="form-control col-lg-4" placeholder="Destino" />
+            </div>
+            <div class="col-lg-2">
+                <button type="submit" class="btn btn-default">
+                    <i class="fa fa-search"></i>
+                    Buscar
+                </button>
+            </div>
+            <div class="col-lg-1"></div>
+        </form>
     </div>
     <div class="container">
         <!-- Nav tabs -->
@@ -35,12 +33,14 @@
                 </a>
             </li>
             <li role="presentation">
-                <a href="#rutinas" aria-controls="home" role="tab" data-toggle="tab">
+                <a href="#rutinas" aria-controls="profile" role="tab" data-toggle="tab">
                     RUTINAS
                 </a>
             </li>
         </ul>
         <div id="timeline" class="col-lg-9 col-md-12 col-sm-12 box-default pull-left">
+
+
             <!-- Tab panes -->
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="viajes">
@@ -120,14 +120,9 @@
                         {% endfor %}
                         {% else %}
                             <div class="col-lg-12">
-                                <h3>Aún no estás siguiendo a nadie que tenga viajes activos.</h3>
-                                <a href="{{ path('users') }}" class="btn btn-primary">
-                                    <i class="fa fa-user-plus"></i>
-                                    Empieza a seguir usuarios
-                                </a>
+                                <h3>No se han encontrado viajes con la ruta introducida</h3>
                             </div>
                         {% endif %}
-
 
                         <div class="navigation">
                             {{ knp_pagination_render(viajes) }}
@@ -211,11 +206,7 @@
                         {% endfor %}
                         {% else %}
                             <div class="col-lg-12">
-                                <h3>Aún no estás siguiendo a nadie que tenga rutinas activas.</h3>
-                                <a href="{{ path('users') }}" class="btn btn-primary">
-                                    <i class="fa fa-user-plus"></i>
-                                    Empieza a seguir usuarios
-                                </a>
+                                <h3>No se han encontrado rutinas con la ruta introducida.</h3>
                             </div>
                         {% endif %}
 
