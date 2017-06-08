@@ -31,6 +31,10 @@ class IndexController extends Controller{
      * @return Response
      */
     public function IndexAction(Request $request){
+        if (!$this->getUser()->getEstado()){
+            $this->redirect('/logout');
+        }
+
         $viajes = $this->getViajes($request);
         $rutinas = $this->getRutinas($request);
 
@@ -591,6 +595,7 @@ class IndexController extends Controller{
         $em = $this->getDoctrine()->getManager();
         try{
             $viaje->setPlazasLibres((int)$viaje->getPlazasLibres()+1);
+            $em->flush();
             $this->addFlash('estado', 'Se ha añadido una plaza a tu rutina');
         }catch (Exception $exception){
             $this->addFlash('error', 'Hubo algún problema al añadir la plaza');

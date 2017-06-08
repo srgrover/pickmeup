@@ -3,10 +3,10 @@ app:
     type:     annotation
 
 login_check:
-    path: /login_check
+    path: /comprobar
 
 logout:
-    path: /logout
+    path: /salir
 
 user_nick_test:
     path: /nick-test

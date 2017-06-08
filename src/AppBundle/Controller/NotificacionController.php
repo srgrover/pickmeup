@@ -39,7 +39,6 @@ class NotificacionController extends Controller{
             5
         );
 
-        sleep(1);
         $notificacion = $this->get('app.notificacion_service');
         $notificacion->leer($usuario_id);
 
@@ -103,6 +102,10 @@ class NotificacionController extends Controller{
 
     /**
      * @Route("/peticion/viaje/{conductor}/{usuario}/{viaje}", name="peticion_viaje")
+     * @param Usuario $conductor
+     * @param Usuario $usuario
+     * @param Viaje $viaje
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function peticionViajeAction(Usuario $conductor, Usuario $usuario, Viaje $viaje){
         try{
@@ -188,7 +191,6 @@ class NotificacionController extends Controller{
      */
     public function denegarViajeAction(Usuario $conductor, Usuario $usuario, Viaje $viaje){
         try{
-            $viaje->setPlazasLibres($viaje->getPlazasLibres()-1);
             $notificacion = $this->get('app.notificacion_service');
             $notificacion->set($usuario, 'Vdenegado', $conductor->getId(), $viaje->getId(), 'viaje');
             $this->addFlash('estado', 'La respuesta se ha mandado al usuario');

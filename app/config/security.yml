@@ -27,9 +27,9 @@ security:
             provider: user_db_provider
             form_login:
                 login_path: /Entrar
-                check_path: /login_check
+                check_path: /comprobar
             logout:
-                path: logout
+                path: salir
                 target: /Entrar
             # activate different ways to authenticate
 
