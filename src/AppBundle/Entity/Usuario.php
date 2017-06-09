@@ -42,11 +42,11 @@ class Usuario implements UserInterface, \Serializable {
      * @Assert\Length(
      *     min = 4,
      *     max = 16,
-     *     minMessage = "El nickname debe tener como mínimo 4 caracteres",
-     *     maxMessage = "El nickname debe tener como mínimo 16 caracteres"
+     *     minMessage = "El nick debe tener como mínimo 4 caracteres",
+     *     maxMessage = "El nick debe tener como mínimo 16 caracteres"
      * )
      * @Assert\NotBlank(
-     *     message = "El Nickname no puede estar vacío"
+     *     message = "El nick no puede estar vacío"
      * )
      */
     protected $nick;
@@ -83,6 +83,11 @@ class Usuario implements UserInterface, \Serializable {
      * @Assert\NotBlank(
      *     message = "El nombre no puede estar vacío"
      * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="Un nombre no puede contener un dígito"
+     * )
      *
      * @var string
      */
@@ -92,6 +97,11 @@ class Usuario implements UserInterface, \Serializable {
      * @ORM\Column(type="string", nullable=false)
      * @Assert\NotBlank(
      *     message = "Los apellidos no pueden estar vacíos"
+     * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="El apellido no puede contener un dígito"
      * )
      *
      * @var string
@@ -110,6 +120,11 @@ class Usuario implements UserInterface, \Serializable {
      * @Assert\NotBlank(
      *     message = "La ciudad no puede estar vacía"
      * )
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="La ciudad no puede contener un dígito"
+     * )
      *
      * @var string
      */
@@ -119,6 +134,11 @@ class Usuario implements UserInterface, \Serializable {
      * @ORM\Column(type="string", nullable=true)
      *
      * @var string
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="La provincia no puede contener un dígito"
+     * )
      */
     protected $provincia;
 
@@ -126,6 +146,11 @@ class Usuario implements UserInterface, \Serializable {
      * @ORM\Column(type="string", nullable=true)
      *
      * @var string
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="El país no puede contener un dígito"
+     * )
      */
     protected $pais;
 

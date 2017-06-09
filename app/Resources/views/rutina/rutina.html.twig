@@ -23,13 +23,13 @@
                     Destino:
                 </span>
                 <span>
-                    Fecha:
+                    Días:
                 </span>
                 <span>
                     Detalles:
                 </span>
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-7">
                 <span>
                     <i class="fa fa-circle-o text-success"></i>
                     {{ rutina.origen }}
@@ -40,7 +40,14 @@
                 </span>
                 <span>
                     <i class="fa fa-calendar"></i>
-                     {{ rutina.dias }} - {{ rutina.horaSalida|date('H:i') }}
+                    {% if rutina.dias|length < 5 %}
+                        {% for dia in rutina.dias %}
+                            {{ dia.dia }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        De Lunes a Viernes
+                    {% endif %}
+                    a las {{ rutina.horaSalida|date('H:i') }}h
                 </span>
                 <span>
                     <i class="fa fa-clock-o"></i>
@@ -48,7 +55,7 @@
                 </span>
                 <span>
                     {% if rutina.maximoAtras %}
-                        <i class="fa fa-info-group"></i>
+                        <i class="fa fa-group"></i>
                         El conductor viaja con un máximo de 2 pasajeros en la parte de atrás
                     {% endif %}
                 </span>

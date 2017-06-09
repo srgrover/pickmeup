@@ -8,6 +8,8 @@
 
 namespace AppBundle\Entity;
 
+// Acme/TaskBundle/Entity/Task.php
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -51,6 +53,7 @@ class Viaje{
      * @ORM\Column(type="string", nullable=false)
      *
      * @var string
+     * @Assert\NotBlank()
      */
     protected $origen;
 
@@ -58,6 +61,7 @@ class Viaje{
      * @ORM\Column(type="string", nullable=false)
      *
      * @var string
+     * @Assert\NotBlank()
      */
     protected $destino;
 
@@ -86,6 +90,11 @@ class Viaje{
      * @ORM\Column(type="decimal", nullable=false)
      *
      * @var DecimalType
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^[0-9]$/",
+     *     message="El precio debe ser un número"
+     * )
      */
     protected $precio;
 

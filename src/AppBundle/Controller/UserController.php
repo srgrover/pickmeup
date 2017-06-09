@@ -11,7 +11,6 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Usuario;
-use AppBundle\Form\RegisterType;
 use AppBundle\Form\UserType;
 
 class UserController extends Controller{

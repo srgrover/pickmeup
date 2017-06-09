@@ -8,6 +8,8 @@
 
 namespace AppBundle\Entity;
 
+// Acme/TaskBundle/Entity/Task.php
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,9 +36,9 @@ class Rutina{
     protected $fechaPublicacion;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Semana")
      *
-     * @var string
+     * @var Semana
      */
     protected $dias;
 
@@ -44,6 +46,7 @@ class Rutina{
      * @ORM\Column(type="string", nullable=false)
      *
      * @var string
+     * @Assert\NotBlank()
      */
     protected $origen;
 
@@ -51,6 +54,7 @@ class Rutina{
      * @ORM\Column(type="string", nullable=false)
      *
      * @var string
+     * @Assert\NotBlank()
      */
     protected $destino;
 
@@ -72,6 +76,11 @@ class Rutina{
      * @ORM\Column(type="decimal", nullable=false)
      *
      * @var DecimalType
+     * @Assert\NotBlank()
+     * @Assert\Regex(
+     *     pattern="/^[0-9]$/",
+     *     message="El precio debe ser un número"
+     * )
      */
     protected $precio;
 
@@ -266,7 +275,7 @@ class Rutina{
     }
 
     /**
-     * @return string
+     * @return Semana
      */
     public function getDias()
     {
@@ -274,7 +283,7 @@ class Rutina{
     }
 
     /**
-     * @param string $dias
+     * @param Semana $dias
      */
     public function setDias($dias)
     {
@@ -328,5 +337,4 @@ class Rutina{
     {
         $this->activo = $activo;
     }
-
 }

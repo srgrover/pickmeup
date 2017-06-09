@@ -48,13 +48,6 @@ class UserType extends AbstractType
                     'class' => 'form-email',
                 ]
             ])
-            ->add('password', PasswordType::class, [
-                'label' => 'Contraseña',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-email hidden',
-                ]
-            ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Biografia',
                 'required' => false,

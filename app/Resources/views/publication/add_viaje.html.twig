@@ -1,5 +1,11 @@
 {% extends 'layout.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src=" http://maps.google.com/?file=api&amp;v=2.x&amp;key=AIzaSyBljN7LS4yZJnja9vL_Ocvz6jLlEKU3fdY" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/custom/google_routes.js') }}"></script>
+{% endblock %}
+
 {% block content %}
     {% set ruta = app.request.get('_route') %}
     <h4 style="padding-left: 20px;">
@@ -8,7 +14,14 @@
             Volver a la página principal
         </a>
     </h4>
-    <div class="col-lg-6 box-form">
+    <div class="col-6 col-lg-6 col-md-12 col-sm-12 pull-left">
+        <div id="map_canvas" style="height: 400px; position: relative; overflow: hidden;"></div>
+        <button class="btn btn-warning" onclick="toggleTraffic(this);">
+            <i class="fa fa-eye-slash"></i>
+            Ocultar/Mostrar Tráfico
+        </button>
+    </div>
+    <div class="col-lg-6 box-form pull-right">
         <h1>
             {% if ruta == 'add_viaje' %}
                 Añadir un viaje
@@ -34,5 +47,6 @@
         <div class="clearfix"></div>
         {{ form_end(form) }}
     </div>
+
 {% endblock %}
 

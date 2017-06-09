@@ -64,4 +64,9 @@ class Semana{
         $this->dia = $dia;
     }
 
+    public function __toString()
+    {
+        return $this->getDia();
+    }
+
 }

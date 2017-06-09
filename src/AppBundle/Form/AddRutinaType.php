@@ -19,7 +19,6 @@ class AddRutinaType extends AbstractType
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options){
-        $dias = $options['empty_data'];
         $builder
             ->add('origen', TextType::class, [
                 'label' => 'Origen',
@@ -46,32 +45,22 @@ class AddRutinaType extends AbstractType
                     '3' => 3,
                     '4' => 4
                 ],
-                'attr' => [
-                    'class' => 'form-plazas form-control'
-                ],
                 'placeholder' => 'Seleccione el número de plazas (máximo 4)'
             ])
             ->add('precio', MoneyType::class, [
-                'label' => 'Precio',
+                'label' => 'Precio (Por viaje)',
                 'required' => true,
                 'attr' => [
                     'class' => 'form-precio form-control',
-                    'placeholder' => 'ej. 1 (Por viaje)'
+                    'placeholder' => 'ej. 1'
                 ]
             ])
             ->add('dias', EntityType::class, [
-                'class' => 'AppBundle\Entity\Usuario',
-                'query_builder' => function($er) use($dias){
-                    return $er->findAll();
-                },
-                'choice_label' => function($dias){
-                    return $dias->getDia();
-                },
-                'label' => 'Para: ',
-                'required' => true,
-                'attr' => [
-                    'class' => 'form-receptor'
-                ]
+                'class' => 'AppBundle\Entity\Semana',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Días: ',
+                'required' => true
             ])
             ->add('horaSalida', TimeType::class, [
                 'label' => 'Hora de salida',

@@ -26,13 +26,14 @@ use Symfony\Component\HttpFoundation\Response;
 class IndexController extends Controller{
 
     /**
-     * @Route("/home", name="homepage")
+     * @Route("/inicio", name="homepage")
      * @param Request $request
      * @return Response
      */
     public function IndexAction(Request $request){
         if (!$this->getUser()->getEstado()){
-            $this->redirect('/logout');
+            $this->addFlash('error','Tu cuenta se encuentra deshabilitada en este momento');
+            return $this->redirectToRoute('salir');
         }
 
         $viajes = $this->getViajes($request);
@@ -220,6 +221,7 @@ class IndexController extends Controller{
             $mensaje->setLeido(false);
 
             $em->persist($mensaje);
+            /** @var EntityManager $em */
             $flush = $em->flush();
 
             if($flush == null){
@@ -237,11 +239,12 @@ class IndexController extends Controller{
     }
 
     /**
-    * @Route("/rutina/ver/{id}", name="ver_rutina")
-    * @param Rutina $rutina
-    * @return Response
-    * @internal param Request $request
-    */
+     * @Route("/rutina/ver/{id}", name="ver_rutina")
+     * @param Request $request
+     * @param Rutina $rutina
+     * @return Response
+     * @internal param Request $request
+     */
     public function verRutinaAction(Request $request, Rutina $rutina){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -368,6 +371,7 @@ class IndexController extends Controller{
                     } else {
                         $this->addFlash('estado', 'Los cambios se han guardado correctamente');
                     }
+                    return $this->redirect('/viaje/ver/'.$viaje->getId());
                 } else {
                     if (null == $viaje) {
                         $this->addFlash('error', 'Error al añadir el viaje');
@@ -383,7 +387,7 @@ class IndexController extends Controller{
                 }
             }
 
-            return $this->redirect('/viaje/ver/'.$viaje->getId());
+
         }
 
         return $this->render(':publication:add_viaje.html.twig', [

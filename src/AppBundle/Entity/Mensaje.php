@@ -8,6 +8,8 @@
 
 namespace AppBundle\Entity;
 
+// Acme/TaskBundle/Entity/Task.php
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -50,6 +52,7 @@ class Mensaje{
      * @ORM\Column(type="string", nullable=false)
      *
      * @var string
+     * @Assert\NotBlank()
      */
     protected $mensaje;
 

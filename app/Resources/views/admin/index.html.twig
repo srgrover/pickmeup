@@ -488,6 +488,11 @@
                                             <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
                                                 colspan="1" aria-sort="ascending"
                                                 aria-label="Rendering engine: activate to sort column descending"
+                                                style="width: 350px;">Conductor
+                                            </th>
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending"
                                                 style="width: 168px;">Origen
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
@@ -521,6 +526,18 @@
                                         {% for viaje in viajes %}
                                             <tr role="row"
                                                 class="odd {% if viaje.activo == false %}alert alert-warning{% endif %}">
+                                                <td class="sorting_1">
+                                                    {% if viaje.conductor.imagenPerfil == null %}
+                                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% else %}
+                                                        <img src="{{ asset('uploads/users/'~viaje.conductor.imagenPerfil) }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% endif %}
+                                                    <a href="{{ path('perfil_usuario', {'nick': viaje.conductor.nick}) }}">
+                                                        {{ viaje.conductor.nombre }} {{ viaje.conductor.apellidos }}
+                                                    </a>
+                                                </td>
                                                 <td class="sorting_1">
                                                     <i class="fa fa-circle-o text-success"></i>
                                                     {{ viaje.origen }}
@@ -604,6 +621,12 @@
                                             <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
                                                 colspan="1" aria-sort="ascending"
                                                 aria-label="Rendering engine: activate to sort column descending"
+                                                style="width: 350px;">
+                                                Conductor
+                                            </th>
+                                            <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
+                                                colspan="1" aria-sort="ascending"
+                                                aria-label="Rendering engine: activate to sort column descending"
                                                 style="width: 168px;">Origen
                                             </th>
                                             <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
@@ -638,6 +661,18 @@
                                             <tr role="row"
                                                 class="odd {% if rutina.activo == false %}alert alert-warning{% endif %}">
                                                 <td class="sorting_1">
+                                                    {% if rutina.conductor.imagenPerfil == null %}
+                                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% else %}
+                                                        <img src="{{ asset('uploads/users/'~rutina.conductor.imagenPerfil) }}"
+                                                             class="img-circle" width="30px" alt="avatar"/>
+                                                    {% endif %}
+                                                    <a href="{{ path('perfil_usuario', {'nick': rutina.conductor.nick}) }}">
+                                                        {{ rutina.conductor.nombre }} {{ rutina.conductor.apellidos }}
+                                                    </a>
+                                                </td>
+                                                <td class="sorting_1">
                                                     <i class="fa fa-circle-o text-success"></i>
                                                     {{ rutina.origen }}
                                                 </td>
@@ -647,7 +682,13 @@
                                                 </td>
                                                 <td>
                                                     <i class="fa fa-calendar"></i>
-                                                    {{ rutina.dias }}
+                                                    {% if rutina.dias|length < 5 %}
+                                                        {% for dia in rutina.dias %}
+                                                            {{ dia.dia }}{% if not loop.last %}, {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        De Lunes a Viernes
+                                                    {% endif %}
                                                 </td>
                                                 <td>
                                                     {{ rutina.plazasLibres }}

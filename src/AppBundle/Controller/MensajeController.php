@@ -42,18 +42,25 @@ class MensajeController extends Controller{
 
             if($flush == null){
                 $this->addFlash('estado','El mensaje se ha enviado correctamente');
-                return $this->redirectToRoute('mensajes_enviados');
+                return $this->redirectToRoute('mensajes');
             }else{
                 $this->addFlash('error','Hubo un problema al enviar el mensaje');
             }
         }
 
         $mensajes_privados = $this->getMensajesPrivados($request); //Mensajes recibidos
+
+        $paginador = $this->get('knp_paginator');
+        $paginacion = $paginador->paginate(
+            $mensajes_privados,
+            $request->query->getInt('page', 1),
+            5
+        );
         $this->marcarLeido($em, $usuario);
 
         return $this->render(':Mensajes:index.html.twig', [
             "formulario" => $formulario->createView(),
-            'mensajes' => $mensajes_privados
+            'mensajes' => $paginacion
         ]);
     }
 
@@ -65,8 +72,15 @@ class MensajeController extends Controller{
     public function enviadosAction(Request $request){
         $mensajes_privados = $this->getMensajesPrivados($request, 'enviado'); //Mensajes enviados
 
-        return $this->render(':Mensajes:enviados.html.twig', [
-            "mensajes" => $mensajes_privados
+        $paginador = $this->get('knp_paginator');
+        $paginacion = $paginador->paginate(
+            $mensajes_privados,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        return $this->render('Mensajes/enviados.html.twig', [
+            "mensajes" => $paginacion
         ]);
     }
 
@@ -75,26 +89,19 @@ class MensajeController extends Controller{
         $em = $this->getDoctrine()->getManager();
         $usuario = $this->getUser();
 
-        $query = $em->createQueryBuilder()
+        $mensajes = $em->createQueryBuilder()
             ->select('m')
             ->from('AppBundle:Mensaje', 'm');
             if($tipo == 'enviado'){
-                $query->where('m.emisor = :usuario');
+                $mensajes->where('m.emisor = :usuario');
             }else{
-                $query->where('m.receptor = :usuario');
+                $mensajes->where('m.receptor = :usuario');
             }
-            $query->orderBy('m.fecha_enviado', 'DESC')
+        $mensajes->orderBy('m.fecha_enviado', 'DESC')
             ->setParameter('usuario', $usuario->getId())
             ->getQuery();
 
-        $paginador = $this->get('knp_paginator');
-        $paginacion = $paginador->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            5
-        );
-
-        return $paginacion;
+        return $mensajes;
     }
 
     /**

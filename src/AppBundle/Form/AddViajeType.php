@@ -3,7 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -25,16 +25,16 @@ class AddViajeType extends AbstractType
                 'label' => 'Origen',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-origen',
-                    'placeholder' => 'ej. Bailén'
+                    'class' => 'form-origen text-success',
+                    'placeholder' => 'ej. Paseo de las palmeras, Bailén',
                 ]
             ])
             ->add('destino', TextType::class, [
                 'label' => 'Destino',
                 'required' => 'required',
                 'attr' => [
-                    'class' => 'form-destino',
-                    'placeholder' => 'ej. Sevilla'
+                    'class' => 'form-destino text-danger',
+                    'placeholder' => 'ej. Estadio Santiago Bernabéu',
                 ]
             ])
             ->add('plazasLibres', ChoiceType::class, [
@@ -59,7 +59,7 @@ class AddViajeType extends AbstractType
                     'placeholder' => 'ej. 5'
                 ]
             ])
-            ->add('fechaSalida', BirthdayType::class, [
+            ->add('fechaSalida', DateType::class, [
                 'label' => 'Fecha de salida',
                 'required' => 'required',
                 'attr' => [
@@ -80,7 +80,7 @@ class AddViajeType extends AbstractType
                     'hour' => 'Hora', 'minute' => 'Minuto'
                 ]
             ])
-            ->add('fechaVuelta', BirthdayType::class, [
+            ->add('fechaVuelta', DateType::class, [
                 'label' => 'Fecha de vuelta',
                 'required' => 'required',
                 'attr' => [
@@ -101,12 +101,6 @@ class AddViajeType extends AbstractType
                     'hour' => 'Hora', 'minute' => 'Minuto'
                 ]
             ])
-//            ->add('Lunes-Viernes', CheckboxType::class, array(
-//                'required' => 'required',
-//                'attr' => array(
-//                    'class' => 'form-check form-control'
-//                )
-//            ))
             ->add('maximoAtras', CheckboxType::class, [
                 'label' => 'Máx. 2 pasajeros atrás',
                 'required' => false,
