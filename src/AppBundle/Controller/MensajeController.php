@@ -72,6 +72,8 @@ class MensajeController extends Controller{
     public function enviadosAction(Request $request){
         $mensajes_privados = $this->getMensajesPrivados($request, 'enviado'); //Mensajes enviados
 
+        dump($mensajes_privados);
+
         $paginador = $this->get('knp_paginator');
         $paginacion = $paginador->paginate(
             $mensajes_privados,
@@ -99,17 +101,20 @@ class MensajeController extends Controller{
             }
         $mensajes->orderBy('m.fecha_enviado', 'DESC')
             ->setParameter('usuario', $usuario->getId())
-            ->getQuery();
+            ->getQuery()
+            ->getResult();
+
+            dump($mensajes);
 
         return $mensajes;
     }
 
     /**
      * @Route("/mensajes/no-leidos", name="mensajes_no_leidos")
-     * @param Request $request
      * @return Response
+     * @internal param Request $request
      */
-    public function noLeidosAction(Request $request){
+    public function noLeidosAction(){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 

@@ -104,7 +104,7 @@
                                     <div class="col-lg-6">
                                         <span>{{ usuario.ciudad }} {% if usuario.provincia  != null %}({{ usuario.provincia }}){% endif %}{% if usuario.pais != null %}, {{ usuario.pais }}{% endif %}</span>
                                         <span>Email: {{ usuario.email }}</span>
-                                        <span>Fecha de nacimiento: {{ usuario.fechaNacimiento|date('d/F/Y') }}</span>
+                                        <span>Nacimiento: {{ usuario.fechaNacimiento|date|localizeddate('long', 'none', 'es') }}</span>
                                     </div>
                                     <div class="col-lg-6">
                                         {% if usuario.descripcion  != null %}
@@ -274,20 +274,27 @@
                                         <div class="publication-item-content">
                                             <table width="100%">
                                                 <tr>
-                                                    <td>
-                                                        <p>
+                                                    <td class="col-lg-3">
+                                                        <h4>
                                                             <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
                                                             {{ viaje.origen }}
-                                                        </p>
-                                                        <p>
+                                                        </h4>
+                                                        <h4>
                                                             <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
                                                             {{ viaje.destino }}
-                                                        </p>
+                                                        </h4>
                                                     </td>
                                                     <td>
-                                                        <p>
-                                                            Hora de salida: <span class="hora-label">{{ viaje.horaSalidaIda|date('h:i')  }}h</span>
-                                                        </p>
+                                                        Fecha de salida:
+                                                        <h4>
+                                                            <i class="fa fa-calendar"></i>
+                                                            {{ viaje.fechaSalida|date|localizeddate('long','none', 'es')  }}
+                                                        </h4>
+                                                        A las:
+                                                        <h4>
+                                                            <i class="fa fa-clock-o"></i>
+                                                            {{ viaje.horaSalidaIda|date('h:i')  }}h
+                                                        </h4>
                                                     </td>
                                                     <td>
                                                         <p>
@@ -367,20 +374,33 @@
                                         <div class="publication-item-content">
                                             <table width="100%">
                                                 <tr>
-                                                    <td>
-                                                        <p>
+                                                    <td class="col-lg-3">
+                                                        <h4>
                                                             <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
                                                             {{ rutina.origen }}
-                                                        </p>
-                                                        <p>
+                                                        </h4>
+                                                        <h4>
                                                             <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
                                                             {{ rutina.destino }}
-                                                        </p>
+                                                        </h4>
                                                     </td>
                                                     <td>
-                                                        <p>
-                                                            Hora de salida: <span class="hora-label">{{ rutina.horaSalida|date('h:i')  }}h</span>
-                                                        </p>
+                                                        Días
+                                                        <h4>
+                                                            <i class="fa fa-calendar"></i>
+                                                            {% if rutina.dias|length < 5 %}
+                                                                {% for dia in rutina.dias %}
+                                                                    {{ dia.dia }}{% if not loop.last %}, {% endif %}
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                De Lunes a Viernes
+                                                            {% endif %}
+                                                        </h4>
+                                                        a las
+                                                        <h4>
+                                                            <i class="fa fa-clock-o"></i>
+                                                            {{ rutina.horaSalida|date('H:i')  }}h
+                                                        </h4>
                                                     </td>
                                                     <td>
                                                         <p>

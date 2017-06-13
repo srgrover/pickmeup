@@ -36,12 +36,12 @@ class IndexController extends Controller{
             return $this->redirectToRoute('salir');
         }
 
-        $viajes = $this->getViajes($request);
-        $rutinas = $this->getRutinas($request);
-
         if($this->getUser()->isAdmin()){
             return $this->redirectToRoute('administracion');
         }
+
+        $viajes = $this->getViajes($request);
+        $rutinas = $this->getRutinas($request);
 
         return $this->render(':publication:home.html.twig', [
             'viajes' => $viajes,
@@ -296,15 +296,7 @@ class IndexController extends Controller{
             $rutina->setFechaPublicacion(new \DateTime("now"));
         }
 
-        $dias = $em->createQueryBuilder()
-            ->select('d')
-            ->from('AppBundle:Semana', 'd')
-            ->getQuery()
-            ->getResult();
-
-        $form = $this->createForm(AddRutinaType::class, $rutina,[
-            'empty_data' => $dias
-        ]);
+        $form = $this->createForm(AddRutinaType::class, $rutina);
 
         $form->handleRequest($request);
         if($form->isSubmitted()) {
@@ -317,6 +309,7 @@ class IndexController extends Controller{
                     } else {
                         $this->addFlash('estado', 'Los cambios se han guardado correctamente');
                     }
+                    return $this->redirect('/rutina/ver/'.$rutina->getId());
                 } else {
                     if (null == $rutina) {
                         $this->addFlash('error', 'Error al añadir la rutina');
@@ -331,8 +324,6 @@ class IndexController extends Controller{
                     $this->addFlash('error', 'Los cambios no se han guardado porque el formulario no es válido');
                 }
             }
-
-            return $this->redirect('/rutina/ver/'.$rutina->getId());
         }
 
         return $this->render(':publication:add_rutina.html.twig', [
@@ -598,9 +589,13 @@ class IndexController extends Controller{
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         try{
-            $viaje->setPlazasLibres((int)$viaje->getPlazasLibres()+1);
-            $em->flush();
-            $this->addFlash('estado', 'Se ha añadido una plaza a tu rutina');
+            if((int)$viaje->getPlazasLibres() < 4){
+                $viaje->setPlazasLibres((int)$viaje->getPlazasLibres()+1);
+                $em->flush();
+                $this->addFlash('estado', 'Se ha añadido una plaza a tu viaje');
+            }else{
+                $this->addFlash('error', 'Ya tienes las 4 plazas libres. Recuerda que solo se puede llevar un máximo de 4 pasajeros y el conductor.');
+            }
         }catch (Exception $exception){
             $this->addFlash('error', 'Hubo algún problema al añadir la plaza');
         }
@@ -616,9 +611,13 @@ class IndexController extends Controller{
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         try{
-            $rutina->setPlazasLibres((int)$rutina->getPlazasLibres()+1);
-            $em->flush();
-            $this->addFlash('estado', 'Se ha añadido una plaza a tu rutina');
+            if((int)$rutina->getPlazasLibres() < 4){
+                $rutina->setPlazasLibres((int)$rutina->getPlazasLibres()+1);
+                $em->flush();
+                $this->addFlash('estado', 'Se ha añadido una plaza a tu rutina');
+            }else{
+                $this->addFlash('error', 'Ya tienes las 4 plazas libres. Recuerda que solo se puede llevar un máximo de 4 pasajeros y el conductor.');
+            }
         }catch (Exception $exception){
             $this->addFlash('error', 'Hubo algún problema al añadir la plaza');
         }

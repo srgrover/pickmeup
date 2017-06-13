@@ -24,7 +24,7 @@ class AddRutinaType extends AbstractType
                 'label' => 'Origen',
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-origen form-control',
+                    'class' => 'form-origen text-success',
                     'placeholder' => 'ej. Bailén'
                 ]
             ])
@@ -32,7 +32,7 @@ class AddRutinaType extends AbstractType
                 'label' => 'Destino',
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-destino form-control',
+                    'class' => 'form-destino text-danger',
                     'placeholder' => 'ej. Linares'
                 ]
             ])

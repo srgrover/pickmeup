@@ -5,19 +5,20 @@
 
     var in_or = document.getElementById('appbundle_viaje_origen');
     var in_de = document.getElementById('appbundle_viaje_destino');
+    if(in_or.value !== "" && in_de.value !== ""){
+        findRoute(in_or.value,in_de.value);
+    }
     in_or.addEventListener('change', function () {
-        findRoute(in_or,in_de);
+        findRoute(in_or.value,in_de.value);
     });
     in_de.addEventListener('change', function () {
-        findRoute(in_or,in_de);
+        findRoute(in_or.value,in_de.value);
     });
-
 };
 
 function findRoute(o, d) {
-
-    if (o.value !== "" && d.value !== "") {
-        setDirections(o.value, d.value, 'es');
+    if (o !== "" && d !== "") {
+        setDirections(o, d, 'es');
         return false;
     }
 }
@@ -44,7 +45,7 @@ function initialize() {
 }
 
 function toggleTraffic(button) {
-    if (toggleState == 1) {
+    if (toggleState === 1) {
         map.removeOverlay(trafficInfo);
         toggleState = 0;
     } else {
@@ -62,18 +63,18 @@ function setDirections(fromAddress, toAddress, locale) {
 }
 
 function handleErrors() {
-    if (gdir.getStatus().code == G_GEO_UNKNOWN_ADDRESS)
+    if (gdir.getStatus().code === G_GEO_UNKNOWN_ADDRESS)
         alert("La ubicación geográfica correspondiente no puede encontrarse en una de las direcciones especificadas. Esto puede ser debido a que la dirección es relativamente nueva, o puede ser incorrecta.\nCódigo de error: " + gdir.getStatus().code);
-    else if (gdir.getStatus().code == G_GEO_SERVER_ERROR)
+    else if (gdir.getStatus().code === G_GEO_SERVER_ERROR)
         alert("Una solicitud de geocodificación o de direcciones no podría ser procesada con éxito, todavía no se sabe el motivo exacto del fallo.\nCódigo ded error: " + gdir.getStatus().code);
 
-    else if (gdir.getStatus().code == G_GEO_MISSING_QUERY)
+    else if (gdir.getStatus().code === G_GEO_MISSING_QUERY)
         alert("El parámetro 'q' HTTP 'falta o no tiene ningún valor. Para las solicitudes de geocoder esto significa que una dirección vacía se especifica como entrada. Para las solicitudes de direcciones esto significa que ninguna consulta se especifica en la entrada.\nCódigo de error: " + gdir.getStatus().code);
 
-    else if (gdir.getStatus().code == G_GEO_BAD_KEY)
+    else if (gdir.getStatus().code === G_GEO_BAD_KEY)
         alert("La clave dada es inválida o no coincide con el dominio para el cual fue dada. \nCódigo de error: " + gdir.getStatus().code);
 
-    else if (gdir.getStatus().code == G_GEO_BAD_REQUEST)
+    else if (gdir.getStatus().code === G_GEO_BAD_REQUEST)
         alert("No se pudo analizar con éxito una solicitud de dirección.\nCódigo de error: " + gdir.getStatus().code);
 
     else alert("Ha ocurrido un error desconocido.");

@@ -40,7 +40,7 @@
                 </span>
                 <span>
                     <i class="fa fa-calendar"></i>
-                    {{ viaje.fechaSalida|date('D\\. d \\d\\e M') }} - {{ viaje.horaSalidaIda|date('H:i') }}
+                    {{ viaje.fechaSalida|date|localizeddate('long', 'none', 'es') }} a las {{ viaje.horaSalidaIda|date('H:i') }}h
                 </span>
                 <span>
                     <i class="fa fa-clock-o"></i>
