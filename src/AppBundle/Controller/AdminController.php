@@ -332,4 +332,6 @@ class AdminController extends Controller{
 
         return $paginacion;
     }
+
+
 }

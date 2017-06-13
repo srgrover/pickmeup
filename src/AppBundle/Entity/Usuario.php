@@ -57,13 +57,24 @@ class Usuario implements UserInterface, \Serializable {
      *     min = 8,
      *     minMessage = "La contraseña debe tener como mínimo 8 caracteres"
      * )
-     * @Assert\NotBlank(
-     *     message = "La contraseña no puede estar vacía"
-     * )
      *
      * @var string
      */
     protected $password;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $token;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    protected $tokenValidity;
 
     /**
      * @var string
@@ -371,6 +382,38 @@ class Usuario implements UserInterface, \Serializable {
     public function setPassword($password)
     {
         $this->password = $password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTokenValidity()
+    {
+        return $this->tokenValidity;
+    }
+
+    /**
+     * @param mixed $tokenValidity
+     */
+    public function setTokenValidity($tokenValidity)
+    {
+        $this->tokenValidity = $tokenValidity;
     }
 
     /**
