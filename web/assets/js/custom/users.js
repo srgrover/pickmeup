@@ -19,7 +19,7 @@ $(document).ready(function () {
     }));
 
     ias.extension(new IASNoneLeftExtension({
-        text: 'No hay mas conductores para mostrar' //Texto que saldrá cuando se acaben los datos a mostrar
+        text: 'No hay mas usuarios para mostrar' //Texto que saldrá cuando se acaben los datos a mostrar
     }));
 
     ias.on('ready', function (event) {

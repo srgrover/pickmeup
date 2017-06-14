@@ -1,8 +1,20 @@
+
+/* FUENTES */
+@font-face {
+    font-family: 'Odudo';
+    src: url("/../assets/fonts/Odudo/OdudoSoft-Light.eot");
+    src: url("/../assets/fonts/Odudo/OdudoSoft-Light.eot?#iefix") format("embedded-opentype"), url("/../assets/fonts/Odudo/OdudoSoft-Light.woff") format("woff");
+    font-weight: normal;
+    font-style: normal
+}
+
 /* GENERAL */
 body{
-    background-image: linear-gradient(to top, rgba(240, 240, 240, 0.7) 100%, rgba(0,0,0,0.0) 100%), url(/assets/images/fondoGris.jpg);
+    background-image: linear-gradient(to top, rgba(240, 240, 240, 0.7) 100%, rgba(0,0,0,0.0) 100%), url("/../assets/images/fondoGris.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
+    font-family: Odudo;
 }
 
 li.active{
@@ -95,7 +107,7 @@ nav{
 .navbar::after {
     height:5px;
     width:100%;
-    background-image: url('/assets/images/gradient-border-bottom.png');
+    background-image: url('/../assets/images/gradient-border-bottom.png');
 }
 
 .navbar-brand>img{
@@ -156,12 +168,12 @@ header nav .add-pub a:hover{
 
 /* LOGIN */
 .page-login{
-    background: url('/assets/images/login_back.jpg') center right ;
+    background: url('/../assets/images/login_back.jpg') center right ;
     background-size: cover;
 }
 
 .box-login{
-    opacity: 0.98;
+    opacity: 0.995;
 }
 
 /* REGISTRO */
@@ -319,7 +331,7 @@ header nav .add-pub a:hover{
 .box-busqueda-viajes{
     padding: 25px;
     margin-bottom: 20px;
-    background: linear-gradient(to top, rgba(0, 100, 185, 0.85) 100%, rgba(0, 0, 0, 0.0) 100%), url('/assets/images/wall_busq.jpg') bottom;
+    background: linear-gradient(to top, rgba(0, 100, 185, 0.75) 100%, rgba(0, 0, 0, 0.0) 100%), url('/../assets/images/wall_busqueda.jpg') top;
     background-size: cover;
 }
 
@@ -868,6 +880,20 @@ header nav .add-pub a:hover{
     margin-top: 5px;
 }
 
+.show-tlf{
+    padding: 10px 0 30px 0;
+    border-radius: 3px;
+    background-color: rgba(90,210,90, 0.2);
+    border: 1px solid rgba(90,210,90, 0.4);
+}
+
+.hide-tlf{
+    padding: 15px;
+    border-radius: 3px;
+    background-color: rgba(210,210,90, 0.2);
+    border: 1px solid rgba(210,210,90, 0.4);
+}
+
 /* STICKY FOOTER */
 
 html {
@@ -890,3 +916,13 @@ footer {
 footer p{
     color: #FFFFFF;
 }
+
+/* RESET PASSWORD */
+.box-reset{
+    margin-top: 20px;
+}
+
+.reset-email{
+    padding-top: 30px;
+}
+

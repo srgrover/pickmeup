@@ -175,12 +175,14 @@
 
         <div class="col-lg-7 col-md-12 col-sm-12 box-default box-ajustado no-padding-bottom">
             <h1 class="box-header">
+                <i class="bbc-icon-car" aria-hidden="true"></i>
                 MI COCHE
 
                 {% if usuario.id == app.user.id %}
                     {% if usuario.vehiculo|length > 0 %}
                         <div class="dropdown pull-right">
                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <i class="fa fa-cog"></i>
                                 Gestionar
                                 <span class="caret"></span>
                             </button>
@@ -204,17 +206,14 @@
             </h1>
             <div class="container box-coche">
                 {% if usuario.vehiculo|length > 0 %}
-                    <h3 class="col-lg-1 col-sm-12">
+                    <h3 class="col-lg-2 col-sm-12">
                         <small>Marca</small> <br> {{ usuario.vehiculo.marca }}
                     </h3>
-                    <h3 class="col-lg-1 col-sm-12">
+                    <h3 class="col-lg-2 col-sm-12">
                         <small>Modelo</small> <br> {{ usuario.vehiculo.modelo }}
                     </h3>
                     <h3 class="col-lg-1 col-sm-12">
                         <small>Color</small> <br> {{ usuario.vehiculo.color }}
-                    </h3>
-                    <h3 class="col-lg-1 col-sm-12">
-                        <small>Plazas</small> <br> {{ usuario.vehiculo.plazas }}
                     </h3>
                 {% else %}
                     <h3>Aún no has añadido información sobre tu coche</h3>
@@ -274,35 +273,37 @@
                                         <div class="publication-item-content">
                                             <table width="100%">
                                                 <tr>
-                                                    <td class="col-lg-3">
+                                                    <td class="col-lg-4">
                                                         <h4>
-                                                            <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
+                                                            <i class="fa fa-map-marker text-success" aria-hidden="true"></i>
                                                             {{ viaje.origen }}
                                                         </h4>
                                                         <h4>
-                                                            <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
+                                                            <i class="fa fa-map-marker text-danger" aria-hidden="true"></i>
                                                             {{ viaje.destino }}
                                                         </h4>
                                                     </td>
                                                     <td>
-                                                        Fecha de salida:
+                                                        <h4><small>Fecha de salida</small></h4>
                                                         <h4>
                                                             <i class="fa fa-calendar"></i>
                                                             {{ viaje.fechaSalida|date|localizeddate('long','none', 'es')  }}
                                                         </h4>
-                                                        A las:
+
                                                         <h4>
+                                                            <small>A las</small>
                                                             <i class="fa fa-clock-o"></i>
-                                                            {{ viaje.horaSalidaIda|date('h:i')  }}h
+                                                            {{ viaje.fechaSalida|date('h:i')  }}h
                                                         </h4>
                                                     </td>
-                                                    <td>
-                                                        <p>
-                                                            <span class="price-label">{{ viaje.precio|number_format(2, ',', '.') }}€</span> por plaza
-                                                        </p>
-                                                        <p>
-                                                            <span class="plazas-label">{{ viaje.plazasLibres }}</span> Plazas libres
-                                                        </p>
+                                                    <td class="text-right">
+                                                        <h3>
+                                                            {{ viaje.precio|number_format(2, ',', '.') }}€ <small style="font-size: 13px">Por plaza</small>
+                                                        </h3>
+                                                        <h3>
+                                                            <i class="bbc-icon2-seat-free Booking-seatIcon u-gray" aria-hidden="true"></i>
+                                                            {{ viaje.plazasLibres }} <small style="font-size: 13px">Plazas libres</small>
+                                                        </h3>
                                                     </td>
                                                     <td class="text-right">
                                                         <div class="btn-group-vertical" role="group" aria-label="...">
@@ -374,18 +375,18 @@
                                         <div class="publication-item-content">
                                             <table width="100%">
                                                 <tr>
-                                                    <td class="col-lg-3">
+                                                    <td class="col-lg-4">
                                                         <h4>
-                                                            <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
+                                                            <i class="fa fa-map-marker text-success" aria-hidden="true"></i>
                                                             {{ rutina.origen }}
                                                         </h4>
                                                         <h4>
-                                                            <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
+                                                            <i class="fa fa-map-marker text-danger" aria-hidden="true"></i>
                                                             {{ rutina.destino }}
                                                         </h4>
                                                     </td>
                                                     <td>
-                                                        Días
+                                                        <h4><small>Días por cada semana</small></h4>
                                                         <h4>
                                                             <i class="fa fa-calendar"></i>
                                                             {% if rutina.dias|length < 5 %}
@@ -396,19 +397,20 @@
                                                                 De Lunes a Viernes
                                                             {% endif %}
                                                         </h4>
-                                                        a las
                                                         <h4>
+                                                            <small>A las</small>
                                                             <i class="fa fa-clock-o"></i>
                                                             {{ rutina.horaSalida|date('H:i')  }}h
                                                         </h4>
                                                     </td>
-                                                    <td>
-                                                        <p>
-                                                            <span class="price-label">{{ rutina.precio|number_format(2, ',', '.') }}€</span> por plaza
-                                                        </p>
-                                                        <p>
-                                                            <span class="plazas-label">{{ rutina.plazasLibres }}</span> Plazas libres
-                                                        </p>
+                                                    <td class="text-right">
+                                                        <h3>
+                                                            {{ rutina.precio|number_format(2, ',', '.') }}€ <small>Por plaza</small>
+                                                        </h3>
+                                                        <h3>
+                                                            <i class="bbc-icon2-seat-free"></i>
+                                                            {{ rutina.plazasLibres }} <small>Plazas libres</small>
+                                                        </h3>
                                                     </td>
                                                     <td class="text-right">
                                                         <div class="btn-group-vertical" role="group" aria-label="...">

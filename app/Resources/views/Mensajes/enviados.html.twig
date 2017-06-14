@@ -18,24 +18,24 @@
             <hr>
             <div class="box-content box-mensajes">
                 {% if mensajes|length > 0 %}
-                    {% for mensaje in mensajes %}
+                    {% for msg in mensajes %}
                         <div class="col-lg-12 publication-item">
                             <p>
-                                <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick':  mensaje.emisor.nick}) }}">
-                                    {{ mensaje.emisor.nombre }} {{ mensaje.emisor.apellidos }}
+                                <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick':  msg.emisor.nick}) }}">
+                                    {{ msg.emisor.nombre }} {{ msg.emisor.apellidos }}
                                 </a>
                                 -
-                                ({{ mensaje.emisor.nick }})
-                                
-                                <span>
-                                    {{ mensaje.fechaEnviado|date|localizeddate('long', 'none', 'es') }}
+                                ({{ msg.emisor.nick }})
+
+                                <span class="text-muted">
+                                    - Enviado el {{ msg.fechaEnviado|date|localizeddate('long', 'none', 'es') }}
                                 </span>
                             </p>
                             <div class="avatar">
-                                {% if mensaje.emisor.imagenPerfil == null %}
+                                {% if msg.emisor.imagenPerfil == null %}
                                     <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
                                 {% else %}
-                                    <img src="{{ asset('uploads/users/'~mensaje.emisor.imagenPerfil) }}" alt="avatar" />
+                                    <img src="{{ asset('uploads/users/'~msg.emisor.imagenPerfil) }}" alt="avatar" />
                                 {% endif %}
                             </div>
 
@@ -44,11 +44,11 @@
                                     <tr>
                                         <td>
                                             Para:
-                                            <a href="{{ path('perfil_usuario', {'nick':mensaje.receptor.nick}) }}">
-                                                {{ mensaje.receptor.nombre }} {{ mensaje.receptor.apellidos }}
+                                            <a href="{{ path('perfil_usuario', {'nick':msg.receptor.nick}) }}">
+                                                {{ msg.receptor.nombre }} {{ msg.receptor.apellidos }}
                                             </a>
                                             <p>
-                                                {{ mensaje.mensaje }}
+                                                {{ msg.mensaje }}
                                             </p>
                                         </td>
                                     </tr>

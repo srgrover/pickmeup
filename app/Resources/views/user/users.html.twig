@@ -8,15 +8,19 @@
 
 
     <div class="col-lg-11 box-form mt-5">
-        <h1>Conductores</h1>
+        <h1>
+            <i class="fa fa-group"></i>
+            Usuarios
+        </h1>
         <hr>
         <div class="count">
-            <span class="label label-primary">
-                Conductores: {{ pagination|length }} <!-- obtiene el total de items del array pagination -->
+            <span class="label label-info" style="font-size: 13px">
+                <i class="fa fa-info-circle"></i>
+                Busca usuarios por su nombre, o su apellido, o su nick
             </span>
             <form action="{{ path('user_search') }}" class="navbar-form pull-right col-lg-12">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Buscar personas" name="search" />
+                    <input type="text" class="form-control" placeholder="Buscar usuarios" name="search" />
                 </div>
                 <button type="submit" class="btn btn-info" style="margin-bottom: 10px;">
                     <i class="fa fa-search"></i>
@@ -27,51 +31,62 @@
         <hr />
 
         <div class="box-content box-users">
-            {% for user in pagination %}    <!-- Para cada usuario(con todos sus datos) dentro de paginacion -->
-                <div class="col-lg-12 user-item">
-                    <div class="avatar">
-                        {% if user.imagenPerfil == null %}
-                            <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
-                        {% else %}
-                            <img src="{{ asset('uploads/users/'~user.imagenPerfil) }}" alt="avatar" />
-                        {% endif %}
-                    </div>
-                    <div class="user-item-content">
-                        <p>
-                            <a class="user-link" href="{{ path('perfil_usuario', {'nick': user.nick}) }}">
-                                {{ user.nombre }} {{ user.apellidos }}
-                            </a>
-                            - ({{ user.nick }})</p>
-                        <p>{{ user.descripcion }}</p>
-                    </div>
+            {% if pagination|length > 0 %}
+                {% for user in pagination %}    <!-- Para cada usuario(con todos sus datos) dentro de paginacion -->
+                    <div class="col-lg-12 user-item">
+                        <div class="avatar">
+                            {% if user.imagenPerfil == null %}
+                                <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                            {% else %}
+                                <img src="{{ asset('uploads/users/'~user.imagenPerfil) }}" alt="avatar" />
+                            {% endif %}
+                        </div>
+                        <div class="user-item-content">
+                            <p>
+                                <a class="user-link" href="{{ path('perfil_usuario', {'nick': user.nick}) }}">
+                                    {{ user.nombre }} {{ user.apellidos }}
+                                </a>
+                                - ({{ user.nick }})</p>
+                            <p>{{ user.descripcion }}</p>
+                        </div>
 
-                    {% if app.user.id != user.id %}
-                        <div class="pull-right buttons-following">
-                            <button class="btn btn-sm btn-success btn-follow
+                        {% if app.user.id != user.id %}
+                            <div class="pull-right buttons-following">
+                                <button class="btn btn-sm btn-success btn-follow
                                     {% if app.user|following(user) == true %}
                                         hidden
                                     {% endif %}
                                     "
-                                    data-followed="{{ user.id }}" onclick="return window.location.reload()">
-                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                Seguir viajes
-                            </button>
+                                        data-followed="{{ user.id }}" onclick="return window.location.reload()">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                    Seguir viajes
+                                </button>
 
-                            <button class="btn btn-sm btn-danger btn-unfollow
+                                <button class="btn btn-sm btn-danger btn-unfollow
                                     {% if app.user|following(user) == false %}
                                         hidden
                                     {% endif %}
                                     "
-                                    data-followed="{{ user.id }}" onclick="return window.location.reload()">
-                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                Dejar de seguir
-                            </button>
-                        </div>
-                    {% endif %}
-                    <div class="clearfix"></div>
-                    <hr />
-                </div>
-            {% endfor %}
+                                        data-followed="{{ user.id }}" onclick="return window.location.reload()">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    Dejar de seguir
+                                </button>
+                            </div>
+                        {% endif %}
+                        <div class="clearfix"></div>
+                        <hr />
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h2 class="text-center">
+                    <i class="fa fa-info-circle"></i>
+                    No se han encontrado usuarios.
+                </h2>
+                <h3 class="text-center text-muted">
+                    Puede que no exista o que no
+                    coincida con los criterios de búsqueda introducidos
+                </h3>
+            {% endif %}
 
         </div>
         <div class="navigation">

@@ -2,12 +2,6 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
-login_check:
-    path: /comprobar
-
-logout:
-    path: /salir
-
 user_nick_test:
     path: /nick-test
     defaults: { _controller: AppBundle:User:nickTest }

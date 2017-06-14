@@ -41,8 +41,7 @@ class MensajeController extends Controller{
             $flush = $em->flush();
 
             if($flush == null){
-                $this->addFlash('estado','El mensaje se ha enviado correctamente');
-                return $this->redirectToRoute('mensajes');
+                return $this->redirectToRoute('mensajes_enviados');
             }else{
                 $this->addFlash('error','Hubo un problema al enviar el mensaje');
             }

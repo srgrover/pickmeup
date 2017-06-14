@@ -1,7 +1,11 @@
 {% extends 'layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('assets/select2/css/select2.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
 {% block content %}
-<div class="container mt-2">
     <div class="col-lg-10 box-default no-padding-lados">
         <h1 class="box-header">
             Mensajes
@@ -35,24 +39,24 @@
             <hr>
             <div class="box-content box-mensajes">
                 {% if mensajes|length > 0 %}
-                    {% for mensaje in mensajes %}
+                    {% for m in mensajes %}
                         <div class="col-lg-12 publication-item">
                             <p>
-                                <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick':  mensaje.emisor.nick}) }}">
-                                    {{ mensaje.emisor.nombre }} {{ mensaje.emisor.apellidos }}
+                                <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick':  m.emisor.nick}) }}">
+                                    {{ m.emisor.nombre }} {{ m.emisor.apellidos }}
                                 </a>
                                 -
-                                ({{ mensaje.emisor.nick }})
+                                ({{ m.emisor.nick }})
                                 -
-                                <span class="pub-date">
-                                ({{ mensaje.fechaEnviado|date|localizeddate('short','none','es') }})
+                                <span class="text-muted">
+                                    Recibido el {{ m.fechaEnviado|date|localizeddate('medium','none','es') }}
                             </span>
                             </p>
                             <div class="avatar">
-                                {% if mensaje.emisor.imagenPerfil == null %}
+                                {% if m.emisor.imagenPerfil == null %}
                                     <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
                                 {% else %}
-                                    <img src="{{ asset('uploads/users/'~mensaje.emisor.imagenPerfil) }}" alt="avatar" />
+                                    <img src="{{ asset('uploads/users/'~m.emisor.imagenPerfil) }}" alt="avatar" />
                                 {% endif %}
                             </div>
 
@@ -61,7 +65,7 @@
                                     <tr>
                                         <td>
                                             <p>
-                                                {{ mensaje.mensaje }}
+                                                {{ m.mensaje }}
                                             </p>
                                         </td>
                                     </tr>
@@ -87,6 +91,14 @@
 
         <div class="clearfix"></div>
     </div>
-</div>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/select2/js/select2.min.js') }}"></script>
+    <script type="text/javascript">
+        $(".form-receptor").select2();
+    </script>
 {% endblock %}
 
