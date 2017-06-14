@@ -25,7 +25,8 @@ class DefaultController extends Controller
      * @Route("/Entrar", name="login")
      */
     public function LoginAction(){
-        if(is_object($this->getUser())){        //El usuario está logueado
+        //Si el usuario está logueado se redirecciona a la página principal
+        if(is_object($this->getUser())){
             return $this->redirect('home');
         }
 
@@ -70,12 +71,6 @@ class DefaultController extends Controller
             $usuario_isset = $query->getResult();
 
             if(count($usuario_isset) == 0){
-//                $claveRegistro = $form->get("password")->getData();
-//                if ($claveRegistro) {
-//                    $clave = $this->get('security.password_encoder')
-//                        ->encodePassword($usuario, $claveRegistro);
-//                    $usuario->setPassword($clave);
-//                }
                 $usuario->setPassword('qwertyuiop');
                 $usuario->setImagenPerfil(null);
                 $usuario->setImagenFondo(null);
@@ -88,7 +83,7 @@ class DefaultController extends Controller
                     $expire = 30;
 
                     if($usuario->getToken() && $usuario->getTokenValidity() > new \Datetime()){
-                        //Mensaje flash de error aqui
+                        return $this->redirectToRoute('login');
                     }else{
                         $token = bin2hex(random_bytes(16));
                         $usuario->setToken($token);
@@ -132,54 +127,119 @@ class DefaultController extends Controller
     /**
      * @Route("/confirmar/{usuario}/{token}", name="confirmar_usuario_pass", methods={"GET", "POST"})
      * @param Request $request
-     * @param Usuario $usuarioId
+     * @param Usuario $usuario
      * @param $token
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function confirmarAction(Request $request, Usuario $usuarioId, $token){
+    public function confirmarAction(Request $request, Usuario $usuario, $token){
         /**
          * @var Usuario|null
          */
-        $usuario = $this->getDoctrine()->getManager()->getRepository('AppBundle:Usuario')->findOneBy([
-            'id' => $usuarioId,
-            'token' => $token
-        ]);
-        if (null === $usuario || ($usuario->getTokenValidity() < new \DateTime())) {
-            $this->addFlash('error', '');
+        if ($usuario->getToken() == $token && $usuario->getTokenValidity() > new \DateTime()) {
+            $form = $this->createForm('AppBundle\Form\NewPassType');
+            $form->handleRequest($request);
+            $error = '';
+            if ($form->isSubmitted() && $form->isValid()) {
+                //codificar la nueva contraseña y asignarla al usuario
+                $password = $this->get('security.password_encoder')
+                    ->encodePassword($usuario, $form->get('newPassword')->get('first')->getData());
+
+                $usuario->setPassword($password);
+                $usuario->setToken(null);
+                $usuario->setTokenValidity(null);
+
+                $this->getDoctrine()->getManager()->flush();
+
+                // indicar que los cambios se han realizado con éxito y volver a la página de inicio
+                $this->addFlash('estado', 'Te has registrado correctamente. Inicia sesión en cualquier momento con tu nueva contraseña');
+                return $this->redirectToRoute('login');
+            }
+        }else{
             return $this->redirectToRoute('login');
         }
-        $data = [
-            'password' => '',
-            'repeat' => ''
-        ];
-        $form = $this->createForm('AppBundle\Form\NewPassType', $data);
-        $form->handleRequest($request);
-        $error = '';
-        if ($form->isSubmitted() && $form->isValid()) {
-            //codificar la nueva contraseña y asignarla al usuario
-            $password = $this->get('security.password_encoder')
-                ->encodePassword($usuario, $form->get('newPassword')->get('first')->getData());
 
-            $usuario->setPassword($password)->setToken(null)->setTokenValidity(null);
-
-            $this->getDoctrine()->getManager()->flush();
-
-            // indicar que los cambios se han realizado con éxito y volver a la página de inicio
-            $this->addFlash('estado', 'Te has registrado correctamente. Inicia sesión en cualquier momento con tu nueva contraseña');
-            return $this->redirectToRoute('login');
-        }
         return $this->render(
             'user/restaurar_pass.html.twig', [
-                'user' => $usuario,
+                'usuario' => $usuario,
                 'form' => $form->createView(),
                 'error' => $error
+            ]
+        );
+
+    }
+
+    /**
+     * @Route("/restaurar", name="restaurar_usuario", methods={"GET", "POST"})
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function resetAction(Request $request){
+        $form = $this->createForm('AppBundle\Form\ResetEmailType');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email = $form->get('email')->getData();
+            $usuario = $this->getDoctrine()->getManager()->getRepository('AppBundle:Usuario')->findOneBy(['email' => $email]);
+
+            if($usuario === null){
+                $this->addFlash('error','El email introducido no pertenece a ningún usuario registrado en esta aplicación');
+                return $this->redirectToRoute('restaurar_usuario');
+            }else{
+                return $this->redirectToRoute('restaurar_usuario_pass',['usuario'=> $usuario->getId()]);
+            }
+        }
+
+        return $this->render(
+            'user/restaurar_pass.html.twig', [
+                'form' => $form->createView(),
             ]
         );
     }
 
 
     /**
-     * @Route("/comprobar", name="comprobar")
+     * @Route("/restaurar/{usuario}", name="restaurar_usuario_pass", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Usuario $usuario
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function resetPassAction(Request $request, Usuario $usuario){
+            $expire = 30;
+
+            if($usuario->getToken() && $usuario->getTokenValidity() > new \Datetime()){
+                return $this->redirectToRoute('login');
+            }else{
+                $token = bin2hex(random_bytes(16));
+                $usuario->setToken($token);
+
+                $validity = new \DateTime();
+                $validity->add(new \DateInterval('PT'.$expire.'M'));
+                $usuario->setTokenValidity($validity);
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('Completa tu registro en PickmeUP!')
+                    ->setFrom($this->getParameter('mailer_user'))
+                    ->setTo($usuario->getEmail())
+                    ->setBody(
+                        $this->renderView('email/emailConfirmUser.html.twig',[
+                            'usuario' => $usuario,
+                            'token' => $token
+                        ])
+                    );
+
+                $this->get('mailer')->send($message);
+
+                // guardar token
+                $this->get('doctrine')->getManager()->flush();                    }
+
+
+            $this->addFlash('estado', 'Se han enviado instrucciones para la restauración de su contraseña al email indicado');
+            return $this->redirectToRoute("login");
+    }
+
+
+
+        /**
+     * @Route("/comprobar", name="login_check")
      * @Route("/salir", name="salir")
      */
     public function comprobarAction() {
