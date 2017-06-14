@@ -40,6 +40,14 @@ twig:
     strict_variables: "%kernel.debug%"
     form_themes:
       - "bootstrap_3_horizontal_layout.html.twig"
+    globals:
+        app_name:     "PICKMEUP!"
+        app_repository: "https://github.com/srgrover/pickmeup"
+        app_version:  "0.92"
+    number_format:
+        decimals: 2
+        decimal_point: ','
+        thousands_separator: '.'
 
 # Doctrine Configuration
 doctrine:
