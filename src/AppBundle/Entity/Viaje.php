@@ -77,10 +77,6 @@ class Viaje{
      *
      * @var DecimalType
      * @Assert\NotBlank()
-     * @Assert\Regex(
-     *     pattern="/^[0-9][0-9]$/",
-     *     message="El precio debe ser un número"
-     * )
      */
     protected $precio;
 
