@@ -19,7 +19,7 @@
                 <div class="col-lg-2">
                     <button type="submit" class="btn btn-warning" style="width: 100%;">
                         <i class="fa fa-search"></i>
-                        Buscar rutass
+                        Buscar rutas
                     </button>
                 </div>
                 <div class="col-lg-1"></div>
@@ -57,8 +57,8 @@
                                     -
                                     ({{ viaje.conductor.nick }})
                                     -
-                                    <span class="">
-                                    Publicado el {{ viaje.fechaPublicacion|date('d-m-Y') }}
+                                    <span class="text-muted">
+                                        Publicado el {{ viaje.fechaPublicacion|date|localizeddate('long', 'none', 'es') }}
                                     </span>
                                 </p>
                                 <div class="avatar">
@@ -72,47 +72,46 @@
                                 <div class="publication-item-content">
                                     <table width="100%">
                                         <tr>
-                                            <td class="col-lg-3">
+                                            <td class="col-lg-4">
                                                 <h4>
-                                                    <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
+                                                    <i class="fa fa-map-marker text-success" aria-hidden="true"></i>
                                                     {{ viaje.origen }}
                                                 </h4>
                                                 <h4>
-                                                    <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
+                                                    <i class="fa fa-map-marker text-danger" aria-hidden="true"></i>
                                                     {{ viaje.destino }}
                                                 </h4>
                                             </td>
                                             <td>
-                                                Fecha de salida:
+                                                <h4><small>Fecha de salida</small></h4>
                                                 <h4>
                                                     <i class="fa fa-calendar"></i>
                                                     {{ viaje.fechaSalida|date|localizeddate('long','none', 'es')  }}
                                                 </h4>
-                                                A las:
                                                 <h4>
+                                                    <small>A las</small>
                                                     <i class="fa fa-clock-o"></i>
-                                                    {{ viaje.horaSalidaIda|date('h:i')  }}h
+                                                    {{ viaje.fechaSalida|date('H:i')  }}h
                                                 </h4>
                                             </td>
-                                            <td>
-                                                <p>
-                                                    <span class="price-label">{{ viaje.precio|number_format(2, ',', '.') }}€</span> por plaza
-                                                </p>
-                                                <p>
-                                                    <span class="plazas-label">{{ viaje.plazasLibres }}</span> Plazas libres
-                                                </p>
+                                            <td class="text-right">
+                                                <h3>{{ viaje.precio|number_format(2, ',', '.') }}€ <small style="font-size: 13px">Por plaza</small></h3>
+                                                <h3 class="plazas-label">
+                                                    <i class="bbc-icon2-seat-free Booking-seatIcon u-gray" aria-hidden="true"></i>
+                                                    {{ viaje.plazasLibres }} <small style="font-size: 13px">Plazas libres</small>
+                                                </h3>
                                             </td>
                                             <td class="text-right">
                                                 <div class="btn-group-vertical" role="group" aria-label="...">
                                                     <a href="{{ path('ver_viaje', {'id' : viaje.id}) }}" class="btn btn-success btn-sm">
-                                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                                        <i class="fa fa-eye" aria-hidden="true"></i>
                                                     </a>
                                                     {% if (viaje.conductor.id is defined) and (viaje.conductor.id == app.user.id) %}
                                                         <a href="{{ path('editar_viaje', {'id' : viaje.id}) }}" class="btn-edit-pub btn btn-default btn-sm">
-                                                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                                            <i class="fa fa-edit" aria-hidden="true"></i>
                                                         </a>
                                                         <a href="{{ path('borrar_viaje', {'id' : viaje.id}) }}" class="btn btn-danger btn-sm">
-                                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                            <i class="fa fa-trash" aria-hidden="true"></i>
                                                         </a>
                                                     {% endif %}
                                                 </div>
@@ -155,9 +154,9 @@
                                     -
                                     ({{ rutina.conductor.nick }})
                                     -
-                                    <span class="pub-date">
-                                ({{ rutina.fechaPublicacion|date('d-m-Y') }})
-                            </span>
+                                    <span class="text-muted">
+                                        Publicado el {{ rutina.fechaPublicacion|date|localizeddate('long','none','es') }}
+                                    </span>
                                 </p>
                                 <div class="avatar">
                                     {% if rutina.conductor.imagenPerfil == null %}
@@ -170,18 +169,19 @@
                                 <div class="publication-item-content">
                                     <table width="100%">
                                         <tr>
-                                            <td class="col-lg-3">
+                                            <td class="col-lg-4">
                                                 <h4>
-                                                    <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
+                                                    <i class="fa fa-map-marker text-success" aria-hidden="true"></i>
                                                     {{ rutina.origen }}
                                                 </h4>
                                                 <h4>
-                                                    <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
+                                                    <i class="fa fa-map-marker text-danger" aria-hidden="true"></i>
                                                     {{ rutina.destino }}
                                                 </h4>
                                             </td>
                                             <td>
-                                                Días
+                                                <h4><small>Días por cada semana</small></h4>
+
                                                 <h4>
                                                     <i class="fa fa-calendar"></i>
                                                     {% if rutina.dias|length < 5 %}
@@ -192,19 +192,17 @@
                                                         De Lunes a Viernes
                                                     {% endif %}
                                                 </h4>
-                                                a las
                                                 <h4>
+                                                    <small>A las</small>
                                                     <i class="fa fa-clock-o"></i>
                                                     {{ rutina.horaSalida|date('H:i')  }}h
                                                 </h4>
                                             </td>
-                                            <td>
-                                                <p>
-                                                    <span class="price-label">{{ rutina.precio|number_format(2, ',', '.') }}€</span> por plaza
-                                                </p>
-                                                <p>
-                                                    <span class="plazas-label">{{ rutina.plazasLibres }}</span> Plazas libres
-                                                </p>
+                                            <td class="text-right">
+                                                <h3>{{ rutina.precio|number_format(2, ',', '.') }}€ <small style="font-size: 13px;">Por plaza</small></h3>
+                                                <h3>
+                                                    <i class="bbc-icon2-seat-free Booking-seatIcon u-gray" aria-hidden="true"></i>
+                                                    {{ rutina.plazasLibres }} <small style="font-size: 13px;">Plazas libres</small></h3>
                                             </td>
                                             <td class="text-right">
                                                 <div class="btn-group-vertical" role="group" aria-label="...">
@@ -273,7 +271,7 @@
                                 <a href="{{ path('perfil_usuario', {'nick': app.user.nick}) }}">{{ app.user.nombre }} {{ app.user.apellidos }}</a>
                             </div>
                             <div class="desc">{{ app.user.nick }}</div>
-                            <div class="desc">{{ app.user.ciudad }}</div>
+                            <div class="desc">({{ app.user.ciudad }})</div>
                         </div>
                         <div class="bottom">
                             {% set estadisticas = app.user|user_stats %}

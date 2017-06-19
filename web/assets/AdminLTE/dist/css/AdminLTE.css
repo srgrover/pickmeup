@@ -143,9 +143,11 @@ body.hold-transition .main-header .logo {
 /* Content */
 .content {
   min-height: 250px;
+  padding: 15px;
   margin-right: auto;
   margin-left: auto;
-  padding: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 /* H1 - H6 font */
 h1,
@@ -249,7 +251,8 @@ a:focus {
 }
 .main-header .sidebar-toggle {
   float: left;
-  background: transparent none;
+  background-color: transparent;
+  background-image: none;
   padding: 15px 15px;
   font-family: fontAwesome;
 }
@@ -558,8 +561,9 @@ a:focus {
 .sidebar-menu .treeview-menu {
   display: none;
   list-style: none;
+  padding: 0;
   margin: 0;
-  padding: 0 0 0 5px;
+  padding-left: 5px;
 }
 .sidebar-menu .treeview-menu .treeview-menu {
   padding-left: 20px;
@@ -957,7 +961,10 @@ a:focus {
 .navbar-nav > .notifications-menu > .dropdown-menu > li.header,
 .navbar-nav > .messages-menu > .dropdown-menu > li.header,
 .navbar-nav > .tasks-menu > .dropdown-menu > li.header {
-  border-radius: 4px 4px 0 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
   background-color: #ffffff;
   padding: 7px 10px;
   border-bottom: 1px solid #f4f4f4;
@@ -967,7 +974,10 @@ a:focus {
 .navbar-nav > .notifications-menu > .dropdown-menu > li.footer > a,
 .navbar-nav > .messages-menu > .dropdown-menu > li.footer > a,
 .navbar-nav > .tasks-menu > .dropdown-menu > li.footer > a {
-  border-radius: 0 0 4px 4px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
   font-size: 12px;
   background-color: #fff;
   padding: 7px 10px;
@@ -1602,6 +1612,7 @@ a:focus {
 .box.box-solid.box-default > .box-header {
   color: #444444;
   background: #d2d6de;
+  background-color: #d2d6de;
 }
 .box.box-solid.box-default > .box-header a,
 .box.box-solid.box-default > .box-header .btn {
@@ -1613,6 +1624,7 @@ a:focus {
 .box.box-solid.box-primary > .box-header {
   color: #ffffff;
   background: #3c8dbc;
+  background-color: #3c8dbc;
 }
 .box.box-solid.box-primary > .box-header a,
 .box.box-solid.box-primary > .box-header .btn {
@@ -1624,6 +1636,7 @@ a:focus {
 .box.box-solid.box-info > .box-header {
   color: #ffffff;
   background: #00c0ef;
+  background-color: #00c0ef;
 }
 .box.box-solid.box-info > .box-header a,
 .box.box-solid.box-info > .box-header .btn {
@@ -1635,6 +1648,7 @@ a:focus {
 .box.box-solid.box-danger > .box-header {
   color: #ffffff;
   background: #dd4b39;
+  background-color: #dd4b39;
 }
 .box.box-solid.box-danger > .box-header a,
 .box.box-solid.box-danger > .box-header .btn {
@@ -1646,6 +1660,7 @@ a:focus {
 .box.box-solid.box-warning > .box-header {
   color: #ffffff;
   background: #f39c12;
+  background-color: #f39c12;
 }
 .box.box-solid.box-warning > .box-header a,
 .box.box-solid.box-warning > .box-header .btn {
@@ -1657,6 +1672,7 @@ a:focus {
 .box.box-solid.box-success > .box-header {
   color: #ffffff;
   background: #00a65a;
+  background-color: #00a65a;
 }
 .box.box-solid.box-success > .box-header a,
 .box.box-solid.box-success > .box-header .btn {
@@ -1778,7 +1794,10 @@ a:focus {
   box-shadow: none;
 }
 .box-body {
-  border-radius: 0 0 3px 3px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
   padding: 10px;
 }
 .no-header .box-body {
@@ -1798,13 +1817,22 @@ a:focus {
   margin: -9px;
 }
 .box-body .box-pane {
-  border-radius: 0 0 0 3px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 3px;
 }
 .box-body .box-pane-right {
-  border-radius: 0 0 3px 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 0;
 }
 .box-footer {
-  border-radius: 0 0 3px 3px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
   border-top: 1px solid #f4f4f4;
   padding: 10px;
   background-color: #ffffff;
@@ -2026,7 +2054,10 @@ a:focus {
   background: #fff;
 }
 .info-box-icon {
-  border-radius: 2px 0 0 2px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
   display: block;
   float: left;
   height: 90px;
@@ -4865,8 +4896,6 @@ table.text-center th {
 .chart canvas {
   width: 100% !important;
 }
-
-
 /*
  * Misc: print
  * -----------

@@ -23,13 +23,13 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li {% if ruta == 'login' %} class="active"{% endif %}>
                                 <a href="{{ path("login") }}">
-                                    <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+                                    <i class="fa fa-sign-in" aria-hidden="true"></i>
                                     &nbsp;Entrar
                                 </a>
                             </li>
                             <li {% if ruta == 'Register' %} class="active"{% endif %}>
                                 <a href="{{ path("Register") }}">
-                                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                                    <span class="fa fa-user" aria-hidden="true"></span>
                                     &nbsp;Registro
                                 </a>
                             </li>
@@ -38,14 +38,14 @@
                         <ul class="nav navbar-nav">
                             <li {% if ruta == 'homepage' %} class="active"{% endif %}>
                                 <a href="{{ path("homepage") }}">
-                                    <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                    <i class="fa fa-home" aria-hidden="true"></i>
                                     &nbsp;Inicio
                                 </a>
                             </li>
                             <li {% if ruta == 'users' %} class="active"{% endif %}>
                                 <a href="{{ path("users") }}">
-                                    <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-                                    &nbsp;Conductores
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    &nbsp;Usuarios
                                 </a>
                             </li>
                         </ul>
@@ -114,21 +114,14 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="{{ path('perfil_usuario', {'nick' : app.user.nick}) }}">
-                                            <span class="glyphicon glyphicon-user"></span>
+                                            <i class="fa fa-user"></i>
                                             Mi perfil
                                         </a>
                                     </li>
-
                                     <li role="separator" class="divider"></li>
                                     <li>
-                                        <a href="">
-                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
-                                            Ayuda
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="{{ path('salir') }}">
-                                            <span class="glyphicon glyphicon-log-out"></span>
+                                            <i class="fa fa-sign-out text-danger"></i>
                                             Salir
                                         </a>
                                     </li>

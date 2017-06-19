@@ -33,7 +33,7 @@ class NewPassType extends AbstractType
                     'attr' => ['tabindex' => 2, 'autofocus' => '']
                 ],
                 'second_options' => [
-                    'label' => 'Repite la nueva contraseña',
+                    'label' => 'Repite la contraseña',
                     'attr' => ['tabindex' => 3]
                 ]
             ]);

@@ -1,5 +1,10 @@
 {% extends 'layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/css/Fonts.css') }}">
+{% endblock %}
+
 {% block content %}
     <div class="col-lg-1"></div>
     <div class="container col-lg-10" style="padding-left: 0;">
@@ -14,6 +19,7 @@
                 {{ rutina.origen }}
                 <i class="fa fa-long-arrow-right"></i>
                 {{ rutina.destino }}
+                <i class="fa fa-road"></i>
             </h1>
             <div class="col-lg-3">
                 <span>
@@ -31,15 +37,15 @@
             </div>
             <div class="col-lg-7">
                 <span>
-                    <i class="fa fa-circle-o text-success"></i>
+                    <i class="fa fa-map-marker text-success"></i>
                     {{ rutina.origen }}
                 </span>
                 <span>
-                    <i class="fa fa-circle-o text-danger"></i>
+                    <i class="fa fa-map-marker text-danger"></i>
                     {{ rutina.destino }}
                 </span>
                 <span>
-                    <i class="fa fa-calendar"></i>
+                    <i class="fa fa-calendar text-primary"></i>
                     {% if rutina.dias|length < 5 %}
                         {% for dia in rutina.dias %}
                             {{ dia.dia }}{% if not loop.last %}, {% endif %}
@@ -55,7 +61,7 @@
                 </span>
                 <span>
                     {% if rutina.maximoAtras %}
-                        <i class="fa fa-group"></i>
+                        <i class="fa fa-group text-primary"></i>
                         El conductor viaja con un máximo de 2 pasajeros en la parte de atrás
                     {% endif %}
                 </span>
@@ -69,18 +75,21 @@
                     {% endif %}
                 </div>
                 <h4>
-                    {{ rutina.conductor.nombre }} {{ rutina.conductor.apellidos }}
+                    <a href="{{ path('perfil_usuario', {'nick':rutina.conductor.nick}) }}">
+                        {{ rutina.conductor.nombre }} {{ rutina.conductor.apellidos }}
+                    </a>
                 </h4>
                 <span>
                     {{ rutina.descripcion }}
                 </span>
-                <span>
-                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#mensaje">
-                        <i class="fa fa-send"></i>
-                        Contactar con el conductor
-                    </a>
-
-                </span>
+                {% if app.user.id != rutina.conductor.id %}
+                    <span>
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#mensaje">
+                            <i class="bbc-icon-chat" aria-hidden="true"></i>
+                            Contactar con el conductor
+                        </a>
+                    </span>
+                {% endif %}
             </div>
         </div>
         <!-- Modal -->
@@ -90,6 +99,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">
+                            <i class="bbc-icon2-messages"></i>
                             Enviar mensaje a
                             <a href="{{ path('perfil_usuario', {'nick': rutina.conductor.nick}) }}">
                                 {{ rutina.conductor.nombre }} {{ rutina.conductor.apellidos }}
@@ -132,6 +142,7 @@
                     Plazas disponibles
                 </span>
                 <span class="plazas-label pull-right">
+                    <i class="bbc-icon2-seat-free Booking-seatIcon" aria-hidden="true"></i>
                     <label>{{ rutina.plazasLibres }}</label> <small>plazas</small>
                 </span>
                 <div class="clearfix"></div>
@@ -161,6 +172,7 @@
                         Reserva ahora una plaza en este viaje
                     </span>
                     <a href="{{ path('peticion_rutina', {'conductor':rutina.conductor.id, 'usuario':app.user.id, 'rutina':rutina.id}) }}" class="btn btn-warning">
+                        <i class="fa fa-reply"></i>
                         Reservar 1 plaza
                     </a>
                 {% endif %}
@@ -171,7 +183,10 @@
         <div class="col-lg-1"></div>
 
         <div class="col-lg-4 box-default pull-left vista-viaje box-conductor">
-            <h3>Conductor</h3>
+            <h3>
+                <i class="bbc-icon2-avatar-driver-m u-gray size28" title="Plaza reservada"></i>
+                Conductor
+            </h3>
             <div class="col-lg-12 text-center">
                 <div class="avatar">
                     {% if rutina.conductor.imagenPerfil == null %}
@@ -188,19 +203,20 @@
                 <span>{{ rutina.conductor.nick }}</span>
                 <hr>
 
-                <h4 class="text-left">Coche</h4>
+                <h4 class="text-left">
+                    <i class="bbc-icon-car" aria-hidden="true"></i>
+                    Coche
+                </h4>
                 {% if rutina.conductor.vehiculo|length > 0 %}
-                    <div class="col-lg-1"></div>
-                    <h4 class="col-lg-3 col-sm-12">
+                    <h4 class="col-lg-4 col-sm-12">
                         <small>Marca</small><br>{{ rutina.conductor.vehiculo.marca }}
                     </h4>
-                    <h4 class="col-lg-3 col-sm-12">
+                    <h4 class="col-lg-4 col-sm-12">
                         <small>Modelo</small><br>{{ rutina.conductor.vehiculo.modelo }}
                     </h4>
-                    <h4 class="col-lg-3 col-sm-12">
+                    <h4 class="col-lg-4 col-sm-12">
                         <small>Color</small><br>{{ rutina.conductor.vehiculo.color }}
                     </h4>
-                    <div class="col-lg-1"></div>
                 {% else %}
                     <h5>El usuario no ha introducido información sobre su vehículo</h5>
                 {% endif %}

@@ -12,7 +12,13 @@
             <label for="password">Contraseña</label>
             <input type="password" id="password" name="_password" class="form-control" />
 
-            <input type="submit" value="Entrar" class="btn btn-success" />
+            <div class="form-group">
+                <button type="submit" name="login" class="btn btn-info btn-block" tabindex="2">
+                    <i class="fa fa-sign-in"></i>
+                    Entrar
+                </button>
+                <a href="{{ path('restaurar_usuario') }}" class="btn-link">¿Has olvidado tu contraseña?</a>
+            </div>
 
             <input type="hidden" name="_target_path" value="/inicio" />
         </form>

@@ -31,21 +31,6 @@ class CocheType extends AbstractType
                     'placeholder' => 'ej. Focus'
                 ]
             ])
-            ->add('plazas', ChoiceType::class, [
-                'label' => 'Plazas libres',
-                'required' => 'required',
-                'choices' => [
-                    '1' => 1,
-                    '2' => 2,
-                    '3' => 3,
-                    '4' => 4,
-                    '5' => 5,
-                    '6' => 6,
-                    '7' => 7,
-
-                ],
-                'placeholder' => 'Seleccione el número de plazas (máximo 7)'
-            ])
             ->add('color', TextType::class, [
                 'label' => 'Color',
                 'required' => true,

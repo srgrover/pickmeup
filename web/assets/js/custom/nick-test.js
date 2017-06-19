@@ -12,7 +12,7 @@ $(document).ready(function () {
            data: {nick: nick},
            type: 'POST',
            success: function (response) {
-               if(response == "used"){
+               if(response === "used"){
                    $(".nick-input").css({
                        "border":"1px solid red",
                        "color": "red"

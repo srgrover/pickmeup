@@ -150,6 +150,7 @@ class IndexController extends Controller{
 
         $query = $viajes_repo->createQueryBuilder('p')
             ->where('p.conductor = (:user_id) OR p.conductor IN (:following)')
+            ->andWhere('p.plazasLibres > 0')
             ->andWhere('p.activo = true')
             ->setParameter('user_id', $user->getId())
             ->setParameter('following', $following_array)
@@ -183,6 +184,7 @@ class IndexController extends Controller{
 
         $query = $viajes_repo->createQueryBuilder('p')
             ->where('p.conductor = (:user_id) OR p.conductor IN (:following)')
+            ->andWhere('p.plazasLibres > 0')
             ->andWhere('p.activo = true')
             ->setParameter('user_id', $user->getId())
             ->setParameter('following', $following_array)
@@ -226,15 +228,21 @@ class IndexController extends Controller{
 
             if($flush == null){
                 $this->addFlash('estado','El mensaje se ha enviado correctamente');
-                return $this->redirectToRoute('mensajes');
+                return $this->redirect('/viaje/ver/'.$viaje->getId());
             }else{
                 $this->addFlash('error','Hubo un problema al enviar el mensaje');
             }
         }
 
+        $cont_mens = $em->getRepository('AppBundle:Mensaje')->findBy([
+            'emisor' => $this->getUser(),
+            'receptor' => $viaje->getConductor()
+        ]);
+
         return $this->render(':Viaje:viaje.html.twig', [
             "formulario" => $formulario->createView(),
             'viaje' => $viaje,
+            'cont_mensa' => $cont_mens
         ]);
     }
 
@@ -264,7 +272,7 @@ class IndexController extends Controller{
 
             if($flush == null){
                 $this->addFlash('estado','El mensaje se ha enviado correctamente');
-                return $this->redirectToRoute('mensajes');
+                return $this->redirect('/rutina/ver/'.$rutina->getId());
             }else{
                 $this->addFlash('error','Hubo un problema al enviar el mensaje');
             }
@@ -342,6 +350,8 @@ class IndexController extends Controller{
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
+        dump(new \DateTime("2017-06-30"));
+
         $usuario = $this->getUser();
         if ($viaje == null) {
             $viaje = new Viaje();
@@ -370,15 +380,7 @@ class IndexController extends Controller{
                         $this->addFlash('error', 'Los cambios no se han guardado correctamente');
                     }
                 }
-            } else {
-                if (null == $viaje) {
-                    $this->addFlash('error', 'El viaje no se ha creado porque el formulario no es válido');
-                } else {
-                    $this->addFlash('error', 'Los cambios no se han guardado porque el formulario no es válido');
-                }
             }
-
-
         }
 
         return $this->render(':publication:add_viaje.html.twig', [

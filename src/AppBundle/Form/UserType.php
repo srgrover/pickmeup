@@ -4,7 +4,6 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,15 +37,17 @@ class UserType extends AbstractType
                 'label' => 'Nick',
                 'required' => true,
                 'attr' => [
-                    'class' => 'form-nick disabled',
-                ]
+                    'class' => 'nick-input',
+                ],
+                'disabled' => true
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Correo electrónico',
                 'required' => true,
                 'attr' => [
                     'class' => 'form-email',
-                ]
+                ],
+                'disabled' => true
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Biografia',
