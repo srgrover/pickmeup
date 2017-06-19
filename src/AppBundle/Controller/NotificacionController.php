@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Notificacion;
 use AppBundle\Entity\Rutina;
 use AppBundle\Entity\Usuario;
 use AppBundle\Entity\Viaje;
@@ -123,10 +124,10 @@ class NotificacionController extends Controller{
      * @Route("/peticion/rutina/{conductor}/{usuario}/{rutina}", name="peticion_rutina")
      * @param Usuario $conductor
      * @param Usuario $usuario
-     * @param Viaje $rutina
+     * @param Rutina $rutina
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function peticionRutinaAction(Usuario $conductor, Usuario $usuario, Viaje $rutina){
+    public function peticionRutinaAction(Usuario $conductor, Usuario $usuario, Rutina $rutina){
         try{
             $notificacion = $this->get('app.notificacion_service');
             $notificacion->set($conductor, 'peticion', $usuario->getId(), $rutina->getId(), 'rutina');
@@ -139,20 +140,26 @@ class NotificacionController extends Controller{
     }
 
     /**
-     * @Route("viaje/aceptar/{conductor}/{usuario}/{viaje}", name="confirmar_plaza_viaje")
+     * @Route("viaje/aceptar/{conductor}/{usuario}/{viaje}/{notif}", name="confirmar_plaza_viaje")
      * @param Usuario $conductor
      * @param Usuario $usuario
      * @param Viaje $viaje
+     * @param Notificacion $id_notif
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function confirmarViajeAction(Usuario $conductor, Usuario $usuario, Viaje $viaje){
+    public function confirmarViajeAction(Usuario $conductor, Usuario $usuario, Viaje $viaje, Notificacion $id_notif){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
+        $notifi = $em->getRepository('AppBundle:Notificacion')->findOneBy([
+            'id' => $id_notif
+        ]);
+        dump($id_notif);
         try{
             $viaje->setPlazasLibres($viaje->getPlazasLibres()-1);
-            $em->flush();
             $notificacion = $this->get('app.notificacion_service');
             $notificacion->set($usuario, 'Vaceptado', $conductor->getId(), $viaje->getId(), 'viaje');
+            $notifi->setTipo('meacepted');
+            $em->flush();
             $this->addFlash('estado', 'La respuesta se ha mandado al usuario');
         }catch (Exception $exception){
             $this->addFlash('error', 'Hubo algún problema al procesar la petición');
@@ -161,20 +168,25 @@ class NotificacionController extends Controller{
     }
 
     /**
-     * @Route("rutina/aceptar/{conductor}/{usuario}/{viaje}", name="confirmar_plaza_rutina")
+     * @Route("rutina/aceptar/{conductor}/{usuario}/{viaje}/{notif}", name="confirmar_plaza_rutina")
      * @param Usuario $conductor
      * @param Usuario $usuario
      * @param Rutina $rutina
+     * @param Notificacion $id_notif
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function confirmarRutinaAction(Usuario $conductor, Usuario $usuario, Rutina $rutina){
+    public function confirmarRutinaAction(Usuario $conductor, Usuario $usuario, Rutina $rutina, Notificacion $id_notif){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
+        $notifi = $em->getRepository('AppBundle:Notificacion')->findOneBy([
+            'id' => $id_notif
+        ]);
         try{
             $rutina->setPlazasLibres($rutina->getPlazasLibres()-1);
-            $em->flush();
             $notificacion = $this->get('app.notificacion_service');
             $notificacion->set($usuario, 'Raceptado', $conductor->getId(), $rutina->getId(), 'rutina');
+            $notifi->setTipo('meacepted');
+            $em->flush();
             $this->addFlash('estado', 'La respuesta se ha mandado al usuario');
         }catch (Exception $exception){
             $this->addFlash('error', 'Hubo algún problema al procesar la petición');
@@ -183,16 +195,26 @@ class NotificacionController extends Controller{
     }
 
     /**
-     * @Route("viaje/denegar/{conductor}/{usuario}/{viaje}", name="denegar_plaza_viaje")
+     * @Route("viaje/denegar/{conductor}/{usuario}/{viaje}/{notif}", name="denegar_plaza_viaje")
      * @param Usuario $conductor
      * @param Usuario $usuario
      * @param Viaje $viaje
+     * @param Notificacion $id_notif
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function denegarViajeAction(Usuario $conductor, Usuario $usuario, Viaje $viaje){
+    public function denegarViajeAction(Usuario $conductor, Usuario $usuario, Viaje $viaje, Notificacion $id_notif){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $notifi = $em->getRepository('AppBundle:Notificacion')->findOneBy([
+            'id' => $id_notif
+        ]);
+
         try{
             $notificacion = $this->get('app.notificacion_service');
             $notificacion->set($usuario, 'Vdenegado', $conductor->getId(), $viaje->getId(), 'viaje');
+            $notifi->setTipo('medecline');
+            $em->flush();
             $this->addFlash('estado', 'La respuesta se ha mandado al usuario');
         }catch (Exception $exception){
             $this->addFlash('error', 'Hubo algún problema al procesar la petición');
@@ -201,16 +223,25 @@ class NotificacionController extends Controller{
     }
 
     /**
-     * @Route("rutina/denegar/{conductor}/{usuario}/{viaje}", name="denegar_plaza_rutina")
+     * @Route("rutina/denegar/{conductor}/{usuario}/{viaje}/{notif}", name="denegar_plaza_rutina")
      * @param Usuario $conductor
      * @param Usuario $usuario
      * @param Rutina $viaje
+     * @param Notificacion $id_notif
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function denegarRutinaAction(Usuario $conductor, Usuario $usuario, Rutina $viaje){
+    public function denegarRutinaAction(Usuario $conductor, Usuario $usuario, Rutina $viaje, Notificacion $id_notif){
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $notifi = $em->getRepository('AppBundle:Notificacion')->findOneBy([
+            'id' => $id_notif
+        ]);
         try{
             $notificacion = $this->get('app.notificacion_service');
             $notificacion->set($usuario, 'Rdenegado', $conductor->getId(), $viaje->getId(), 'rutina');
+            $notifi->setTipo('medecline');
+            $em->flush();
             $this->addFlash('estado', 'La respuesta se ha mandado al usuario');
         }catch (Exception $exception){
             $this->addFlash('error', 'Hubo algún problema al procesar la petición');

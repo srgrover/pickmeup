@@ -142,7 +142,7 @@
                                     </a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="{{ path('logout') }}" class="btn btn-primary btn-flat">
+                                    <a href="{{ path('salir') }}" class="btn btn-primary btn-flat">
                                         <i class="fa fa-sign-out"></i>
                                         Salir
                                     </a>
@@ -244,11 +244,6 @@
 
                         </a>
                     </li>
-
-                    <li class="header">MÁS</li>
-                    <li><a href="#"><i class="fa fa-book"></i> <span>Contacto</span></a></li>
-                    <li><a href="#"><i class="fa fa-question"></i> <span>Ayuda</span></a></li>
-                    <li><a href="#"><i class="fa fa-info"></i> <span>Información</span></a></li>
                 </ul>
             </section>
             <!-- /.sidebar -->
@@ -743,100 +738,11 @@
                 </div>
 
 
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">MENSAJES ENVIADOS EN LA APLICACIÓN</h3>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table id="example1"
-                                           class="table table-bordered table-striped table-hover dataTable"
-                                           role="grid" aria-describedby="example1_info">
-                                        <thead>
-                                        <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="example1" rowspan="1"
-                                                colspan="1" aria-sort="ascending"
-                                                aria-label="Rendering engine: activate to sort column descending"
-                                                style="width: 168px;">Emisor
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                colspan="1" aria-label="Browser: activate to sort column ascending"
-                                                style="width: 208px;">Receptor
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
-                                                style="width: 183px;">Fecha
-                                            </th>
-                                            <th class="sorting" tabindex="0" aria-controls="example1" rowspan="1"
-                                                colspan="1" aria-label="Platform(s): activate to sort column ascending"
-                                                style="width: 183px;">Mensaje
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% for mensaje_u in mensajes %}
-                                            <tr role="row" class="odd">
-                                                <td class="sorting_2">
-                                                    {% if mensaje_u.emisor.imagenPerfil == null %}
-                                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}"
-                                                             class="img-circle" width="30px" alt="avatar"/>
-                                                    {% else %}
-                                                        <img src="{{ asset('uploads/users/'~mensaje_u.emisor.imagenPerfil) }}"
-                                                             class="img-circle" width="30px" alt="avatar"/>
-                                                    {% endif %}
-                                                    <a href="{{ path('perfil_usuario', {'nick': mensaje_u.emisor.nick}) }}">
-                                                        {{ mensaje_u.emisor.nombre }} {{ mensaje_u.emisor.apellidos }}
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    {% if mensaje_u.receptor.imagenPerfil == null %}
-                                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}"
-                                                             class="img-circle" width="30px" alt="avatar"/>
-                                                    {% else %}
-                                                        <img src="{{ asset('uploads/users/'~mensaje_u.receptor.imagenPerfil) }}"
-                                                             class="img-circle" width="30px" alt="avatar"/>
-                                                    {% endif %}
-                                                    <a href="{{ path('perfil_usuario', {'nick': mensaje_u.receptor.nick}) }}">
-                                                        {{ mensaje_u.receptor.nombre }} {{ mensaje_u.receptor.apellidos }}
-                                                    </a>
-                                                </td>
-                                                <td>
-                                                    <i class="fa fa-calendar"></i>
-                                                    {{ mensaje_u.fechaEnviado|date|localizeddate('long','none','es') }}
-                                                </td>
-                                                <td>
-                                                    {{ mensaje_u.mensaje }}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-1"></div>
-                                <div class="col-lg-11">
-                                    <div class="navigation">
-                                        {{ knp_pagination_render(mensajes) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
                 <div class="callout callout-info">
-                    <h4>Tip!</h4>
+                    <h4>Información</h4>
 
-                    <p>Add the sidebar-collapse class to the body tag to get this layout. You should combine this option
-                        with a
-                        fixed layout if you have a long sidebar. Doing that will prevent your page content from getting
-                        stretched
-                        vertically.</p>
+                    <p>Los mensajes enviados entre usuarios son privados. El administrador no puede
+                    ver ni eliminar un mensaje. El mensaje que se envía, enviado queda.</p>
                 </div>
                 <!-- /.box -->
             </section>

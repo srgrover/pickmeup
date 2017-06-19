@@ -158,10 +158,12 @@ class UserController extends Controller{
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        $search = trim($request->query->get("search", null)); //Se recoge el valor de la variable search de la URL
+        //Se recoge el valor de la variable search de la URL
+        $search = trim($request->query->get("search", null));
 
-        if($search == null){    //Si la variable search del GET es nula, se redirige a la pagina home
-            return $this->redirect($this->generateUrl('homepage'));
+        //Si la variable search del GET es nula, se redirige a la pagina home
+        if($search == null){
+            return $this->redirect($this->generateUrl('users'));
         }
 
         $usuarios = $em->createQueryBuilder()
@@ -207,6 +209,7 @@ class UserController extends Controller{
             $usuario = $this->getUser();
         }
 
+        //Si el usuario está vacío o no está logueado se redirige al inicio
         if(empty($usuario) || !is_object($usuario)){
             return $this->redirect($this->generateUrl('homepage'));
         }
@@ -280,7 +283,6 @@ class UserController extends Controller{
             }catch (Exception $exception){
                 $this->addFlash('error','Hubo algún problema al actualizar la contraseña');
             }
-
         }
 
         return $this->render(':user:cambiar_pass.html.twig', [

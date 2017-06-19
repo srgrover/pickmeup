@@ -30,22 +30,19 @@ class AdminController extends Controller{
         $viajes = $this->getViajes($request);
         $rutinas = $this->getRutinas($request);
         $usuarios = $this->getUsuarios($request);
-        $mensajes = $this->getMensajes($request);
 
         $total_usuarios = $this->getTotalUsuarios($request);
         $total_viajes = $this->getTotalViajes($request);
         $total_rutinas = $this->getTotalRutinas($request);
         $total_mensajes = $this->getTotalMensajes($request);
-
-        $mensajes_admin = $this->getMensajesAdmin($request);
         $notif_admin = $this->getAllNotificaciones($request);
+        $mensajes_admin = $this->getMensajesAdmin($request);
 
         return $this->render('admin/index.html.twig', [
             'admin' => $usuario,
             'viajes' => $viajes,
             'rutinas' => $rutinas,
             'usuarios' => $usuarios,
-            'mensajes' => $mensajes,
             'total_usuarios' => $total_usuarios,
             'total_viajes' => $total_viajes,
             'total_rutinas' => $total_rutinas,
@@ -272,23 +269,6 @@ class AdminController extends Controller{
             ->getSingleScalarResult();
 
         return $total_mensajes;
-    }
-
-    public function getMensajes($request){
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-
-        $mensaje_repo = $em->getRepository('AppBundle:Mensaje');
-        $mensajes = $mensaje_repo->findAll();
-
-        $paginador = $this->get('knp_paginator');
-        $paginacion = $paginador->paginate(
-            $mensajes,
-            $request->query->getInt('page', 1),
-            5
-        );
-
-        return $paginacion;
     }
 
     public function getAllNotificaciones($request){

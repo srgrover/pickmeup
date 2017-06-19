@@ -66,20 +66,6 @@ class Viaje{
     protected $destino;
 
     /**
-     * @ORM\Column(type="time", nullable=false)
-     *
-     * @var /time
-     */
-    protected $horaSalidaIda;
-
-    /**
-     * @ORM\Column(type="time", nullable=true)
-     *
-     * @var /time
-     */
-    protected $horaSalidaVuelta;
-
-    /**
      * @ORM\Column(type="integer", nullable=false)
      *
      * @var integer
@@ -92,7 +78,7 @@ class Viaje{
      * @var DecimalType
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *     pattern="/^[0-9]$/",
+     *     pattern="/^[0-9][0-9]$/",
      *     message="El precio debe ser un número"
      * )
      */
@@ -301,6 +287,8 @@ class Viaje{
      */
     public function setFechaSalida($fechaSalida)
     {
+//        $fecha = explode("/", $fechaSalida);
+//        dump($fecha);
         $this->fechaSalida = $fechaSalida;
     }
 
@@ -317,6 +305,7 @@ class Viaje{
      */
     public function setFechaVuelta($fechaVuelta)
     {
+//        $fecha = explode("/", $fechaVuelta);
         $this->fechaVuelta = $fechaVuelta;
     }
 

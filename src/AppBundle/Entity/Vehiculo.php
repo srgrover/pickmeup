@@ -40,13 +40,6 @@ class Vehiculo{
     protected $modelo;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
-     *
-     * @var integer
-     */
-    protected $plazas;
-
-    /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="vehiculo")
      *
      * @var Usuario

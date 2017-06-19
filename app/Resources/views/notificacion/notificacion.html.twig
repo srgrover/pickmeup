@@ -34,11 +34,11 @@
                                         {{ viaje_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ viaje_notif.destino }}
                                         </a>
                                         <div class="mt-1 col-lg-12">
-                                            <a href="{{ path('confirmar_plaza_viaje',{'conductor': viaje_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': viaje_notif.id}) }}" class="btn btn-success btn-sm">
+                                            <a href="{{ path('confirmar_plaza_viaje',{'conductor': viaje_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': viaje_notif.id, 'notif' : notificacion.id}) }}" class="btn btn-success btn-sm">
                                                 <i class="fa fa-check"></i>
                                                 Aceptar
                                             </a>
-                                            <a href="{{ path('denegar_plaza_viaje',{'conductor': viaje_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': viaje_notif.id}) }}" class="btn btn-danger btn-sm">
+                                            <a href="{{ path('denegar_plaza_viaje',{'conductor': viaje_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': viaje_notif.id, 'notif' : notificacion.id}) }}" class="btn btn-danger btn-sm">
                                                 <i class="fa fa-remove"></i>
                                                 No aceptar
                                             </a>
@@ -54,14 +54,74 @@
                                         {{ rutina_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ rutina_notif.destino }}
                                         </a>
                                         <div class="mt-1 col-lg-12">
-                                            <a href="{{ path('confirmar_plaza_rutina',{'conductor': rutina_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': rutina_notif.id}) }}" class="btn btn-success btn-sm">
+                                            <a href="{{ path('confirmar_plaza_rutina',{'conductor': rutina_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': rutina_notif.id, 'notif' : notificacion.id}) }}" class="btn btn-success btn-sm">
                                                 <i class="fa fa-check"></i>
                                                 Aceptar
                                             </a>
-                                            <a href="{{ path('denegar_plaza_rutina',{'conductor': rutina_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': rutina_notif.id}) }}" class="btn btn-danger btn-sm">
+                                            <a href="{{ path('denegar_plaza_rutina',{'conductor': rutina_notif.conductor.id, 'usuario': usuario_notif.id, 'viaje': rutina_notif.id, 'notif' : notificacion.id}) }}" class="btn btn-danger btn-sm">
                                                 <i class="fa fa-remove"></i>
                                                 No aceptar
                                             </a>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    {% endif %}
+                                {% endif %}
+
+                                {#RUTA ACEPTADA/DENEGADA#}
+                                {% if notificacion.tipo == "meacepted" %}
+                                    {% if notificacion.tipoRuta == "viaje" %}
+                                        {% set viaje_notif = notificacion.rutaId|get_viaje %}
+                                        <h6 class="pull-right"><i class="fa fa-clock"></i> <label class="label label-default">{{ notificacion.createdAt | date | localizeddate('long', 'none', 'es') }}</label></h6>
+                                        <i class="fa fa-info-circle text-primary"></i>
+                                        <a href="{{ path('perfil_usuario', {'nick': usuario_notif.nick}) }}" class="label_notif label label-info">{{ usuario_notif.nombre }} {{ usuario_notif.apellidos }}</a>
+                                        quiere unirse a tu viaje
+                                        <a href="{{ path('ver_viaje', {'id':viaje_notif.id}) }}" class="label_notif label label-warning col-form-label-lg">
+                                            {{ viaje_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ viaje_notif.destino }}
+                                        </a>
+                                        <div class="mt-1 col-lg-12 bg-success">
+                                            <h5>Has aceptado esta plaza en tu viaje</h5>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    {% elseif notificacion.tipoRuta == "rutina" %}
+                                        {% set rutina_notif = notificacion.rutaId|get_rutina %}
+                                        <h6 class="pull-right"><i class="fa fa-clock"></i> <label class="label label-default">{{ notificacion.createdAt | date | localizeddate('long', 'none', 'es') }}</label></h6>
+                                        <i class="fa fa-info-circle text-primary"></i>
+                                        <a href="{{ path('perfil_usuario', {'nick': usuario_notif.nick}) }}" class="label_notif label label-info">{{ usuario_notif.nombre }} {{ usuario_notif.apellidos }}</a>
+                                        quiere unirse a tu rutina
+                                        <a href="{{ path('ver_rutina', {'id':rutina_notif.id}) }}" class="label_notif label label-primary col-form-label-lg">
+                                            {{ rutina_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ rutina_notif.destino }}
+                                        </a>
+                                        <div class="mt-1 col-lg-12 bg-success">
+                                            <h5>Has aceptado esta plaza en tu rutina</h5>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    {% endif %}
+                                {% endif %}
+                                {% if notificacion.tipo == "medeclined" %}
+                                    {% if notificacion.tipoRuta == "viaje" %}
+                                        {% set viaje_notif = notificacion.rutaId|get_viaje %}
+                                        <h6 class="pull-right"><i class="fa fa-clock"></i> <label class="label label-default">{{ notificacion.createdAt | date | localizeddate('long', 'none', 'es') }}</label></h6>
+                                        <i class="fa fa-info-circle text-primary"></i>
+                                        <a href="{{ path('perfil_usuario', {'nick': usuario_notif.nick}) }}" class="label_notif label label-info">{{ usuario_notif.nombre }} {{ usuario_notif.apellidos }}</a>
+                                        quiere unirse a tu viaje
+                                        <a href="{{ path('ver_viaje', {'id':viaje_notif.id}) }}" class="label_notif label label-warning col-form-label-lg">
+                                            {{ viaje_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ viaje_notif.destino }}
+                                        </a>
+                                        <div class="mt-1 col-lg-12 bg-danger">
+                                            <h5>Has rechazado esta plaza en tu viaje</h5>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    {% elseif notificacion.tipoRuta == "rutina" %}
+                                        {% set rutina_notif = notificacion.rutaId|get_rutina %}
+                                        <h6 class="pull-right"><i class="fa fa-clock"></i> <label class="label label-default">{{ notificacion.createdAt | date | localizeddate('long', 'none', 'es') }}</label></h6>
+                                        <i class="fa fa-info-circle text-primary"></i>
+                                        <a href="{{ path('perfil_usuario', {'nick': usuario_notif.nick}) }}" class="label_notif label label-info">{{ usuario_notif.nombre }} {{ usuario_notif.apellidos }}</a>
+                                        quiere unirse a tu rutina
+                                        <a href="{{ path('ver_rutina', {'id':rutina_notif.id}) }}" class="label_notif label label-primary col-form-label-lg">
+                                            {{ rutina_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ rutina_notif.destino }}
+                                        </a>
+                                        <div class="mt-1 col-lg-12 bg-danger">
+                                            <h5>Has rechazado esta plaza en tu rutina</h5>
                                         </div>
                                         <div class="clearfix"></div>
                                     {% endif %}

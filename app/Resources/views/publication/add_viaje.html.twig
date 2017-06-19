@@ -1,8 +1,15 @@
 {% extends 'layout.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('assets/datetimepicker/jquery.datetimepicker.css') }}">
+{% endblock %}
+
 {% block javascripts %}
     <script src=" http://maps.google.com/?file=api&amp;v=2.x&amp;key=AIzaSyBljN7LS4yZJnja9vL_Ocvz6jLlEKU3fdY" type="text/javascript"></script>
-    <script type="text/javascript" src="{{ asset('assets/js/custom/google_routes.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/custom/google_Vroutes.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/datetimepicker/build/jquery.datetimepicker.full.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/js/custom/fechas.js') }}"></script>
 {% endblock %}
 
 {% block content %}
@@ -33,6 +40,7 @@
         {{ form_widget(form) }}
         <div class="col-sm-2"></div>
         <div class="col-sm-10">
+            <a href="javascript:history.go(-1);" class="btn btn-info"><i class="fa fa-long-arrow-left"></i> Volver</a>
             <button type="submit" class="btn btn-success pull-right">
                 {% if ruta == 'add_viaje' %}
                     <i class="fa fa-plus"></i>

@@ -1,26 +1,29 @@
 {% extends 'layout.html.twig' %}
 
 {% block content %}
-    <div class="container">
-        <div class="col-lg-4"></div>
-        <div class="col-lg-4 box-default">
-            {{ form_start(form) }}
-            <div class="form-group">
-                <div class="pull-right">
-                    <a href="{{ path('login') }}" tabindex="3">
-                        Volver al login
-                    </a>
-                </div>
-                {{ form_widget(form) }}
+    <div class="container col-lg-12 mt-2">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6 box-default">
+            <div class="pull-right">
+                <a href="{{ path('login') }}" tabindex="3">
+                    <i class="fa fa-long-arrow-left"></i>
+                    Volver al login
+                </a>
             </div>
+            <div class="clearfix"></div>
+            <hr>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+
             <div class="form-group">
-                <button type="submit" name="login" class="btn btn-success btn-block" tabindex="2">
-                    Aceptar
+                <button type="submit" name="send" class="btn btn-primary btn-block" tabindex="2">
+                    <i class="fa fa-send"></i>
+                    Mandar instrucciones
                 </button>
             </div>
             {{ form_end(form) }}
         </div>
-        <div class="col-lg-4"></div>
+        <div class="col-lg-3"></div>
     </div>
 
 {% endblock %}

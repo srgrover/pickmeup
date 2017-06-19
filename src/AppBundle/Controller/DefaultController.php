@@ -147,6 +147,7 @@ class DefaultController extends Controller
                 $usuario->setPassword($password);
                 $usuario->setToken(null);
                 $usuario->setTokenValidity(null);
+                $usuario->setEstado(true);
 
                 $this->getDoctrine()->getManager()->flush();
 
@@ -189,7 +190,7 @@ class DefaultController extends Controller
         }
 
         return $this->render(
-            'user/restaurar_pass.html.twig', [
+            'user/enterEmail.html.twig', [
                 'form' => $form->createView(),
             ]
         );

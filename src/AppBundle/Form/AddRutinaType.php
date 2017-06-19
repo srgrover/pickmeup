@@ -25,7 +25,7 @@ class AddRutinaType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'class' => 'form-origen text-success',
-                    'placeholder' => 'ej. Bailén'
+                    'placeholder' => 'ej. Paseo de las palmeras, Bailén'
                 ]
             ])
             ->add('destino', TextType::class, [
@@ -33,7 +33,7 @@ class AddRutinaType extends AbstractType
                 'required' => true,
                 'attr' => [
                     'class' => 'form-destino text-danger',
-                    'placeholder' => 'ej. Linares'
+                    'placeholder' => 'ej. I.E.S. Oretania, Linares'
                 ]
             ])
             ->add('plazasLibres', ChoiceType::class, [
@@ -65,8 +65,11 @@ class AddRutinaType extends AbstractType
             ->add('horaSalida', TimeType::class, [
                 'label' => 'Hora de salida',
                 'required' => true,
+                'html5' => false,
+                'widget' => 'single_text',
                 'attr' => [
-                    'class' => 'form-hora-salida'
+                    'class' => 'horaSalida',
+                    'placeholder'=>'hh:mm'
                 ],
                 'placeholder' => [
                     'hour' => "Hora",

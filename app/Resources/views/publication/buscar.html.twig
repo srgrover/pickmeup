@@ -18,7 +18,7 @@
             <div class="col-lg-2">
                 <button type="submit" class="btn btn-warning" style="width: 100%;">
                     <i class="fa fa-search"></i>
-                    Buscar rutass
+                    Buscar rutas
                 </button>
             </div>
             <div class="col-lg-1"></div>
@@ -48,81 +48,88 @@
 
                     <div class="box-content">
                         {% if viajes|length > 0 %}
-                        {% for viaje in viajes %}             {# Cada vez que se llame a un elemento de la colección será con "publication" #}
-                            <div class="col-lg-12 publication-item">
-                                <p>
-                                    <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick': viaje.conductor.nick}) }}">
-                                        {{ viaje.conductor.nombre }} {{ viaje.conductor.apellidos }}
-                                    </a>
-                                    -
-                                    ({{ viaje.conductor.nick }})
-                                    -
-                                    <span class="pub-date">
-                                ({{ viaje.fechaPublicacion|date('d-m-Y') }})
-                            </span>
-                                </p>
-                                <div class="avatar">
-                                    {% if viaje.conductor.imagenPerfil == null %}
-                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
-                                    {% else %}
-                                        <img src="{{ asset('uploads/users/'~viaje.conductor.imagenPerfil) }}" alt="avatar" />
-                                    {% endif %}
-                                </div>
+                            {% for viaje in viajes %}             {# Cada vez que se llame a un elemento de la colección será con "publication" #}
+                                <div class="col-lg-12 publication-item">
+                                    <p>
+                                        <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick': viaje.conductor.nick}) }}">
+                                            {{ viaje.conductor.nombre }} {{ viaje.conductor.apellidos }}
+                                        </a>
+                                        -
+                                        ({{ viaje.conductor.nick }})
+                                        -
+                                        <span class="text-muted">
+                                            Publicado el {{ viaje.fechaPublicacion|date|localizeddate('long', 'none', 'es') }}
+                                        </span>
+                                    </p>
+                                    <div class="avatar">
+                                        {% if viaje.conductor.imagenPerfil == null %}
+                                            <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                                        {% else %}
+                                            <img src="{{ asset('uploads/users/'~viaje.conductor.imagenPerfil) }}" alt="avatar" />
+                                        {% endif %}
+                                    </div>
 
-                                <div class="publication-item-content">
-                                    <table width="100%">
-                                        <tr>
-                                            <td>
-                                                <p>
-                                                    <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
-                                                    {{ viaje.origen }}
-                                                </p>
-                                                <p>
-                                                    <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
-                                                    {{ viaje.destino }}
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <p>
-                                                    Hora de salida: <span class="hora-label">{{ viaje.horaSalidaIda|date('h:i')  }}h</span>
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <p>
-                                                    <span class="price-label">{{ viaje.precio|number_format(2, ',', '.') }}€</span> por plaza
-                                                </p>
-                                                <p>
-                                                    <span class="plazas-label">{{ viaje.plazasLibres }}</span> Plazas libres
-                                                </p>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="btn-group-vertical" role="group" aria-label="...">
-                                                    <a href="{{ path('ver_viaje', {'id' : viaje.id}) }}" class="btn btn-success btn-sm">
-                                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                                    </a>
-                                                    {% if (viaje.conductor.id is defined) and (viaje.conductor.id == app.user.id) %}
-                                                        <a href="{{ path('editar_viaje', {'id' : viaje.id}) }}" class="btn-edit-pub btn btn-default btn-sm">
-                                                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    <div class="publication-item-content">
+                                        <table width="100%">
+                                            <tr>
+                                                <td class="col-lg-4">
+                                                    <h4>
+                                                        <i class="fa fa-map-marker text-success" aria-hidden="true"></i>
+                                                        {{ viaje.origen }}
+                                                    </h4>
+                                                    <h4>
+                                                        <i class="fa fa-map-marker text-danger" aria-hidden="true"></i>
+                                                        {{ viaje.destino }}
+                                                    </h4>
+                                                </td>
+                                                <td>
+                                                    <h4><small>Fecha de salida</small></h4>
+                                                    <h4>
+                                                        <i class="fa fa-calendar"></i>
+                                                        {{ viaje.fechaSalida|date|localizeddate('long','none', 'es')  }}
+                                                    </h4>
+                                                    <h4>
+                                                        <small>A las</small>
+                                                        <i class="fa fa-clock-o"></i>
+                                                        {{ viaje.fechaSalida|date('h:i')  }}h
+                                                    </h4>
+                                                </td>
+                                                <td class="text-right">
+                                                    <h3>{{ viaje.precio|number_format(2, ',', '.') }}€ <small style="font-size: 13px">Por plaza</small></h3>
+                                                    <h3 class="plazas-label">
+                                                        <i class="bbc-icon2-seat-free Booking-seatIcon u-gray" aria-hidden="true"></i>
+                                                        {{ viaje.plazasLibres }} <small style="font-size: 13px">Plazas libres</small>
+                                                    </h3>
+                                                </td>
+                                                <td class="text-right">
+                                                    <div class="btn-group-vertical" role="group" aria-label="...">
+                                                        <a href="{{ path('ver_viaje', {'id' : viaje.id}) }}" class="btn btn-success btn-sm">
+                                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                         </a>
-                                                        <a href="{{ path('borrar_viaje', {'id' : viaje.id}) }}" class="btn btn-danger btn-sm">
-                                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                                        {% if (viaje.conductor.id is defined) and (viaje.conductor.id == app.user.id) %}
+                                                            <a href="{{ path('editar_viaje', {'id' : viaje.id}) }}" class="btn-edit-pub btn btn-default btn-sm">
+                                                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                                            </a>
+                                                            <a href="{{ path('borrar_viaje', {'id' : viaje.id}) }}" class="btn btn-danger btn-sm">
+                                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
 
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <hr>
                                 </div>
-                                <div class="clearfix"></div>
-                                <hr>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
                         {% else %}
                             <div class="col-lg-12">
-                                <h3>No se han encontrado viajes con la ruta introducida</h3>
+                                <h3>No se han encontrado viajes con estos criterios</h3>
                             </div>
                         {% endif %}
+
 
                         <div class="navigation">
                             {{ knp_pagination_render(viajes) }}
@@ -134,79 +141,91 @@
 
                     <div class="box-content">
                         {% if rutinas|length > 0 %}
-                        {% for rutina in rutinas %}             {# Cada vez que se llame a un elemento de la colección será con "publication" #}
-                            <div class="col-lg-12 publication-item">
-                                <p>
-                                    <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick': rutina.conductor.nick}) }}">
-                                        {{ rutina.conductor.nombre }} {{ rutina.conductor.apellidos }}
-                                    </a>
-                                    -
-                                    ({{ rutina.conductor.nick }})
-                                    -
-                                    <span class="pub-date">
-                                ({{ rutina.fechaPublicacion|date('d-m-Y') }})
-                            </span>
-                                </p>
-                                <div class="avatar">
-                                    {% if rutina.conductor.imagenPerfil == null %}
-                                        <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
-                                    {% else %}
-                                        <img src="{{ asset('uploads/users/'~rutina.conductor.imagenPerfil) }}" alt="avatar" />
-                                    {% endif %}
-                                </div>
+                            {% for rutina in rutinas %}             {# Cada vez que se llame a un elemento de la colección será con "publication" #}
+                                <div class="col-lg-12 publication-item">
+                                    <p>
+                                        <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick': rutina.conductor.nick}) }}">
+                                            {{ rutina.conductor.nombre }} {{ rutina.conductor.apellidos }}
+                                        </a>
+                                        -
+                                        ({{ rutina.conductor.nick }})
+                                        -
+                                        <span class="text-muted">
+                                            Publicado el {{ rutina.fechaPublicacion|date|localizeddate('long','none','es') }}
+                                        </span>
+                                    </p>
+                                    <div class="avatar">
+                                        {% if rutina.conductor.imagenPerfil == null %}
+                                            <img src="{{ asset('assets/images/default-avatar.jpg') }}" alt="avatar" />
+                                        {% else %}
+                                            <img src="{{ asset('uploads/users/'~rutina.conductor.imagenPerfil) }}" alt="avatar" />
+                                        {% endif %}
+                                    </div>
 
-                                <div class="publication-item-content">
-                                    <table width="100%">
-                                        <tr>
-                                            <td>
-                                                <p>
-                                                    <span class="glyphicon glyphicon-circle-arrow-right text-success" aria-hidden="true"></span>
-                                                    {{ rutina.origen }}
-                                                </p>
-                                                <p>
-                                                    <span class="glyphicon glyphicon-circle-arrow-right text-danger" aria-hidden="true"></span>
-                                                    {{ rutina.destino }}
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <p>
-                                                    Hora de salida: <span class="hora-label">{{ rutina.horaSalida|date('h:i')  }}h</span>
-                                                </p>
-                                            </td>
-                                            <td>
-                                                <p>
-                                                    <span class="price-label">{{ rutina.precio|number_format(2, ',', '.') }}€</span> por plaza
-                                                </p>
-                                                <p>
-                                                    <span class="plazas-label">{{ rutina.plazasLibres }}</span> Plazas libres
-                                                </p>
-                                            </td>
-                                            <td class="text-right">
-                                                <div class="btn-group-vertical" role="group" aria-label="...">
-                                                    <a href="{{ path('ver_rutina', {'id' : rutina.id}) }}" class="btn btn-success btn-sm">
-                                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                                                    </a>
-                                                    {% if (rutina.conductor.id is defined) and (rutina.conductor.id == app.user.id) %}
-                                                        <a href="{{ path('editar_rutina', {'id' : rutina.id}) }}" class="btn-edit-pub btn btn-default btn-sm">
-                                                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                                                        </a>
-                                                        <a href="{{ path('borrar_rutina', {'id' : rutina.id}) }}" class="btn btn-danger btn-sm">
-                                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                                        </a>
-                                                    {% endif %}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
+                                    <div class="publication-item-content">
+                                        <table width="100%">
+                                            <tr>
+                                                <td class="col-lg-4">
+                                                    <h4>
+                                                        <i class="fa fa-map-marker text-success" aria-hidden="true"></i>
+                                                        {{ rutina.origen }}
+                                                    </h4>
+                                                    <h4>
+                                                        <i class="fa fa-map-marker text-danger" aria-hidden="true"></i>
+                                                        {{ rutina.destino }}
+                                                    </h4>
+                                                </td>
+                                                <td>
+                                                    <h4><small>Días por cada semana</small></h4>
 
+                                                    <h4>
+                                                        <i class="fa fa-calendar"></i>
+                                                        {% if rutina.dias|length < 5 %}
+                                                            {% for dia in rutina.dias %}
+                                                                {{ dia.dia }}{% if not loop.last %}, {% endif %}
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            De Lunes a Viernes
+                                                        {% endif %}
+                                                    </h4>
+                                                    <h4>
+                                                        <small>A las</small>
+                                                        <i class="fa fa-clock-o"></i>
+                                                        {{ rutina.horaSalida|date('H:i')  }}h
+                                                    </h4>
+                                                </td>
+                                                <td class="text-right">
+                                                    <h3>{{ rutina.precio|number_format(2, ',', '.') }}€ <small style="font-size: 13px;">Por plaza</small></h3>
+                                                    <h3>
+                                                        <i class="bbc-icon2-seat-free Booking-seatIcon u-gray" aria-hidden="true"></i>
+                                                        {{ rutina.plazasLibres }} <small style="font-size: 13px;">Plazas libres</small></h3>
+                                                </td>
+                                                <td class="text-right">
+                                                    <div class="btn-group-vertical" role="group" aria-label="...">
+                                                        <a href="{{ path('ver_rutina', {'id' : rutina.id}) }}" class="btn btn-success btn-sm">
+                                                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                                        </a>
+                                                        {% if (rutina.conductor.id is defined) and (rutina.conductor.id == app.user.id) %}
+                                                            <a href="{{ path('editar_rutina', {'id' : rutina.id}) }}" class="btn-edit-pub btn btn-default btn-sm">
+                                                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                                            </a>
+                                                            <a href="{{ path('borrar_rutina', {'id' : rutina.id}) }}" class="btn btn-danger btn-sm">
+                                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <hr>
                                 </div>
-                                <div class="clearfix"></div>
-                                <hr>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
                         {% else %}
                             <div class="col-lg-12">
-                                <h3>No se han encontrado rutinas con la ruta introducida.</h3>
+                                <h3>No se han encontrado rutinas con estos criterios</h3>
                             </div>
                         {% endif %}
 

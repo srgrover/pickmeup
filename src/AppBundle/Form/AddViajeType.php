@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,6 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Routing\Matcher\TraceableUrlMatcher;
 
 class AddViajeType extends AbstractType
 {
@@ -23,7 +25,7 @@ class AddViajeType extends AbstractType
         $builder
             ->add('origen', TextType::class, [
                 'label' => 'Origen',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-origen text-success',
                     'placeholder' => 'ej. Paseo de las palmeras, Bailén',
@@ -31,7 +33,7 @@ class AddViajeType extends AbstractType
             ])
             ->add('destino', TextType::class, [
                 'label' => 'Destino',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-destino text-danger',
                     'placeholder' => 'ej. Estadio Santiago Bernabéu',
@@ -39,7 +41,7 @@ class AddViajeType extends AbstractType
             ])
             ->add('plazasLibres', ChoiceType::class, [
                 'label' => 'Plazas libres',
-                'required' => 'required',
+                'required' => true,
                 'choices' => [
                     '1' => 1,
                     '2' => 2,
@@ -53,54 +55,53 @@ class AddViajeType extends AbstractType
             ])
             ->add('precio', MoneyType::class, [
                 'label' => 'Precio',
-                'required' => 'required',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-precio form-control',
                     'placeholder' => 'ej. 5'
                 ]
             ])
-            ->add('fechaSalida', DateType::class, [
+            ->add('fechaSalida', null, [
                 'label' => 'Fecha de salida',
-                'required' => 'required',
+                'required' => true,
+                'widget' => 'single_text',
                 'attr' => [
-                    'class' => 'form-salida'
+                    'class' => 'Fida',
+                    'placeholder'=>'dd/mm/aaaa hh:mm'
                 ],
-                'placeholder' => [
-                    'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
-                ],
-                'years' => range(Date('Y'), Date('Y')+5)
+                'format' => 'Y/M/d HH:mm',
             ])
-            ->add('horaSalidaIda', TimeType::class, [
-                'label' => 'Hora de salida',
-                'required' => 'required',
-                'attr' => [
-                    'class' => 'form-hora-salida'
-                ],
-                'placeholder' => [
-                    'hour' => 'Hora', 'minute' => 'Minuto'
-                ]
-            ])
-            ->add('fechaVuelta', DateType::class, [
+//            ->add('horaSalidaIda', TimeType::class, [
+//                'label' => 'Hora de salida',
+//                'required' => true,
+//                'widget' => 'single_text',
+//                'html5' => false,
+//                'attr' => [
+//                    'class' => 'horaSalida',
+//                    'placeholder'=>'hh:mm'
+//                ],
+//            ])
+            ->add('fechaVuelta', null, [
                 'label' => 'Fecha de vuelta',
-                'required' => 'required',
+                'required' => true,
+                'widget' => 'single_text',
                 'attr' => [
-                    'class' => 'form-vuelta'
+                    'class' => 'Fvuelta',
+                    'placeholder'=>'dd/mm/aaaa hh:mm'
                 ],
-                'placeholder' => [
-                    'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
-                ],
-                'years' => range(Date('Y'), Date('Y')+5)
+                'format' => 'Y/M/d HH:mm',
+
             ])
-            ->add('horaSalidaVuelta', TimeType::class, [
-                'label' => 'Hora de Vuelta',
-                'required' => 'required',
-                'attr' => [
-                    'class' => 'form-hora-vuelta'
-                ],
-                'placeholder' => [
-                    'hour' => 'Hora', 'minute' => 'Minuto'
-                ]
-            ])
+//            ->add('horaSalidaVuelta', TimeType::class, [
+//                'label' => 'Hora de Vuelta',
+//                'required' => true,
+//                'html5' => false,
+//                'widget' => 'single_text',
+//                'attr' => [
+//                    'class' => 'horaVuelta',
+//                    'placeholder'=>'hh:mm'
+//                ],
+//            ])
             ->add('maximoAtras', CheckboxType::class, [
                 'label' => 'Máx. 2 pasajeros atrás',
                 'required' => false,
@@ -123,7 +124,7 @@ class AddViajeType extends AbstractType
                 ]
             ])
             ->add('descripcion', TextareaType::class, [
-                'label' => 'Descripción/Anotaciones del viaje',
+                'label' => 'Anotaciones del viaje',
                 'required' => 'required',
                 'attr' => [
                     'class' => 'form-desc form-control'

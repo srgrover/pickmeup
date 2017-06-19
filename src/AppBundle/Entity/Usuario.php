@@ -206,7 +206,7 @@ class Usuario implements UserInterface, \Serializable {
      *
      * @var boolean
      */
-    protected $estado = true;
+    protected $estado = false;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
