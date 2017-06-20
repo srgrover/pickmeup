@@ -10,6 +10,7 @@ use AppBundle\Form\AddRutinaType;
 use AppBundle\Form\AddViajeType;
 use AppBundle\Form\CocheType;
 use AppBundle\Form\fastMensajeType;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -211,19 +212,19 @@ class IndexController extends Controller{
     public function verViajeAction(Request $request, Viaje $viaje){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
+
+        //Mandar un mensaje rápido al conductor
         $mensaje = new Mensaje();
         $formulario = $this->createForm(fastMensajeType::class, $mensaje);
-
         $formulario->handleRequest($request);
 
         if($formulario->isSubmitted() && $formulario->isValid()){
             $mensaje->setEmisor($this->getUser());
             $mensaje->setReceptor($viaje->getConductor());
-            $mensaje->setFechaEnviado(new \DateTime('now'));
+            $mensaje->setFechaEnviado(new DateTime('now'));
             $mensaje->setLeido(false);
 
             $em->persist($mensaje);
-            /** @var EntityManager $em */
             $flush = $em->flush();
 
             if($flush == null){
@@ -234,6 +235,14 @@ class IndexController extends Controller{
             }
         }
 
+        //Edad del conductor a partir de su fecha de nacimiento
+        $fecha = $viaje->getConductor()->getFechaNacimiento();
+        $cumpleanos = new DateTime($fecha->format("Y-m-d"));
+        $hoy = new DateTime();
+        $annos = $hoy->diff($cumpleanos);
+        $edad = $annos->y;
+
+        //Cuenta los mensajes que hemos enviado al conductor de la ruta
         $cont_mens = $em->getRepository('AppBundle:Mensaje')->findBy([
             'emisor' => $this->getUser(),
             'receptor' => $viaje->getConductor()
@@ -242,7 +251,8 @@ class IndexController extends Controller{
         return $this->render(':Viaje:viaje.html.twig', [
             "formulario" => $formulario->createView(),
             'viaje' => $viaje,
-            'cont_mensa' => $cont_mens
+            'cont_mensa' => $cont_mens,
+            'edad' => $edad
         ]);
     }
 
@@ -256,6 +266,8 @@ class IndexController extends Controller{
     public function verRutinaAction(Request $request, Rutina $rutina){
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
+
+        //Mandar un mensaje al condutor
         $mensaje = new Mensaje();
         $formulario = $this->createForm(fastMensajeType::class, $mensaje);
 
@@ -264,7 +276,7 @@ class IndexController extends Controller{
         if($formulario->isSubmitted() && $formulario->isValid()){
             $mensaje->setEmisor($this->getUser());
             $mensaje->setReceptor($rutina->getConductor());
-            $mensaje->setFechaEnviado(new \DateTime('now'));
+            $mensaje->setFechaEnviado(new DateTime('now'));
             $mensaje->setLeido(false);
 
             $em->persist($mensaje);
@@ -278,10 +290,24 @@ class IndexController extends Controller{
             }
         }
 
+        //Edad del conductor a partir de su fecha de nacimiento
+        $fecha = $rutina->getConductor()->getFechaNacimiento();
+        $cumpleanos = new DateTime($fecha->format("Y-m-d"));
+        $hoy = new DateTime();
+        $annos = $hoy->diff($cumpleanos);
+        $edad = $annos->y;
+
+        //Cuenta los mensajes que hemos enviado al conductor de la ruta
+        $cont_mens = $em->getRepository('AppBundle:Mensaje')->findBy([
+            'emisor' => $this->getUser(),
+            'receptor' => $rutina->getConductor()
+        ]);
 
         return $this->render('rutina/rutina.html.twig', [
             "formulario" => $formulario->createView(),
             'rutina' => $rutina,
+            'cont_mens' => $cont_mens,
+            'edad' => $edad
         ]);
     }
 
@@ -301,7 +327,7 @@ class IndexController extends Controller{
             $rutina = new Rutina();
             $em->persist($rutina);
             $rutina->setConductor($usuario);
-            $rutina->setFechaPublicacion(new \DateTime("now"));
+            $rutina->setFechaPublicacion(new DateTime("now"));
         }
 
         $form = $this->createForm(AddRutinaType::class, $rutina);
@@ -350,14 +376,14 @@ class IndexController extends Controller{
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        dump(new \DateTime("2017-06-30"));
+        dump(new DateTime("2017-06-30"));
 
         $usuario = $this->getUser();
         if ($viaje == null) {
             $viaje = new Viaje();
             $em->persist($viaje);
             $viaje->setConductor($usuario);
-            $viaje->setFechaPublicacion(new \DateTime("now"));
+            $viaje->setFechaPublicacion(new DateTime("now"));
         }
         $form = $this->createForm(AddViajeType::class, $viaje);
 
