@@ -489,6 +489,27 @@ header nav .add-pub a:hover{
     font-size: 100%;
 }
 
+.not-notifications{
+    color: #555555;
+    font-weight: bold;
+    font-size: 17px;
+    text-align: center;
+}
+
+.ruta-acepted{
+    padding: 5px;
+    border-radius: 3px;
+    background-color: rgba(90,210,90, 0.2);
+    border: 1px solid rgba(90,210,90, 0.4);
+}
+
+.ruta-denied{
+    padding: 5px;
+    border-radius: 3px;
+    background-color: rgba(255,150,90, 0.2);
+    border: 1px solid rgba(255,150,90, 0.4);
+}
+
 /* CARD PERFIL */
 
 .card {
@@ -778,15 +799,6 @@ header nav .add-pub a:hover{
 
 .card .stat-data a .stat-number{
     float: right;
-}
-
-/* NOTIFICACIONES */
-
-.not-notifications{
-    color: #555555;
-    font-weight: bold;
-    font-size: 17px;
-    text-align: center;
 }
 
 /* VISTA DE VIAJE*/
