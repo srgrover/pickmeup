@@ -49,22 +49,10 @@ class RegisterType extends AbstractType
                     'class' => 'form-email form-control'
                 ]
             ])
-//            ->add('password', PasswordType::class, [
-//                'label' => 'Contraseña',
-//                'required' => true,
-//                'attr' => [
-//                    'class' => 'form-password form-control'
-//                ],
-//                'constraints' => [
-//                    new Length([
-//                        'min' => 8
-//                    ])
-//                ]
-//            ])
             ->add('fechaNacimiento', DateType::class, [
                 'label' => 'Fecha de nacimiento',
                 'required' => true,
-                'years' => range(1930,Date('Y')),
+                'years' => range(1930,Date('Y')-18),
                 'placeholder' => [
                     'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
                 ],

@@ -18,17 +18,16 @@ class datosIniciales extends AbstractFixture implements OrderedFixtureInterface,
     public function load(ObjectManager $manager)
     {
         $userAdmin = new Usuario();
-        $userAdmin
-            ->setNombre('Admin')
-            ->setApellidos('Admin')
-            ->setNick('Admin')
-            ->setEmail('grovebreaks@gmail.com')
-            ->setFechaNacimiento(new DateTime('1994-04-11'))
-            ->setCiudad('Bailén')
-            ->setProvincia('Jaén')
-            ->setPais('España')
-            ->setTelefono('722390411')
-            ->setPassword($this->container->get('security.password_encoder')->encodePassword($userAdmin, 'admin'));
+        $userAdmin->setNombre('Admin');
+        $userAdmin->setApellidos('Admin');
+        $userAdmin->setNick('Admin');
+        $userAdmin->setEmail('grovebreaks@gmail.com');
+        $userAdmin->setFechaNacimiento(new DateTime('1994-04-11'));
+        $userAdmin->setCiudad('Bailén');
+        $userAdmin->setProvincia('Jaén');
+        $userAdmin->setPais('España');
+        $userAdmin->setTelefono('722390411');
+        $userAdmin->setPassword($this->container->get('security.password_encoder')->encodePassword($userAdmin, 'admin'));
         $manager->persist($userAdmin);
         $manager->flush();
     }
