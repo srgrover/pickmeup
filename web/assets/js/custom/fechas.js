@@ -20,3 +20,8 @@ jQuery(function(){
         },
     });
 });
+
+jQuery('#appbundle_rutina_horaSalida').datetimepicker({
+    datepicker:false,
+    format:'H:i'
+});

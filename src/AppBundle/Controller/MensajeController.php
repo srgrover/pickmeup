@@ -71,8 +71,6 @@ class MensajeController extends Controller{
     public function enviadosAction(Request $request){
         $mensajes_privados = $this->getMensajesPrivados($request, 'enviado'); //Mensajes enviados
 
-        dump($mensajes_privados);
-
         $paginador = $this->get('knp_paginator');
         $paginacion = $paginador->paginate(
             $mensajes_privados,
@@ -102,8 +100,6 @@ class MensajeController extends Controller{
             ->setParameter('usuario', $usuario->getId())
             ->getQuery()
             ->getResult();
-
-            dump($mensajes);
 
         return $mensajes;
     }
@@ -151,5 +147,4 @@ class MensajeController extends Controller{
 
         return $respuesta;
     }
-
 }

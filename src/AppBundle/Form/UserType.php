@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Usuario;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -48,6 +49,17 @@ class UserType extends AbstractType
                     'class' => 'form-email',
                 ],
                 'disabled' => true
+            ])
+            ->add('fechaNacimiento', DateType::class, [
+                'label' => 'Fecha de nacimiento',
+                'required' => true,
+                'years' => range(1930,Date('Y')-18),
+                'placeholder' => [
+                    'day' => 'Día', 'month' => 'Mes', 'year' => 'Año'
+                ],
+                'attr' => [
+                    'class' => 'form-date'
+                ]
             ])
             ->add('descripcion', TextareaType::class, [
                 'label' => 'Biografia',
