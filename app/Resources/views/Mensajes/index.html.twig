@@ -42,14 +42,13 @@
                     {% for m in mensajes %}
                         <div class="col-lg-12 publication-item">
                             <p>
+                                De
                                 <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick':  m.emisor.nick}) }}">
                                     {{ m.emisor.nombre }} {{ m.emisor.apellidos }}
                                 </a>
-                                -
-                                ({{ m.emisor.nick }})
-                                -
+
                                 <span class="text-muted">
-                                    Recibido el {{ m.fechaEnviado|date|localizeddate('medium','none','es') }}
+                                    - Recibido el {{ m.fechaEnviado|date|localizeddate('medium','none','es') }} a las {{ m.fechaEnviado|date('H:i') }}
                             </span>
                             </p>
                             <div class="avatar">

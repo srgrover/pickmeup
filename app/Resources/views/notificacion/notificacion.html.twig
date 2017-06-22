@@ -78,8 +78,11 @@
                                         <a href="{{ path('ver_viaje', {'id':viaje_notif.id}) }}" class="label_notif label label-warning col-form-label-lg">
                                             {{ viaje_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ viaje_notif.destino }}
                                         </a>
-                                        <div class="mt-1 col-lg-12 bg-success">
-                                            <h5>Has aceptado esta plaza en tu viaje</h5>
+                                        <div class="mt-1 col-lg-12 ruta-acepted">
+                                            <h5>
+                                                <i class="fa fa-check text-success"></i>
+                                                Has aceptado esta plaza en tu viaje
+                                            </h5>
                                         </div>
                                         <div class="clearfix"></div>
                                     {% elseif notificacion.tipoRuta == "rutina" %}
@@ -91,13 +94,16 @@
                                         <a href="{{ path('ver_rutina', {'id':rutina_notif.id}) }}" class="label_notif label label-primary col-form-label-lg">
                                             {{ rutina_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ rutina_notif.destino }}
                                         </a>
-                                        <div class="mt-1 col-lg-12 bg-success">
-                                            <h5>Has aceptado esta plaza en tu rutina</h5>
+                                        <div class="mt-1 col-lg-12 ruta-acepted">
+                                            <h5>
+                                                <i class="fa fa-check text-success"></i>
+                                                Has aceptado esta plaza en tu rutina
+                                            </h5>
                                         </div>
                                         <div class="clearfix"></div>
                                     {% endif %}
                                 {% endif %}
-                                {% if notificacion.tipo == "medeclined" %}
+                                {% if notificacion.tipo == "medecline" %}
                                     {% if notificacion.tipoRuta == "viaje" %}
                                         {% set viaje_notif = notificacion.rutaId|get_viaje %}
                                         <h6 class="pull-right"><i class="fa fa-clock"></i> <label class="label label-default">{{ notificacion.createdAt | date | localizeddate('long', 'none', 'es') }}</label></h6>
@@ -107,8 +113,11 @@
                                         <a href="{{ path('ver_viaje', {'id':viaje_notif.id}) }}" class="label_notif label label-warning col-form-label-lg">
                                             {{ viaje_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ viaje_notif.destino }}
                                         </a>
-                                        <div class="mt-1 col-lg-12 bg-danger">
-                                            <h5>Has rechazado esta plaza en tu viaje</h5>
+                                        <div class="mt-1 col-lg-12 ruta-denied">
+                                            <h5>
+                                                <i class="fa fa-close text-danger"></i>
+                                                Has rechazado esta plaza en tu viaje
+                                            </h5>
                                         </div>
                                         <div class="clearfix"></div>
                                     {% elseif notificacion.tipoRuta == "rutina" %}
@@ -120,8 +129,11 @@
                                         <a href="{{ path('ver_rutina', {'id':rutina_notif.id}) }}" class="label_notif label label-primary col-form-label-lg">
                                             {{ rutina_notif.origen }} <i class="fa fa-long-arrow-right"></i> {{ rutina_notif.destino }}
                                         </a>
-                                        <div class="mt-1 col-lg-12 bg-danger">
-                                            <h5>Has rechazado esta plaza en tu rutina</h5>
+                                        <div class="mt-1 col-lg-12 ruta-denied">
+                                            <h5>
+                                                <i class="fa fa-close text-danger"></i>
+                                                Has rechazado esta plaza en tu rutina
+                                            </h5>
                                         </div>
                                         <div class="clearfix"></div>
                                     {% endif %}

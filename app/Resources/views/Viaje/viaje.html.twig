@@ -14,14 +14,14 @@
                 Volver a la página principal
             </a>
         </h4>
-        <div class="col-lg-7 box-default pull-left vista-viaje">
+        <div class="col-lg-7 col-md-12 col-sm-12 box-default pull-left vista-viaje">
             <h1 class="box-header">
                 {{ viaje.origen }}
                 <i class="fa fa-long-arrow-right"></i>
                 {{ viaje.destino }}
                 <i class="fa fa-road"></i>
             </h1>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-3 col-sm-3">
                 <span>
                     Salida:
                 </span>
@@ -35,7 +35,7 @@
                     Detalles:
                 </span>
             </div>
-            <div class="col-lg-7">
+            <div class="col-lg-7 col-md-8 col-sm-8">
                 <span>
                     <i class="fa fa-map-marker text-success"></i>
                     {{ viaje.origen }}
@@ -143,7 +143,7 @@
             </div>
         </div>
         <div class="col-lg-1"></div>
-        <div class="col-lg-4 box-default pull-left vista-viaje">
+        <div class="col-lg-4 col-md-12 col-sm-12 box-default pull-left vista-viaje">
             <div class="col-lg-12 row-list">
                 <span>
                     Aportación por plaza
@@ -153,7 +153,6 @@
                 </span>
                 <div class="clearfix"></div>
             </div>
-            <hr>
             <div class="col-lg-12 row-list">
                 <span>
                     Plazas disponibles
@@ -199,7 +198,7 @@
 
         <div class="col-lg-1"></div>
 
-        <div class="col-lg-4 box-default pull-left vista-viaje box-conductor">
+        <div class="col-lg-4 col-md-12 col-sm-12 box-default pull-left vista-viaje box-conductor">
             <h3>
                 <i class="bbc-icon2-avatar-driver-m u-gray size28" title="Plaza reservada"></i>
                 Conductor
@@ -217,7 +216,8 @@
                         {{ viaje.conductor.nombre }} {{ viaje.conductor.apellidos }}
                     </a>
                 </h4>
-                <span>{{ viaje.conductor.nick }}</span>
+                <h4>{{ edad }} años <small> - ({{ viaje.conductor.nick }})</small></h4>
+
                 <hr>
                 <h4 class="text-left">
                     <i class="bbc-icon-car" aria-hidden="true"></i>

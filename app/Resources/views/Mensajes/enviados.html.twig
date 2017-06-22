@@ -21,14 +21,13 @@
                     {% for msg in mensajes %}
                         <div class="col-lg-12 publication-item">
                             <p>
+                                De
                                 <a class="pub-name-link" href="{{ path('perfil_usuario', {'nick':  msg.emisor.nick}) }}">
                                     {{ msg.emisor.nombre }} {{ msg.emisor.apellidos }}
                                 </a>
-                                -
-                                ({{ msg.emisor.nick }})
                                 
                                 <span class="text-muted">
-                                    - Enviado el {{ msg.fechaEnviado|date|localizeddate('long', 'none', 'es') }}
+                                    - Enviado el {{ msg.fechaEnviado|date|localizeddate('long', 'none', 'es') }} a las {{ msg.fechaEnviado|date('H:i') }}
                                 </span>
                             </p>
                             <div class="avatar">
