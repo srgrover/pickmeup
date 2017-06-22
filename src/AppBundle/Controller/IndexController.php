@@ -376,8 +376,6 @@ class IndexController extends Controller{
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        dump(new DateTime("2017-06-30"));
-
         $usuario = $this->getUser();
         if ($viaje == null) {
             $viaje = new Viaje();
